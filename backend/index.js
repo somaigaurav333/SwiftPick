@@ -1,5 +1,5 @@
 import express, { response } from "express";
-import { PORT,mongoDBURL_location } from "./config.js";
+import { PORT,mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import { Location } from "./models/locationModel.js";
 import locationRoute from "./routes/locationRoute.js";
@@ -28,7 +28,7 @@ app.get('/',(requset,response)=>{
 app.use('/locations', locationRoute);
 
 mongoose
-    .connect(mongoDBURL_location)
+    .connect(mongoDBURL)
     .then(()=> {
         console.log("App connected to location database")
         app.listen(PORT,()=>{

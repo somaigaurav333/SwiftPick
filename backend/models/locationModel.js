@@ -16,4 +16,4 @@ const locationSchema = mongoose.Schema(
   }
 );
 
-export const Location = mongoose.model('Book', locationSchema);
+export const Location = mongoose.model('Location', locationSchema);
