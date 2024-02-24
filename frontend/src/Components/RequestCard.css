@@ -9,7 +9,6 @@
     background-color: pink;
     width: fit-content;
     border-radius: 10px;
-
 }
 
 .Head {
@@ -23,6 +22,12 @@
 }
 
 .DropLocation {
+    text-align: center;
+    font-size: large;
+    margin-bottom: 5px;
+}
+
+.Items {
     text-align: center;
     font-size: large;
     margin-bottom: 5px;
