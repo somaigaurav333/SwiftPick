@@ -5,11 +5,11 @@ function RequestCard({ request }) {
   return (
     <div className="RequestCard">
       <div className="Head">
-        <div className="Username">{request.UserName} </div>
-        <div className="Phone">{request.Phone} </div>
+        <div className="Username">{request.name} </div>
+        <div className="Phone">{request.phoneNumber} </div>
       </div>
-      <div className="DropLocation">{request.DropLocation}</div>
-      <div className="Time"> {request.Time}</div>
+      <div className="DropLocation">{request.deliveryLocation}</div>
+      <div className="Time"> {request.createdAt}</div>
     </div>
   );
 }
