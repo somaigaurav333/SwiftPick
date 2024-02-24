@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RequestCard from "./RequestCard";
+import "./ViewAllRequestsRow.css";
 
 function ViewAllRequestsRow({ title, requests, pickupLocation }) {
   //Filter requests based on pickup location
@@ -22,7 +23,11 @@ function ViewAllRequestsRow({ title, requests, pickupLocation }) {
           <div className="RequestCards">
             {filteredRequests.map((request) => {
               return (
-                <RequestCard key={request.id} request={request}></RequestCard>
+                <RequestCard
+                  className="RequestCardOuter"
+                  key={request.id}
+                  request={request}
+                ></RequestCard>
               );
             })}
           </div>

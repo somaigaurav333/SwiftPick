@@ -21,6 +21,7 @@ function ViewAllRequests() {
           Phone: "9314578491",
           PickupLocation: "Yummpys",
           DropLocation: "ABCD",
+          Time: "10",
         },
         {
           id: 2,
@@ -28,6 +29,7 @@ function ViewAllRequests() {
           Phone: "9314578492",
           PickupLocation: "Yummpys",
           DropLocation: "EFGH",
+          Time: "11",
         },
         {
           id: 3,
@@ -35,6 +37,7 @@ function ViewAllRequests() {
           Phone: "9314578493",
           PickupLocation: "MedC",
           DropLocation: "IJKL",
+          Time: "12",
         },
         {
           id: 4,
@@ -42,6 +45,7 @@ function ViewAllRequests() {
           Phone: "9314578494",
           PickupLocation: "MedC",
           DropLocation: "MNOP",
+          Time: "13",
         },
       ]);
       return;
