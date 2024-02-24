@@ -10,6 +10,7 @@ router.post("/", async (req, res) => {
       !req.body.name ||
       !req.body.pickupLocation ||
       !req.body.deliveryLocation ||
+      !req.body.phoneNumber ||
       !req.body.paymentMethod ||
       !req.body.items ||
       !req.body.requesterNote ||
@@ -23,6 +24,7 @@ router.post("/", async (req, res) => {
       name: req.body.name,
       pickupLocation: req.body.pickupLocation,
       deliveryLocation: req.body.deliveryLocation,
+      phoneNumber: req.body.phoneNumber,
       paymentMethod: req.body.paymentMethod,
       items: req.body.items,
       requesterNote: req.body.requesterNote,

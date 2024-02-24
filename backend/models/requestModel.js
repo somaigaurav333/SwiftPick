@@ -14,6 +14,10 @@ const requestSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    phoneNumber: {
+      type: String,
+      requred: true,
+    },
     paymentMethod: {
       type: String,
       required: true,
