@@ -14,11 +14,19 @@
 .Head {
     display: flex;
     font-size: medium;
+    padding: 5px;
     margin-bottom: 10px;
+    border-bottom: 1px solid white;
+
 }
 
 .Username {
     margin-right: 20px;
+}
+
+.Phone {
+    /* margin-right: 20px; */
+    text-align: right;
 }
 
 .DropLocation {
@@ -36,5 +44,9 @@
 .Time {
     font-size: small;
     text-align: end;
+    margin-top: 5px;
+    border-top: 1px solid beige;
+    padding: 2px;
+
 
 }
