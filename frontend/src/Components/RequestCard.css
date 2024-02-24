@@ -6,7 +6,8 @@
     padding-top: 5px;
     padding-bottom: 5px;
     margin-left: 10px;
-    background-color: pink;
+    background-color: rgba(154, 29, 158, 0.856);
+    color: rgb(255, 255, 255);
     width: fit-content;
     border-radius: 10px;
 }
@@ -46,7 +47,7 @@
     text-align: end;
     margin-top: 5px;
     border-top: 1px solid beige;
-    padding: 2px;
+    padding: 5px;
 
 
 }
