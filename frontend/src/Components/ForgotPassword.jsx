@@ -9,7 +9,7 @@ function ForgotPassword() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:5000/auth/forgot-password', {
+        axios.post('http://localhost:5000/auth/forgotPassword', {
             email,
         }).then(response => {
           if(response.data.status){
@@ -36,7 +36,7 @@ function ForgotPassword() {
                         onChange={(e) => setEmail(e.target.value)} />
 
                     <button 
-                        className='w-full text-center py-3 rounded text-balck focus:outline-none my-1 border-black' 
+                        className='w-full text-center py-3 rounded text-balck focus:outline-none my-1 border border-black hover:bg-gray-900 text hover:text-white' 
                         type='submit'>Send</button>
                 </form>
                 <div className="text-grey-dark mt-6">

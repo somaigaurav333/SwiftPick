@@ -87,7 +87,7 @@ router.post('/login', async (req, res) => {
 })
 
 //Route for forgot password
-router.post('/forgot-password', async (req, res) => {
+router.post('/forgotPassword', async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -110,12 +110,12 @@ router.post('/forgot-password', async (req, res) => {
       from: adminEmail,
       to: email,
       subject: 'Reset Password',
-      text: `http://localhost:3000/auth/forgot-password/${token}`
+      text: `http://localhost:3000/auth/resetPassword/${token}`
     };
     
     transporter.sendMail(mailOptions, function(error, info){
       if (error) {
-        return res.json({status: false, message:"Error sending email"});
+        return res.json({status: false, message:"Error sending email" + info});
       } else {
         return res.json({status: true, message:"Email Sent"});
       }
