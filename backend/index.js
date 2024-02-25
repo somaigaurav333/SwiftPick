@@ -23,7 +23,7 @@ app.use(express.json());
 // }));
 
 app.get("/", (requset, response) => {
-  console.log(requset);
+  // console.log(requset);
   return response.status(234).send("Welcome");
 });
 
