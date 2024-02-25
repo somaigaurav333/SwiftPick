@@ -81,7 +81,7 @@ const SingUp = () => {
                         onChange={(e) => setPhoneNumber(e.target.value)} />
 
                     <button 
-                        className='w-full text-center py-3 rounded text-balck focus:outline-none my-1 border-black' 
+                        className='w-full text-center py-3 rounded text-balck focus:outline-none my-1 border border-black hover:bg-gray-900 text hover:text-white' 
                         type='submit'>SignUp</button>
                 </form>
                 <div className="text-grey-dark mt-6">

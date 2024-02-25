@@ -19,6 +19,7 @@ function ForgotPassword() {
           else{
             navigate('/auth/signup')
           }
+          console.log(response);
         }).catch(err => {
             console.log(err);
         })

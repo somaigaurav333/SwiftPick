@@ -1,7 +1,7 @@
 import express from "express";
 import { User } from "../models/userModel.js";
 import bcrypt from "bcrypt";
-import { jwtTokenKey , adminEmail, adminPass} from "../config.js";
+import { jwtTokenKey, adminEmail, adminPass } from "../config.js";
 import jwt from "jsonwebtoken";
 import nodemailer from 'nodemailer';
 
@@ -96,7 +96,7 @@ router.post('/forgotPassword', async (req, res) => {
       return res.json({ status: false, message: "User Not Registered" })
     }
 
-    const token = jwt.sign({id: user._id}, jwtTokenKey, {expiresIn: '5m'})
+    const token = jwt.sign({ id: user._id }, jwtTokenKey, { expiresIn: '5m' })
 
     var transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -105,19 +105,19 @@ router.post('/forgotPassword', async (req, res) => {
         pass: adminPass
       }
     });
-    
+
     var mailOptions = {
       from: adminEmail,
       to: email,
       subject: 'Reset Password',
       text: `http://localhost:3000/auth/resetPassword/${token}`
     };
-    
-    transporter.sendMail(mailOptions, function(error, info){
+
+    transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        return res.json({status: false, message:"Error sending email" + info});
+        return res.json({ status: false, message: "Error sending email" + info });
       } else {
-        return res.json({status: true, message:"Email Sent"});
+        return res.json({ status: true, message: "Email Sent" });
       }
     });
   } catch (error) {
@@ -125,6 +125,20 @@ router.post('/forgotPassword', async (req, res) => {
   }
 });
 
+// Route for Rest Password
+router.post('/resetPassword/:token', async (req, res) => {
+    const {token} = req.params;
+    const {password} = req.body;
 
+    try {
+        const decoded = await jwt.verify(token, jwtTokenKey);
+        const id = decoded.id;
+        const hashPassword = await bcrypt.hash(password, 10);
+        await User.findByIdAndUpdate({_id: id}, {password: hashPassword})
+        return res.json({status: true, message:"Updated Password"})
+    } catch (error) {
+      return res.json("Invalid token");
+    }
+})
 
 export default router;
