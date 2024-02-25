@@ -8,18 +8,22 @@ const Login = () => {
 
     const navigate = useNavigate();
 
+    axios.defaults.withCredentials = true;
+
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post('http://localhost:5000/auth/login', {
             email,
             password,
         }).then(response => {
-            if(response.data.status){
-                navigate('/');
-            }else{
-            }
+          if(response.data.message === "Wrong Password"){
+            alert("Wrong Password");
+          }
+          else{
+            navigate('/')
+          }
         }).catch(err => {
-            console.log(err.response.data);
+            console.log(err);
         })
     }
 
@@ -41,8 +45,11 @@ const Login = () => {
                         onChange={(e) => setPassword(e.target.value)} />
 
                     <button 
-                        className='w-full text-center py-3 rounded text-balck focus:outline-none my-1 border-black' 
+                        className='w-full text-center py-3 rounded text-balck focus:outline-none my-1 border border-black hover:bg-gray-900 text hover:text-white' 
                         type='submit'>Login</button>
+                    <div className="bg-grey-lighter flex p-4 items-center justify-center">
+                      <Link className='no-underline border-b border-blue ' to={'/auth/forgotPass'}>Forgot Password?</Link>
+                    </div>
                 </form>
                 <div className="text-grey-dark mt-6">
                     Don't have an Account?
