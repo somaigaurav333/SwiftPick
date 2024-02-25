@@ -9,7 +9,7 @@ function ForgotPassword() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:5000/auth/forgotPass', {
+        axios.post('http://localhost:5000/auth/forgot-password', {
             email,
         }).then(response => {
           if(response.data.status){
@@ -17,7 +17,7 @@ function ForgotPassword() {
             navigate('/auth/login');
           }
           else{
-            navigate('/')
+            navigate('/auth/signup')
           }
         }).catch(err => {
             console.log(err);

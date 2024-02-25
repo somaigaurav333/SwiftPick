@@ -13,6 +13,7 @@ const app = express();
 
 //Middleware for parsing request body
 app.use(express.json());
+app.use(cookieParser());
 
 //Middleware for handling CORS Policy
 //Option 1: Allow All origins with default of cors(*)
@@ -36,7 +37,7 @@ app.get("/", (requset, response) => {
   return response.status(234).send("Welcome");
 });
 
-app.use(cookieParser());
+
 app.use("/locations", locationRoute);
 app.use("/requests", requestRoute);
 app.use("/auth", userRoute);

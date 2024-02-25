@@ -5,6 +5,7 @@ import SingUp from "./Components/SingUp";
 import Login from "./Components/Login";
 import Home from "./Components/Home";
 import ForgotPassword from "./Components/ForgotPassword";
+import ViewAllRequests from "./Components/ViewAllRequests";
 
 const App = () => {
   return (
@@ -13,6 +14,8 @@ const App = () => {
       <Route path="/auth/signup" element={<SingUp/>} />
       <Route path="/auth/login" element = {<Login/>} />
       <Route path="/auth/forgotPass" element = {<ForgotPassword/>} />
+      <Route path="/requests" element = {<ViewAllRequests/>} />
+      
     </Routes>
   )
 }

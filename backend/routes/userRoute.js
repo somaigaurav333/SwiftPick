@@ -1,8 +1,10 @@
 import express from "express";
 import { User } from "../models/userModel.js";
 import bcrypt from "bcrypt";
-import { jwtTokenKey } from "../config.js";
+import { jwtTokenKey , adminEmail, adminPass} from "../config.js";
 import jwt from "jsonwebtoken";
+import nodemailer from 'nodemailer';
+
 const router = express.Router();
 
 
@@ -33,11 +35,11 @@ router.post("/signup", async (req, res) => {
     } = req.body;
 
     // Check if user is already existing
-    const userEmailExists = await User.findOne({'email': email});
-    const userNameExists = await User.findOne({'username': username});
+    const userEmailExists = await User.findOne({ 'email': email });
+    const userNameExists = await User.findOne({ 'username': username });
     console.log(userEmailExists)
-    if(userEmailExists || userNameExists){
-      return res.json({message: "User already exists"});
+    if (userEmailExists || userNameExists) {
+      return res.json({ status: false, message: "User already exists" });
     }
     // Hash Password
 
@@ -75,25 +77,54 @@ router.post('/login', async (req, res) => {
 
   const validPass = await bcrypt.compare(password, user.password);
   if (!validPass) {
-    const resct = res.status(false).message("Wrong Password")
-    return resct;
+    return res.json({ status: false, message: "Wrong Password" });
   } else {
-    const token = jwt.sign({ username: user.username }, jwtTokenKey);
-    res.cookie('token', token, { httpOnly: true, maxAge: 10 });
+    const token = jwt.sign({ username: user.username }, jwtTokenKey, { expiresIn: '1h' });
+    res.cookie('token', token, { httpOnly: true, maxAge: 3600 });
     return res.json({ status: true, message: "login successfully" });
   }
 
 })
 
-// //Route for forgot password
-// router.post('/forgotPass', async (req, res) => {
-//   const { email } = req.body;
-  
-//   try {
-//     const user = await
-//   } catch (error) {
-//     console.log(error);
-//   }
+//Route for forgot password
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
 
-// })
+  try {
+    const user = await User.findOne({ email })
+    if (!user) {
+      return res.json({ status: false, message: "User Not Registered" })
+    }
+
+    const token = jwt.sign({id: user._id}, jwtTokenKey, {expiresIn: '5m'})
+
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: adminEmail,  // Send email from address and password
+        pass: adminPass
+      }
+    });
+    
+    var mailOptions = {
+      from: adminEmail,
+      to: email,
+      subject: 'Reset Password',
+      text: `http://localhost:3000/auth/forgot-password/${token}`
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        return res.json({status: false, message:"Error sending email"});
+      } else {
+        return res.json({status: true, message:"Email Sent"});
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
+
 export default router;
