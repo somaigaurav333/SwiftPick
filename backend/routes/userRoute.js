@@ -105,12 +105,12 @@ router.post('/forgotPassword', async (req, res) => {
         pass: adminPass
       }
     });
-
+    const encodedToken = encodeURIComponent(token).replace(/\./g, "%2E")
     var mailOptions = {
       from: adminEmail,
       to: email,
       subject: 'Reset Password',
-      text: `http://localhost:3000/auth/resetPassword/${token}`
+      text: `http://localhost:3000/auth/resetPassword/${encodedToken}`
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
