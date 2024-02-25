@@ -9,7 +9,7 @@ function ViewAllRequestsRow({ title, requests, pickupLocation }) {
   useEffect(() => {
     setFilteredRequests([]);
     requests.forEach((request) => {
-      if (request.PickupLocation === pickupLocation.Name) {
+      if (request.pickupLocation === pickupLocation.location) {
         setFilteredRequests((oldArray) => [...oldArray, request]);
       }
     });
@@ -25,7 +25,7 @@ function ViewAllRequestsRow({ title, requests, pickupLocation }) {
               return (
                 <RequestCard
                   className="RequestCardOuter"
-                  key={request.id}
+                  key={request._id}
                   request={request}
                 ></RequestCard>
               );

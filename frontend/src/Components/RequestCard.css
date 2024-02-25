@@ -6,20 +6,28 @@
     padding-top: 5px;
     padding-bottom: 5px;
     margin-left: 10px;
-    background-color: pink;
+    background-color: rgba(154, 29, 158, 0.856);
+    color: rgb(255, 255, 255);
     width: fit-content;
     border-radius: 10px;
-
 }
 
 .Head {
     display: flex;
     font-size: medium;
+    padding: 5px;
     margin-bottom: 10px;
+    border-bottom: 1px solid white;
+
 }
 
 .Username {
     margin-right: 20px;
+}
+
+.Phone {
+    /* margin-right: 20px; */
+    text-align: right;
 }
 
 .DropLocation {
@@ -28,8 +36,18 @@
     margin-bottom: 5px;
 }
 
+.Items {
+    text-align: center;
+    font-size: large;
+    margin-bottom: 5px;
+}
+
 .Time {
     font-size: small;
     text-align: end;
+    margin-top: 5px;
+    border-top: 1px solid beige;
+    padding: 5px;
+
 
 }

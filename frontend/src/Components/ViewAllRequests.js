@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ViewAllRequestsRow from "./ViewAllRequestsRow";
-
-// const requestsURL = "url";
-// const pickupLocationsURL = "url";
+import axios_instance from "../axios";
+const requestsURL = "/requests";
+const pickupLocationsURL = "/locations";
 
 function ViewAllRequests() {
   //fetch requests data
@@ -10,44 +10,8 @@ function ViewAllRequests() {
 
   useEffect(() => {
     async function fetchRequests() {
-      //   const response = await axios_instance.get(requestsURL);
-      //   setRequests(response.requests);
-      //   return;
-
-      setRequests([
-        {
-          id: 1,
-          UserName: "User1",
-          Phone: "9314578491",
-          PickupLocation: "Yummpys",
-          DropLocation: "ABCD",
-          Time: "10",
-        },
-        {
-          id: 2,
-          UserName: "User2",
-          Phone: "9314578492",
-          PickupLocation: "Yummpys",
-          DropLocation: "EFGH",
-          Time: "11",
-        },
-        {
-          id: 3,
-          UserName: "User3",
-          Phone: "9314578493",
-          PickupLocation: "MedC",
-          DropLocation: "IJKL",
-          Time: "12",
-        },
-        {
-          id: 4,
-          UserName: "User4",
-          Phone: "9314578494",
-          PickupLocation: "MedC",
-          DropLocation: "MNOP",
-          Time: "13",
-        },
-      ]);
+      const response = await axios_instance.get(requestsURL);
+      setRequests(response.data.data);
       return;
     }
     fetchRequests();
@@ -58,15 +22,8 @@ function ViewAllRequests() {
 
   useEffect(() => {
     async function fetchPickUpLocations() {
-      //   const response = await axios_instance.get(pickupLocationsURL);
-      //   setpickupLocations(response.pickUpLocations);
-      //   return;
-
-      setpickupLocations([
-        { Name: "Yummpys" },
-        { Name: "MedC" },
-        { Name: "SFC" },
-      ]);
+      const response = await axios_instance.get(pickupLocationsURL);
+      setpickupLocations(response.data.data);
       return;
     }
     fetchPickUpLocations();
@@ -77,8 +34,8 @@ function ViewAllRequests() {
       {pickupLocations.map((pickupLocation) => {
         return (
           <ViewAllRequestsRow
-            key={pickupLocation.Name}
-            title={pickupLocation.Name}
+            key={pickupLocation.location}
+            title={pickupLocation.location}
             requests={requests}
             pickupLocation={pickupLocation}
           ></ViewAllRequestsRow>
