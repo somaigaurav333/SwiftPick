@@ -33,10 +33,12 @@ router.post("/signup", async (req, res) => {
     } = req.body;
 
     // Check if user is already existing
-    // const userEmailExists = User.findOne({email});
-    // if(userEmailExists){
-    //   return res.json({message: "User already exists"});
-    // }
+    const userEmailExists = await User.findOne({'email': email});
+    const userNameExists = await User.findOne({'username': username});
+    console.log(userEmailExists)
+    if(userEmailExists || userNameExists){
+      return res.json({message: "User already exists"});
+    }
     // Hash Password
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -83,4 +85,15 @@ router.post('/login', async (req, res) => {
 
 })
 
+// //Route for forgot password
+// router.post('/forgotPass', async (req, res) => {
+//   const { email } = req.body;
+  
+//   try {
+//     const user = await
+//   } catch (error) {
+//     console.log(error);
+//   }
+
+// })
 export default router;
