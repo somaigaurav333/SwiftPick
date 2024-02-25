@@ -5,6 +5,7 @@ import { Location } from "./models/locationModel.js";
 import { Request } from "./models/requestModel.js";
 import locationRoute from "./routes/locationRoute.js";
 import requestRoute from "./routes/requestRoute.js";
+import userRoute from "./routes/userRoute.js";
 import cors from "cors";
 
 const app = express();
@@ -31,6 +32,7 @@ app.get("/", (requset, response) => {
 
 app.use("/locations", locationRoute);
 app.use("/requests", requestRoute);
+app.use("/auth", userRoute);
 
 mongoose
   .connect(mongoDBURL)

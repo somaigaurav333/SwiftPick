@@ -1,19 +1,16 @@
 import "./App.css";
-import ViewAllRequests from "./Components/ViewAllRequests";
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import SingUp from "./Components/SingUp";
+import Login from "./Components/Login"
 
-function App() {
+const App = () => {
   return (
-    // <div className="App">
-    //   <ViewAllRequests />
-    // </div>
-
-    <div>
-      <h1>Register</h1>
-      <form>
-        <input type="text" placeholder="name"></input>
-      </form>
-    </div>
-  );
+    <Routes>
+      <Route path="/auth/signup" element={<SingUp/>} />
+      <Route path="/auth/login" element = {<Login/>} />
+    </Routes>
+  )
 }
 
-export default App;
+export default App
