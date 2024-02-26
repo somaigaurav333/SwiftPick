@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const requestSchema = mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true,
     },
@@ -38,10 +38,15 @@ const requestSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    date: {
+      type: String,
+      required: true,
+    },
+    time:{
+      type: String,
+      required: true,
+    }
   },
-  {
-    timestamps: true,
-  }
 );
 
 export const Request = mongoose.model("Request", requestSchema);
