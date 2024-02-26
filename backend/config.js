@@ -1,6 +1,6 @@
 export const PORT = 5000;
 
-export const jwtTokenKey = "SampleJWtToken";
+export const jwtTokenKey = "HelloThere";
 
 export const adminEmail = 'bharathvitala4444@gmail.com';
 export const adminPass = 'rirh awcd yqxh clms';

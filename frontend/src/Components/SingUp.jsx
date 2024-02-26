@@ -27,6 +27,7 @@ const SingUp = () => {
             if(response.data.status){
                 navigate('/auth/login');
             }else{
+                alert("Username or Email already exists")
             }
         }).catch(err => {
             console.log(err.response.data);

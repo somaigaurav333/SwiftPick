@@ -7,6 +7,11 @@ import nodemailer from 'nodemailer';
 
 const router = express.Router();
 
+/*
+  Few Points to be noted:
+    1) We have to change the jwt Key to a strong one
+    2) The time the user would be allowed to be on the website
+*/
 
 // Route for SignUp // Check on the user validation
 router.post("/signup", async (req, res) => {
@@ -37,7 +42,7 @@ router.post("/signup", async (req, res) => {
     // Check if user is already existing
     const userEmailExists = await User.findOne({ 'email': email });
     const userNameExists = await User.findOne({ 'username': username });
-    console.log(userEmailExists)
+    // console.log(userEmailExists)
     if (userEmailExists || userNameExists) {
       return res.json({ status: false, message: "User already exists" });
     }
@@ -79,8 +84,14 @@ router.post('/login', async (req, res) => {
   if (!validPass) {
     return res.json({ status: false, message: "Wrong Password" });
   } else {
-    const token = jwt.sign({ username: user.username }, jwtTokenKey, { expiresIn: '1h' });
-    res.cookie('token', token, { httpOnly: true, maxAge: 3600 });
+    const token = jwt.sign({ username: user.username }, jwtTokenKey);
+    const options = {
+      maxAge: 1000 * 60 * 100,
+      httpOnly: true,
+      signed: true
+    }
+    res.cookie('LOGIN', token, options);
+
     return res.json({ status: true, message: "login successfully" });
   }
 
@@ -140,5 +151,26 @@ router.post('/resetPassword/:token', async (req, res) => {
       return res.json("Invalid token");
     }
 })
+
+// verifyUser
+
+
+// Route for login verification
+router.get('/verify', async (req, res, next)=>{
+    try {
+      const token = req.cookies.token;
+      if(!token){
+        return res.json({status: false, message:"No Token"});
+      }
+      const decoded = await jwt.verify(token, jwtTokenKey);
+      next();
+  
+    } catch (error) {
+      return res.json(error);
+    }
+
+  return res.json({status: true, message:"Authorized"});
+})
+
 
 export default router;

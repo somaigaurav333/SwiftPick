@@ -20,6 +20,8 @@ const Login = () => {
             alert("Wrong Password");
           }
           else{
+            console.log(response);
+            alert("Successufully Logged In");
             navigate('/')
           }
         }).catch(err => {
