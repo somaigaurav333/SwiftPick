@@ -7,7 +7,7 @@ const Dashboard = () => {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    axios.get('http://localhost:5000/auth/verify',{
+    axios.get('http://localhost:5000/auth/verifyLogin',{
       withCredentials: true
     }).then(res => {
       if (!(res.data.status)) {

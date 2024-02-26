@@ -84,15 +84,29 @@ router.post('/login', async (req, res) => {
   if (!validPass) {
     return res.json({ status: false, message: "Wrong Password" });
   } else {
-    const token = jwt.sign({ username: user.username }, jwtTokenKey);
-    const options = {
-      maxAge: 1000 * 60 * 100,
-      httpOnly: true,
-      signed: true
+    const payLoad = {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      roomNumber: user.roomNumber,
+      hostelName: user.hostelName,
+      gender: user.gender,
+      phoneNumber: user.phoneNumber,
+      requesterRating: user.requesterRating,
+      requesteeRating: user.requesteeRating,
+      totalRequests: user.totalRequests,
+      totalDeliveries: user.totalDeliveries
     }
-    res.cookie('LOGIN', token, options);
+    const token = jwt.sign(payLoad, jwtTokenKey, { expiresIn: "60s" });
+    const options = {
+      path: '/',
+      expires: new Date(Date.now() + 1000 * 60 * 1),
+      httpOnly: true,
+      sameSite: 'lax'
+    }
+    res.cookie(String(user._id), token, options);
 
-    return res.json({ status: true, message: "login successfully" });
+    return res.json({ status: true, message: "login successfully", user: user, token });
   }
 
 })
@@ -138,39 +152,73 @@ router.post('/forgotPassword', async (req, res) => {
 
 // Route for Rest Password
 router.post('/resetPassword/:token', async (req, res) => {
-    const {token} = req.params;
-    const {password} = req.body;
+  const { token } = req.params;
+  const { password } = req.body;
 
-    try {
-        const decoded = await jwt.verify(token, jwtTokenKey);
-        const id = decoded.id;
-        const hashPassword = await bcrypt.hash(password, 10);
-        await User.findByIdAndUpdate({_id: id}, {password: hashPassword})
-        return res.json({status: true, message:"Updated Password"})
-    } catch (error) {
-      return res.json("Invalid token");
-    }
+  try {
+    const decoded = await jwt.verify(token, jwtTokenKey);
+    const id = decoded.id;
+    const hashPassword = await bcrypt.hash(password, 10);
+    await User.findByIdAndUpdate({ _id: id }, { password: hashPassword })
+    return res.json({ status: true, message: "Updated Password" })
+  } catch (error) {
+    return res.json("Invalid token");
+  }
 })
 
 // verifyUser
-
+// export const verifyToken = (req, res, next) => {
+//   const headers = req.headers[`authorization`];
+//   console.log(headers);
+//   const token = headers.split(" ")[1];
+//   if (!token) {
+//     return res.status(404).json({ message: "No token found" });
+//   }
+//   jwt.verify(String(token), jwtTokenKey, (err, user) => {
+//     if (err) {
+//       return res.status(400), json({ message: "Invalid Token" });
+//     }
+//     console.log(user.id);
+//     req.id = user.id;
+//   });
+//   next();
+// }
 
 // Route for login verification
-router.get('/verify', async (req, res, next)=>{
-    try {
-      const token = req.cookies.token;
-      if(!token){
-        return res.json({status: false, message:"No Token"});
-      }
-      const decoded = await jwt.verify(token, jwtTokenKey);
-      next();
-  
-    } catch (error) {
-      return res.json(error);
+router.get('/verifyLogin', async (req, res, next) => {
+  try {
+    const cookies = req.headers.cookie;
+    const token = cookies.split('=')[1];
+    if (!token) {
+      return res.status(401).json({ message: "No token found" });
     }
+    jwt.verify(String(token), jwtTokenKey, (err, user) => {
+      if (err) {
+        return res.status(401).json({ message: "Invalid Token" });
+      }
+      req.id = user._id;
+    });
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid Token" });
+  }
+  return res.status(200).json({ message: "Completed" });
+});
 
-  return res.json({status: true, message:"Authorized"});
-})
+const getUser = async (req, res, next) =>{
+  const userId = req.id;
+  let user;
+  try {
+    user = await User.findById(userId, "-password");
+  } catch (error) {
+    return new Error(error);
+  }
+
+  if(!user){
+    return res.status(404).json({message: "User not found"});
+  }
+  return res.status(200).json({user})
+}
 
 
 export default router;
