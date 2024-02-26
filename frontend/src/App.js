@@ -8,6 +8,7 @@ import ForgotPassword from "./Components/ForgotPassword";
 import ViewAllRequests from "./Components/ViewAllRequests";
 import ResetPassword from "./Components/ResetPassword";
 import Dashboard from "./Components/Dashboard";
+import AdminLogin from "./Components/AdminLogin"
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
       <Route path="/" element = {<Home/>} />
       <Route path="/auth/signup" element={<SingUp/>} />
       <Route path="/auth/login" element = {<Login/>} />
+      <Route path="/auth/adminLogin" element = {<AdminLogin/>} />
       <Route path="/auth/forgotPassword" element = {<ForgotPassword/>} />
       <Route path="/auth/resetPassword/:token" element = {<ResetPassword/>} />
       <Route path="/dashboard" element = {<Dashboard/>}/>

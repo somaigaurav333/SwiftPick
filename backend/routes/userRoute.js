@@ -1,5 +1,6 @@
 import express from "express";
 import { User } from "../models/userModel.js";
+import { Admin } from "../models/adminModel.js";
 import bcrypt from "bcrypt";
 import { jwtTokenKey, adminEmail, adminPass } from "../config.js";
 import jwt from "jsonwebtoken";
@@ -13,7 +14,7 @@ const router = express.Router();
     2) The time the user would be allowed to be on the website
 */
 
-// Route for SignUp // Check on the user validation
+// Route for SignUp 
 router.post("/signup", async (req, res) => {
   try {
     if (
@@ -164,6 +165,80 @@ router.post('/resetPassword/:token', async (req, res) => {
   } catch (error) {
     return res.json("Invalid token");
   }
+})
+
+// Route for Admin SignUp 
+router.post("/adminSignup", async (req, res) => {
+  try {
+    if (
+      !req.body.username ||
+      !req.body.email ||
+      !req.body.password
+    ) {
+      return res.status(400).send({
+        message: "Required fields not found",
+      });
+    }
+    const {
+      username,
+      email,
+      password
+    } = req.body;
+
+    // Check if user is already existing
+    const userEmailExists = await Admin.findOne({ 'email': email });
+    const userNameExists = await Admin.findOne({ 'username': username });
+    // console.log(userEmailExists)
+    if (userEmailExists || userNameExists) {
+      return res.json({ status: false, message: "Admin already exists" });
+    }
+    // Hash Password
+
+    const hashPassword = await bcrypt.hash(password, 10);
+    // Validate Email
+    const newUser = {
+      username: username,
+      email: email,
+      password: hashPassword
+    };
+
+    const item = await Admin.create(newUser);
+    return res.json({ status: true, message: "Record Registered" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// Route for Admin Login
+router.post('/adminLogin', async (req, res) => {
+  const { email, password } = req.body;
+  const admin = await Admin.findOne({ email });
+  if (!admin) {
+    return res.json({ message: "Admin Not Found" });
+  }
+
+  const validPass = await bcrypt.compare(password, user.password);
+  if (!validPass) {
+    return res.json({ status: false, message: "Wrong Password" });
+  } else {
+    const payLoad = {
+      _id: admin._id,
+      username: admin.username,
+      email: admin.email
+    }
+    const token = jwt.sign(payLoad, jwtTokenKey, { expiresIn: "60s" });
+    const options = {
+      path: '/',
+      expires: new Date(Date.now() + 1000 * 60 * 1),
+      httpOnly: true,
+      sameSite: 'lax'
+    }
+    res.cookie(String(admin._id), token, options);
+
+    return res.json({ status: true, message: "login successfully", user: admin, token });
+  }
+
 })
 
 // verifyUser
