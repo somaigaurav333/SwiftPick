@@ -30,7 +30,8 @@ function ViewAllRequests() {
   }, []);
 
   return (
-    <div className="ViewAllRequestsRow">
+
+    <div className="ViewAllRequests">
       {pickupLocations.map((pickupLocation) => {
         return (
           <ViewAllRequestsRow
