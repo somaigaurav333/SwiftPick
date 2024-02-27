@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -21,6 +22,21 @@ export default function PostNewRequest() {
     setOpen(false);
   };
 
+  const month = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Ju",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
   return (
     <React.Fragment>
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
@@ -28,10 +44,11 @@ export default function PostNewRequest() {
           color="success"
           aria-label="add"
           onClick={handleClickOpen}
-        //   style={{ background: "#008080" }}
+          //   style={{ background: "#008080" }}
           style={{ background: "#03dac6" }}
+          className="floating-button"
         >
-          <AddIcon />
+          <AddIcon className="icon" />
         </Fab>
       </Box>
       <Dialog
@@ -39,19 +56,52 @@ export default function PostNewRequest() {
         onClose={handleClose}
         PaperProps={{
           component: "form",
-          onSubmit: (event) => {
+          onSubmit: async (event) => {
+            let today = new Date();
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
-            const name = formJson.name;
+            const requesterUsername = "Kush";
             const pickupLocation = formJson.pickupLocation;
             const deliveryLocation = formJson.deliveryLocation;
-            const phoneNumber = formJson.phoneNumber;
+            const phoneNumber = "0123456789";
             const paymentMethod = formJson.paymentMethod;
             const items = formJson.items;
             const requesterNote = formJson.requesterNote;
-            const status = formJson.status;
+            const status = "open";
+            const date =
+              today.getDay() +
+              " " +
+              month[today.getMonth()] +
+              " " +
+              today.getYear();
+            const time =
+              today.getHours().toString() + ":" + today.getMinutes().toString();
             // console.log(email);
+            await axios
+              .post("http://localhost:5000/requests", {
+                requesterUsername,
+                pickupLocation,
+                deliveryLocation,
+                phoneNumber,
+                paymentMethod,
+                items,
+                requesterNote,
+                status,
+                date,
+                time,
+              })
+              .then((response) => {
+                console.log(response);
+                if (response.status === 201) {
+                  alert("Successfull Added");
+                } else {
+                  alert("Retry");
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
             handleClose();
           },
         }}
@@ -61,7 +111,6 @@ export default function PostNewRequest() {
           <DialogContentText>
             Please fill the following details to post a new request
           </DialogContentText>
-
           <TextField
             autoFocus
             required
