@@ -7,9 +7,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import Box from "@mui/material/Box";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
+import "./PostNewRequest.css";
 
 export default function PostNewRequest() {
   const [open, setOpen] = React.useState(false);
@@ -29,7 +27,7 @@ export default function PostNewRequest() {
     "Apr",
     "May",
     "Jun",
-    "Ju",
+    "Jul",
     "Aug",
     "Sep",
     "Oct",
@@ -39,18 +37,10 @@ export default function PostNewRequest() {
 
   return (
     <React.Fragment>
-      <Box sx={{ "& > :not(style)": { m: 1 } }}>
-        <Fab
-          color="success"
-          aria-label="add"
-          onClick={handleClickOpen}
-          //   style={{ background: "#008080" }}
-          style={{ background: "#03dac6" }}
-          className="floating-button"
-        >
-          <AddIcon className="icon" />
-        </Fab>
-      </Box>
+      <a href="#" class="button" onClick={handleClickOpen}>
+        <span class="iconh">+</span>
+        <span class="texth">New Request</span>
+      </a>
       <Dialog
         open={open}
         onClose={handleClose}
