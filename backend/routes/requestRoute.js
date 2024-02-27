@@ -7,21 +7,23 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   try {
     if (
-      !req.body.name ||
+      !req.body.requesterUsername ||
       !req.body.pickupLocation ||
       !req.body.deliveryLocation ||
       !req.body.phoneNumber ||
       !req.body.paymentMethod ||
       !req.body.items ||
       !req.body.requesterNote ||
-      !req.body.status
+      !req.body.status ||
+      !req.body.date ||
+      !req.body.time
     ) {
       return res.status(400).send({
         message: "Required fields not found",
       });
     }
     const newReq = {
-      name: req.body.name,
+      requesterUsername: req.body.requesterUsername,
       pickupLocation: req.body.pickupLocation,
       deliveryLocation: req.body.deliveryLocation,
       phoneNumber: req.body.phoneNumber,
@@ -29,6 +31,8 @@ router.post("/", async (req, res) => {
       items: req.body.items,
       requesterNote: req.body.requesterNote,
       status: req.body.status,
+      date: req.body.date,
+      time: req.body.time,
     };
     const item = await Request.create(newReq);
     return res.status(201).send(item);

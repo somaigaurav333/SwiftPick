@@ -1,37 +1,37 @@
 .ViewAllReqRow {
-    margin-left: 20px;
-    padding-bottom: 40px;
-    padding-left: 20px;
-    text-align: start;
-
+  margin-left: 20px;
+  padding-bottom: 40px;
+  padding-left: 20px;
+  text-align: start;
 }
-
 
 .RequestCards {
-    display: flex;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    padding: 20px;
-    padding-left: 0px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  padding: 20px;
+  padding-left: 0px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-
 
 .RequestCards::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
-
 .RequestCardOuter {
-    object-fit: contain;
-    width: 100%;
-    max-height: 150px;
-    transition: transform 400ms;
-    margin-right: 8px;
+  object-fit: contain;
+  width: 100%;
+  max-height: 150px;
+  transition: transform 400ms;
+  margin-right: 8px;
 }
 
 .RequestCard:hover {
-    transform: scale(1.06);
-    cursor: pointer;
+  transform: scale(1.06);
+  cursor: pointer;
+}
+
+.PostNewRequest {
+  text-align: right;
 }
