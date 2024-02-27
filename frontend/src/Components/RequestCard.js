@@ -5,7 +5,7 @@ function RequestCard({ request }) {
   return (
     <div className="RequestCard">
       <div className="Head">
-        <div className="Username">{request.name} </div>
+        <div className="Username">{request.requesterUsername} </div>
         <div className="Phone">{request.phoneNumber} </div>
       </div>
       <div className="DropLocation">{request.deliveryLocation}</div>
@@ -16,8 +16,9 @@ function RequestCard({ request }) {
           </div>
         );
       })}
-
-      <div className="Time"> {request.createdAt}</div>
+      <div className="Time">
+        {request.date} {request.time}
+      </div>
     </div>
   );
 }
