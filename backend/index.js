@@ -6,6 +6,7 @@ import { Request } from "./models/requestModel.js";
 import locationRoute from "./routes/locationRoute.js";
 import requestRoute from "./routes/requestRoute.js";
 import userRoute from "./routes/userRoute.js";
+import verifyToken from './routes/userRoute.js'
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 

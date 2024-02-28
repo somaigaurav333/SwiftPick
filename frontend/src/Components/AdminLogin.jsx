@@ -22,7 +22,6 @@ const Login = () => {
           else{
             console.log(response);
             alert("Successufully Logged In");
-            navigate('/')
           }
         }).catch(err => {
             console.log(err);
@@ -33,7 +32,7 @@ const Login = () => {
         <div className='bg-grey-lighter min-h-screen flex flex-col p-4'>
             <div className='container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2 '>
                 <form className='bg-white px-6 py-8 rounded shadow-md text-black w-full' onSubmit={handleSubmit}>
-                    <h2 className='mb-8 text-3xl text-center'>Login</h2>
+                    <h2 className='mb-8 text-3xl text-center'>Admin Login</h2>
                     {/* <label htmlFor="email">Email</label> */}
                     <input
                         className='block border border-grey-light w-full p-3 rounded mb-4'
@@ -53,8 +52,7 @@ const Login = () => {
                       <Link className='no-underline border-b border-blue ' to={'/auth/forgotPassword'}>Forgot Password?</Link>
                     </div>
                     <div className="white-space:break-space bg-grey-lighter flex p-4 items-center justify-center">
-                        Login as
-                      <Link className='no-underline border-b border-blue ' to={'/auth/adminLogin    '}>Admin?</Link>
+                      <Link className='no-underline border-b border-blue ' to={'/auth/login'}>User Login</Link>
                     </div>
                 </form>
                 <div className="text-grey-dark mt-6">

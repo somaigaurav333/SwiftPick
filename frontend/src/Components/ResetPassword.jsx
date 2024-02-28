@@ -4,22 +4,19 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const ResetPassword = () => {
     const [password, setPassword] = useState('');
-    const {token} = useParams();
     const navigate = useNavigate();
-
-    // axios.defaults.withCredentials = true;
-
+    const {token} = useParams();
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post(`http://localhost:5000/auth/resetPassword/${token}`, {
+        axios.post('http://localhost:5000/auth/resetPassword/'+token, {
             password,
         }).then(response => {
             if(response.data.status){
                 alert("Password Change Successful");
+                navigate('/auth/login')
             }else{
                 alert("Session Time out");
             }
-            navigate('/auth/login')
         }).catch(err => {
             console.log(err);
         })
