@@ -1,6 +1,6 @@
 import "./App.css";
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 import SingUp from "./Components/SingUp";
 import Login from "./Components/Login";
 import Home from "./Components/Home";
@@ -9,6 +9,9 @@ import ViewAllRequests from "./Components/ViewAllRequests";
 import ResetPassword from "./Components/ResetPassword";
 import Dashboard from "./Components/Dashboard";
 import AdminLogin from "./Components/AdminLogin"
+import ViewAllLocations from "./Components/Admin/ViewAllLocations";
+import PostNewRequest from "./Components/PostNewRequest";
+
 
 const App = () => {
   return (
@@ -21,9 +24,9 @@ const App = () => {
       <Route path="/auth/resetPassword/:token" element = {<ResetPassword/>} />
       <Route path="/dashboard" element = {<Dashboard/>}/>
       <Route path="/requests" element = {<ViewAllRequests/>} />
-      
+      <Route path="/admin/locations" element = {<ViewAllLocations/>} />
     </Routes>
-  )
-}
+  );
+};
 
-export default App
+export default App;
