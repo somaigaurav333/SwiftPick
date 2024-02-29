@@ -22,7 +22,7 @@ const Login = () => {
           else{
             console.log(response);
             alert("Successufully Logged In");
-            navigate('/')
+            navigate('/dashboard');
           }
         }).catch(err => {
             console.log(err);

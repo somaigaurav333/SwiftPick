@@ -5,6 +5,8 @@ import bcrypt from "bcrypt";
 import { jwtTokenKey, adminEmail, adminPass } from "../config.js";
 import jwt from "jsonwebtoken";
 import nodemailer from 'nodemailer';
+import {verifyToken, getUser} from "./authMiddleware.js"
+// const {verifyToken, getUser} = require("./authMiddleware.js");
 
 const router = express.Router();
 
@@ -260,40 +262,22 @@ router.post('/adminLogin', async (req, res) => {
 // }
 
 // Route for login verification
-router.get('/verifyLogin', async (req, res, next) => {
-  try {
-    const cookies = req.headers.cookie;
-    const token = cookies.split('=')[1];
-    if (!token) {
-      return res.status(401).json({ message: "No token found" });
-    }
-    jwt.verify(String(token), jwtTokenKey, (err, user) => {
-      if (err) {
-        return res.status(401).json({ message: "Invalid Token" });
-      }
-      req.id = user._id;
-    });
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: "Invalid Token" });
-  }
-  return res.status(200).json({ message: "Completed" });
-});
+router.get('/verifyLogin', verifyToken, getUser);
 
-const getUser = async (req, res, next) =>{
-  const userId = req.id;
-  let user;
-  try {
-    user = await User.findById(userId, "-password");
-  } catch (error) {
-    return new Error(error);
-  }
+// const getUser = async (req, res, next) =>{
+//   const userId = req.id;
+//   let user;
+//   try {
+//     user = await User.findById(userId, "-password");
+//   } catch (error) {
+//     return new Error(error);
+//   }
 
-  if(!user){
-    return res.status(404).json({message: "User not found"});
-  }
-  return res.status(200).json({user})
-}
+//   if(!user){
+//     return res.status(404).json({message: "User not found"});
+//   }
+//   return res.status(200).json({user})
+// }
 
 
 export default router;
