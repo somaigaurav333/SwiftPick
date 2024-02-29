@@ -67,13 +67,13 @@ const refreshToken = async (req, res, next) => {
         totalRequests: user.totalRequests,
         totalDeliveries: user.totalDeliveries
       }
-      const token = jwt.sign(payLoad, jwtTokenKey, { expiresIn: "35s" });
+      const token = jwt.sign(payLoad, jwtTokenKey, { expiresIn: "5m" });
 
       // console.log("Regenerated Token\n", token);
 
       const options = {
         path: '/',
-        expires: new Date(Date.now() + 1000 * 30 * 1),
+        expires: new Date(Date.now() + 1000 * 60 * 4.5),
         httpOnly: true,
         sameSite: 'lax'
       };
