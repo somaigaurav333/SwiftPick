@@ -3,7 +3,6 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import SingUp from "./Components/SingUp";
 import Login from "./Components/Login";
-import Home from "./Components/Home";
 import ForgotPassword from "./Components/ForgotPassword";
 import ViewAllRequests from "./Components/ViewAllRequests";
 import ResetPassword from "./Components/ResetPassword";

@@ -1,27 +1,42 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+let firstRender = true;
+
 const Dashboard = () => {
-  const navigate = useNavigate();
-  axios.defaults.withCredentials = true;
+  const [user, setUser] = useState();
 
-  useEffect(() => {
-    axios.get('http://localhost:5000/auth/verifyLogin',{
+  const refreshToken = async () => {
+    const res = await axios.get("http://localhost:5000/auth/refresh", {
       withCredentials: true
-    }).then(res => {
-      if (!(res.data.status)) {
-        navigate('/auth/login')
-      }
-    }).catch(error => {
-        console.log(error);
-    })
-      
-  });
+    }).catch(err => console.log(err));
 
-  return (
-    <div>Dashboard</div>
-  )
+    const data = await res.data;
+    return data;
+  }
+
+  const sendReq = async () => {
+    const res = await axios.get('http://localhost:5000/auth/verifyLogin', {
+      withCredentials: true
+    }).catch(err => console.log(err));
+    const data = await res.data;
+    return data;
+  }
+  useEffect(() => {
+    if (firstRender) {
+      firstRender = false;
+      sendReq().then((data) => setUser(data.user));
+    }
+    let interval = setInterval(() => {
+      refreshToken().then(data => setUser(data.user))
+    }, 1000 * 28)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  return <div>
+    {user && <h1>Welcome {user.username}</h1>}
+  </div>
 }
 
 export default Dashboard

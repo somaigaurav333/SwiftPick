@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import { jwtTokenKey, adminEmail, adminPass } from "../config.js";
 import jwt from "jsonwebtoken";
 import nodemailer from 'nodemailer';
-import {verifyToken, getUser} from "./authMiddleware.js"
+import {verifyToken, getUser, refreshToken} from "../Middlewares/authMiddleware.js"
 // const {verifyToken, getUser} = require("./authMiddleware.js");
 
 const router = express.Router();
@@ -78,38 +78,47 @@ router.post("/signup", async (req, res) => {
 // Route for login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) {
+  const existingUser = await User.findOne({ email });
+  if (!existingUser) {
     return res.json({ message: "User is not registered" });
   }
 
-  const validPass = await bcrypt.compare(password, user.password);
+  const validPass = await bcrypt.compare(password, existingUser.password);
   if (!validPass) {
     return res.json({ status: false, message: "Wrong Password" });
   } else {
     const payLoad = {
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      roomNumber: user.roomNumber,
-      hostelName: user.hostelName,
-      gender: user.gender,
-      phoneNumber: user.phoneNumber,
-      requesterRating: user.requesterRating,
-      requesteeRating: user.requesteeRating,
-      totalRequests: user.totalRequests,
-      totalDeliveries: user.totalDeliveries
+      _id: existingUser._id,
+      username: existingUser.username,
+      email: existingUser.email,
+      roomNumber: existingUser.roomNumber,
+      hostelName: existingUser.hostelName,
+      gender: existingUser.gender,
+      phoneNumber: existingUser.phoneNumber,
+      requesterRating: existingUser.requesterRating,
+      requesteeRating: existingUser.requesteeRating,
+      totalRequests: existingUser.totalRequests,
+      totalDeliveries: existingUser.totalDeliveries
     }
-    const token = jwt.sign(payLoad, jwtTokenKey, { expiresIn: "60s" });
-    const options = {
+    const token = jwt.sign(payLoad, jwtTokenKey, { expiresIn: "35s" });
+    
+    
+    if(req.cookies[`${existingUser._id}`]){
+      req.cookies[`${existingUser._id}`] = "";
+    }
+    
+    console.log("Generated Token\n", token)
+    
+    const cookieOptions = {
       path: '/',
-      expires: new Date(Date.now() + 1000 * 60 * 1),
+      expires: new Date(Date.now() + 1000 * 30 * 1),
       httpOnly: true,
       sameSite: 'lax'
     }
-    res.cookie(String(user._id), token, options);
 
-    return res.json({ status: true, message: "login successfully", user: user, token });
+    res.cookie(String(existingUser._id), token, cookieOptions);
+
+    return res.json({ status: true, message: "login successfully", user: existingUser, token });
   }
 
 })
@@ -263,6 +272,7 @@ router.post('/adminLogin', async (req, res) => {
 
 // Route for login verification
 router.get('/verifyLogin', verifyToken, getUser);
+router.get('/refresh', refreshToken, verifyToken, getUser);
 
 // const getUser = async (req, res, next) =>{
 //   const userId = req.id;
