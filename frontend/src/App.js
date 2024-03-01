@@ -7,10 +7,11 @@ import ForgotPassword from "./Components/ForgotPassword";
 import ViewAllRequests from "./Components/ViewAllRequests";
 import ResetPassword from "./Components/ResetPassword";
 import Dashboard from "./Components/Dashboard";
-import AdminLogin from "./Components/AdminLogin";;
+import AdminLogin from "./Components/AdminLogin";
 import ViewAllLocations from "./Components/Admin/ViewAllLocations";
 import PostNewRequest from "./Components/PostNewRequest";
-import ViewMyRequests from "./Components/ViewMyRequests";import { useSelector } from "react-redux";
+import ViewMyRequests from "./Components/ViewMyRequests";
+import { useSelector } from "react-redux";
 import Header from "./Components/Header";
 
 const App = () => {
@@ -36,7 +37,9 @@ const App = () => {
           {isLoggedIn && (
             <Route path="/requests" element={<ViewAllRequests />} />
           )}
-          {isLoggedIn &&(<Route path="/admin/locations" element={<ViewAllLocations />}/>)}
+          {isLoggedIn && (
+            <Route path="/admin/locations" element={<ViewAllLocations />} />
+          )}
         </Routes>
       </main>
     </React.Fragment>

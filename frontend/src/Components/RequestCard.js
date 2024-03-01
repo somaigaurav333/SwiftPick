@@ -48,7 +48,7 @@ function RequestCard({ request }) {
     // </div>
     <span
       href="#"
-      class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 RequestCard"
+      class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 RequestCard"
     >
       <div className="Head">
         <div className="Username">{request.requesterUsername} Agrawal</div>
@@ -66,7 +66,7 @@ function RequestCard({ request }) {
           })}
         </p>
       </div>
-      <div className="Footer">
+      <div className="Footer" style={{ marginTop: "auto" }}>
         <div className="Date">{request.date}</div>
         <div className="Time"> {request.time} </div>
       </div>
