@@ -17,11 +17,12 @@
   align-items: center;
   overflow: hidden;
   width: auto;
-  max-width: 50px; 
+  max-width: 50px;
   -webkit-transition: max-width 1s;
   transition: max-width 1s;
   margin: 10px;
-  position: absolute;
+  flex: 1;
+  position: fixed;
   bottom: 0;
   right: 0;
 }
@@ -47,3 +48,8 @@
   white-space: nowrap;
   padding-right: 15px;
 }
+
+/* .container {
+  position: absolute;
+  
+} */

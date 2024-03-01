@@ -57,7 +57,12 @@ export default function PostNewRequest() {
 
   return (
     <React.Fragment>
-      <a href="#" className="button" onClick={handleClickOpen}>
+      <a
+        href="#"
+        className="button"
+        onClick={handleClickOpen}
+        style={{ position: "abosolute", right: 0, bottom: 0 }}
+      >
         <span className="iconh">+</span>
         <span className="texth">New Request</span>
       </a>
@@ -80,11 +85,11 @@ export default function PostNewRequest() {
             const requesterNote = formJson.requesterNote;
             const status = "open";
             const date =
-              today.getDay() +
+              today.getDate() +
               " " +
               month[today.getMonth()] +
               " " +
-              today.getYear();
+              today.getFullYear();
             const time =
               today.getHours().toString() + ":" + today.getMinutes().toString();
             // console.log(email);
