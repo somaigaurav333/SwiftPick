@@ -1,4 +1,3 @@
-import { jwtTokenKey } from "../config.js";
 import jwt from "jsonwebtoken";
 import { User } from "../models/userModel.js";
 
@@ -9,7 +8,7 @@ const verifyToken = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({ message: "No token found" });
     }
-    jwt.verify(String(token), jwtTokenKey, (err, user) => {
+    jwt.verify(String(token), process.env.jwtTokenKey, (err, user) => {
       if (err) {
         return res.status(401).json({ message: "Invalid Token" });
       }
@@ -43,7 +42,7 @@ const refreshToken = async (req, res, next) => {
     if (!prevToken) {
       return res.status(401).json({ message: "No token found" });
     }
-    jwt.verify(String(prevToken), jwtTokenKey, (err, user) => {
+    jwt.verify(String(prevToken), process.env.jwtTokenKey, (err, user) => {
       if (err) {
         console.log(err);
         return res.status(401).json({ message: "Invalid Token" });
@@ -67,13 +66,13 @@ const refreshToken = async (req, res, next) => {
         totalRequests: user.totalRequests,
         totalDeliveries: user.totalDeliveries
       }
-      const token = jwt.sign(payLoad, jwtTokenKey, { expiresIn: "5m" });
+      const token = jwt.sign(payLoad, process.env.jwtTokenKey, { expiresIn: "35s" });
 
       // console.log("Regenerated Token\n", token);
 
       const options = {
         path: '/',
-        expires: new Date(Date.now() + 1000 * 60 * 4.5),
+        expires: new Date(Date.now() + 1000 * 60 * 0.5),
         httpOnly: true,
         sameSite: 'lax'
       };
@@ -88,5 +87,6 @@ const refreshToken = async (req, res, next) => {
     return res.status(401).json({ message: "Invalid Token" });
   }
 }
+
 
 export { verifyToken, getUser, refreshToken };

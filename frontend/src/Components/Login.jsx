@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../store';
 
 const Login = () => {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -10,23 +13,21 @@ const Login = () => {
 
     axios.defaults.withCredentials = true;
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:5000/auth/login', {
+    const sendLoginReq = async () => {
+        const res = axios.post('http://localhost:5000/auth/login', {
             email,
             password,
-        }).then(response => {
-          if(response.data.message === "Wrong Password"){
-            alert("Wrong Password");
-          }
-          else{
-            console.log(response);
-            alert("Successufully Logged In");
-            navigate('/dashboard');
-          }
         }).catch(err => {
             console.log(err);
         })
+        const data = await res.data;
+        return data;
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        sendLoginReq()
+            .then(() => dispatch(authActions.login()))
     }
 
     return (
@@ -46,15 +47,15 @@ const Login = () => {
                         type="password" placeholder='Password'
                         onChange={(e) => setPassword(e.target.value)} />
 
-                    <button 
-                        className='w-full text-center py-3 rounded text-balck focus:outline-none my-1 border border-black hover:bg-gray-900 text hover:text-white' 
+                    <button
+                        className='w-full text-center py-3 rounded text-balck focus:outline-none my-1 border border-black hover:bg-gray-900 text hover:text-white'
                         type='submit'>Login</button>
                     <div className="bg-grey-lighter flex p-4 items-center justify-center">
-                      <Link className='no-underline border-b border-blue ' to={'/auth/forgotPassword'}>Forgot Password?</Link>
+                        <Link className='no-underline border-b border-blue ' to={'/auth/forgotPassword'}>Forgot Password?</Link>
                     </div>
                     <div className="white-space:break-space bg-grey-lighter flex p-4 items-center justify-center">
                         Login as
-                      <Link className='no-underline border-b border-blue ' to={'/auth/adminLogin    '}>Admin?</Link>
+                        <Link className='no-underline border-b border-blue ' to={'/auth/adminLogin    '}>Admin?</Link>
                     </div>
                 </form>
                 <div className="text-grey-dark mt-6">

@@ -5,7 +5,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import nodemailer from 'nodemailer';
 import {verifyToken, getUser, refreshToken} from "../Middlewares/authMiddleware.js"
-// const {verifyToken, getUser} = require("./authMiddleware.js");
 
 const router = express.Router();
 
@@ -99,7 +98,7 @@ router.post('/login', async (req, res) => {
       totalRequests: existingUser.totalRequests,
       totalDeliveries: existingUser.totalDeliveries
     }
-    const token = jwt.sign(payLoad, process.env.jwtTokenKey, { expiresIn: "5m" });
+    const token = jwt.sign(payLoad, process.env.jwtTokenKey, { expiresIn: "35s" });
     
     
     if(req.cookies[`${existingUser._id}`]){
@@ -108,14 +107,14 @@ router.post('/login', async (req, res) => {
 
     const cookieOptions = {
       path: '/',
-      expires: new Date(Date.now() + 1000 * 60 * 4.5),
+      expires: new Date(Date.now() + 1000 * 60 * 0.5),
       httpOnly: true,
       sameSite: 'lax'
     }
 
     res.cookie(String(existingUser._id), token, cookieOptions);
 
-    return res.json({ status: true, message: "login successfully", user: existingUser, token });
+    return res.json({ status: true, message: "login successfully", user: payLoad, token });
   }
 
 })
@@ -226,7 +225,7 @@ router.post('/adminLogin', async (req, res) => {
     return res.json({ message: "Admin Not Found" });
   }
 
-  const validPass = await bcrypt.compare(password, user.password);
+  const validPass = await bcrypt.compare(password, admin.password);
   if (!validPass) {
     return res.json({ status: false, message: "Wrong Password" });
   } else {
@@ -246,45 +245,39 @@ router.post('/adminLogin', async (req, res) => {
 
     return res.json({ status: true, message: "login successfully", user: admin, token });
   }
+  
+});
 
-})
+//Route for Logout
+router.post('/userLogout', verifyToken, async (req, res) =>{
+  try {
+    const cookies = req.headers.cookie;
+    const prevToken = cookies.split('=')[1];
+    if (!prevToken) {
+      return res.status(401).json({ message: "No token found" });
+    }
+    jwt.verify(String(prevToken), process.env.jwtTokenKey, (err, user) => {
+      if (err) {
+        console.log(err);
+        return res.status(401).json({ message: "Invalid Token" });
+      }
 
-// verifyUser
-// export const verifyToken = (req, res, next) => {
-//   const headers = req.headers[`authorization`];
-//   console.log(headers);
-//   const token = headers.split(" ")[1];
-//   if (!token) {
-//     return res.status(404).json({ message: "No token found" });
-//   }
-//   jwt.verify(String(token), process.env.jwtTokenKey, (err, user) => {
-//     if (err) {
-//       return res.status(400), json({ message: "Invalid Token" });
-//     }
-//     console.log(user.id);
-//     req.id = user.id;
-//   });
-//   next();
-// }
+      res.clearCookie(`${user._id}`);
+      req.cookies[`${user._id}`] = "";
+      
+      return res.status(200).json({message: "Logout Success"});
+    });
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid Token" });
+  }
+});
 
 // Route for login verification
 router.get('/verifyLogin', verifyToken, getUser);
+
+// Route for Token Refresh
 router.get('/refresh', refreshToken, verifyToken, getUser);
 
-// const getUser = async (req, res, next) =>{
-//   const userId = req.id;
-//   let user;
-//   try {
-//     user = await User.findById(userId, "-password");
-//   } catch (error) {
-//     return new Error(error);
-//   }
-
-//   if(!user){
-//     return res.status(404).json({message: "User not found"});
-//   }
-//   return res.status(200).json({user})
-// }
 
 
 export default router;
