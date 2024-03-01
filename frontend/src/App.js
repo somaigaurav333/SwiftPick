@@ -12,13 +12,15 @@ import Sidebar from "./Components/Sidebar";
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/auth/signup" element={<SingUp />} />
-      <Route path="/auth/login" element={<Login />} />
-      <Route path="/auth/forgotPassword" element={<ForgotPassword />} />
-      <Route path="/auth/resetPassword/:token" element={<ResetPassword />} />
-      <Route path="/requests" element={<ViewAllRequests />} />
-      <Route path="/sidebar" element={<Sidebar />} />
+      <Route path="/" element = {<Home/>} />
+      <Route path="/auth/signup" element={<SingUp/>} />
+      <Route path="/auth/login" element = {<Login/>} />
+      <Route path="/auth/adminLogin" element = {<AdminLogin/>} />
+      <Route path="/auth/forgotPassword" element = {<ForgotPassword/>} />
+      <Route path="/auth/resetPassword/:token" element = {<ResetPassword/>} />
+      <Route path="/dashboard" element = {<Dashboard/>}/>
+      <Route path="/requests" element = {<ViewAllRequests/>} />
+      <Route path="/admin/locations" element = {<ViewAllLocations/>} />
     </Routes>
   );
 };

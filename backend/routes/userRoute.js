@@ -2,9 +2,9 @@ import express from "express";
 import { User } from "../models/userModel.js";
 import { Admin } from "../models/adminModel.js";
 import bcrypt from "bcrypt";
-import { jwtTokenKey, adminEmail, adminPass } from "../config.js";
 import jwt from "jsonwebtoken";
 import nodemailer from 'nodemailer';
+import {verifyToken, getUser, refreshToken} from "../Middlewares/authMiddleware.js"
 
 const router = express.Router();
 
@@ -76,38 +76,45 @@ router.post("/signup", async (req, res) => {
 // Route for login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) {
+  const existingUser = await User.findOne({ email });
+  if (!existingUser) {
     return res.json({ message: "User is not registered" });
   }
 
-  const validPass = await bcrypt.compare(password, user.password);
+  const validPass = await bcrypt.compare(password, existingUser.password);
   if (!validPass) {
     return res.json({ status: false, message: "Wrong Password" });
   } else {
     const payLoad = {
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      roomNumber: user.roomNumber,
-      hostelName: user.hostelName,
-      gender: user.gender,
-      phoneNumber: user.phoneNumber,
-      requesterRating: user.requesterRating,
-      requesteeRating: user.requesteeRating,
-      totalRequests: user.totalRequests,
-      totalDeliveries: user.totalDeliveries
+      _id: existingUser._id,
+      username: existingUser.username,
+      email: existingUser.email,
+      roomNumber: existingUser.roomNumber,
+      hostelName: existingUser.hostelName,
+      gender: existingUser.gender,
+      phoneNumber: existingUser.phoneNumber,
+      requesterRating: existingUser.requesterRating,
+      requesteeRating: existingUser.requesteeRating,
+      totalRequests: existingUser.totalRequests,
+      totalDeliveries: existingUser.totalDeliveries
     }
-    const token = jwt.sign(payLoad, jwtTokenKey, { expiresIn: "60s" });
-    const options = {
+    const token = jwt.sign(payLoad, process.env.jwtTokenKey, { expiresIn: "35s" });
+    
+    
+    if(req.cookies[`${existingUser._id}`]){
+      req.cookies[`${existingUser._id}`] = "";
+    }
+
+    const cookieOptions = {
       path: '/',
-      expires: new Date(Date.now() + 1000 * 60 * 1),
+      expires: new Date(Date.now() + 1000 * 60 * 0.5),
       httpOnly: true,
       sameSite: 'lax'
     }
-    res.cookie(String(user._id), token, options);
 
-    return res.json({ status: true, message: "login successfully", user: user, token });
+    res.cookie(String(existingUser._id), token, cookieOptions);
+
+    return res.json({ status: true, message: "login successfully", user: payLoad});
   }
 
 })
@@ -122,18 +129,18 @@ router.post('/forgotPassword', async (req, res) => {
       return res.json({ status: false, message: "User Not Registered" })
     }
 
-    const token = jwt.sign({ id: user._id }, jwtTokenKey, { expiresIn: '5m' })
+    const token = jwt.sign({ id: user._id }, process.env.jwtTokenKey, { expiresIn: '5m' })
 
     var transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: adminEmail,  // Send email from address and password
-        pass: adminPass
+        user: process.env.adminEmail,  // Send email from address and password
+        pass: process.env.adminPass
       }
     });
     const encodedToken = encodeURIComponent(token).replace(/\./g, "%2E")
     var mailOptions = {
-      from: adminEmail,
+      from: process.env.adminEmail,
       to: email,
       subject: 'Reset Password',
       text: `http://localhost:3000/auth/resetPassword/${encodedToken}`
@@ -157,7 +164,7 @@ router.post('/resetPassword/:token', async (req, res) => {
   const { password } = req.body;
 
   try {
-    const decoded = await jwt.verify(token, jwtTokenKey);
+    const decoded = await jwt.verify(token, process.env.jwtTokenKey);
     const id = decoded.id;
     const hashPassword = await bcrypt.hash(password, 10);
     await User.findByIdAndUpdate({ _id: id }, { password: hashPassword })
@@ -218,7 +225,7 @@ router.post('/adminLogin', async (req, res) => {
     return res.json({ message: "Admin Not Found" });
   }
 
-  const validPass = await bcrypt.compare(password, user.password);
+  const validPass = await bcrypt.compare(password, admin.password);
   if (!validPass) {
     return res.json({ status: false, message: "Wrong Password" });
   } else {
@@ -227,7 +234,7 @@ router.post('/adminLogin', async (req, res) => {
       username: admin.username,
       email: admin.email
     }
-    const token = jwt.sign(payLoad, jwtTokenKey, { expiresIn: "60s" });
+    const token = jwt.sign(payLoad, process.env.jwtTokenKey, { expiresIn: "60s" });
     const options = {
       path: '/',
       expires: new Date(Date.now() + 1000 * 60 * 1),
@@ -238,62 +245,39 @@ router.post('/adminLogin', async (req, res) => {
 
     return res.json({ status: true, message: "login successfully", user: admin, token });
   }
+  
+});
 
-})
-
-// verifyUser
-// export const verifyToken = (req, res, next) => {
-//   const headers = req.headers[`authorization`];
-//   console.log(headers);
-//   const token = headers.split(" ")[1];
-//   if (!token) {
-//     return res.status(404).json({ message: "No token found" });
-//   }
-//   jwt.verify(String(token), jwtTokenKey, (err, user) => {
-//     if (err) {
-//       return res.status(400), json({ message: "Invalid Token" });
-//     }
-//     console.log(user.id);
-//     req.id = user.id;
-//   });
-//   next();
-// }
-
-// Route for login verification
-router.get('/verifyLogin', async (req, res, next) => {
+//Route for Logout
+router.post('/userLogout', verifyToken, async (req, res) =>{
   try {
     const cookies = req.headers.cookie;
-    const token = cookies.split('=')[1];
-    if (!token) {
+    const prevToken = cookies.split('=')[1];
+    if (!prevToken) {
       return res.status(401).json({ message: "No token found" });
     }
-    jwt.verify(String(token), jwtTokenKey, (err, user) => {
+    jwt.verify(String(prevToken), process.env.jwtTokenKey, (err, user) => {
       if (err) {
+        console.log(err);
         return res.status(401).json({ message: "Invalid Token" });
       }
-      req.id = user._id;
+
+      res.clearCookie(`${user._id}`);
+      req.cookies[`${user._id}`] = "";
+      
+      return res.status(200).json({message: "Logout Success"});
     });
-    next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid Token" });
   }
-  return res.status(200).json({ message: "Completed" });
 });
 
-const getUser = async (req, res, next) =>{
-  const userId = req.id;
-  let user;
-  try {
-    user = await User.findById(userId, "-password");
-  } catch (error) {
-    return new Error(error);
-  }
+// Route for login verification
+router.get('/verifyLogin', verifyToken, getUser);
 
-  if(!user){
-    return res.status(404).json({message: "User not found"});
-  }
-  return res.status(200).json({user})
-}
+// Route for Token Refresh
+router.get('/refresh', refreshToken, verifyToken, getUser);
+
 
 
 export default router;

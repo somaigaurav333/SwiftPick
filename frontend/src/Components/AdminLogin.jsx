@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { authActions } from '../store';
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -10,22 +13,29 @@ const Login = () => {
 
     axios.defaults.withCredentials = true;
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:5000/auth/login', {
+    const sendLoginReq = async () => {
+        const res = axios.post('http://localhost:5000/auth/adminLogin', {
             email,
             password,
         }).then(response => {
-          if(response.data.message === "Wrong Password"){
-            alert("Wrong Password");
-          }
-          else{
-            console.log(response);
-            alert("Successufully Logged In");
-          }
-        }).catch(err => {
+            if(response.data.message === "Wrong Password"){
+              alert("Wrong Password");
+            }
+            else{
+              alert("Successufully Logged In");
+              navigate('/admin/locations');
+            }
+          }).catch(err => {
             console.log(err);
         })
+        const data = await res.data;
+        return data;
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        sendLoginReq()
+            .then(() => dispatch(authActions.login()))
     }
 
     return (
