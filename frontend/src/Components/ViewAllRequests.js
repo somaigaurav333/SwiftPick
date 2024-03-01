@@ -3,6 +3,7 @@ import ViewAllRequestsRow from "./ViewAllRequestsRow";
 import PostNewRequest from "./PostNewRequest";
 import axios_instance from "../axios";
 import axios from "axios";
+import "./ViewAllRequests.css";
 
 const requestsURL = "/requests";
 const pickupLocationsURL = "/locations";
@@ -87,7 +88,7 @@ function ViewAllRequests() {
   }, []);
 
   return (
-    <div>
+    <div className="bgvir">
       <div className="ViewAllRequests">
         {pickupLocations.map((pickupLocation) => {
           return (

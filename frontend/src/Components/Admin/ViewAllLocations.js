@@ -7,6 +7,24 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import AppBar from '@mui/material/AppBar';
+import CssBaseline from '@mui/material/CssBaseline';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+
+const drawerWidth = 240;
 
 // const columns = [
 //   { field: 'id', headerName: 'ID', width: 70 },
@@ -44,6 +62,41 @@ import DialogTitle from '@mui/material/DialogTitle';
 // ];
 
 const ViewAllLocations = () => {
+  let firstRender = true;
+  const [user, setUser] = useState();
+
+  const refreshToken = async () => {
+    const res = await axios
+      .get('http://localhost:5000/auth/refresh', {
+        withCredentials: true,
+      })
+      .catch((err) => console.log(err));
+
+    const data = await res.data;
+    return data;
+  };
+
+  const sendReq = async () => {
+    const res = await axios
+      .get('http://localhost:5000/auth/verifyLogin', {
+        withCredentials: true,
+      })
+      .catch((err) => console.log(err));
+    const data = await res.data;
+    return data;
+  };
+  useEffect(() => {
+    if (firstRender) {
+      firstRender = false;
+      sendReq().then((data) => setUser(data.user));
+    }
+    let interval = setInterval(() => {
+      refreshToken().then((data) => setUser(data.user));
+    }, 1000 * 60 * 9);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
   const [newLocation, setNewLocation] = useState({
@@ -172,74 +225,104 @@ const ViewAllLocations = () => {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}
-    >
-      <div style={{ position: 'relative', maxWidth: '800px', width: '100%' }}>
-        {/* Button positioned at the top right corner */}
-        <Button
-          variant='outlined'
-          onClick={handleClickOpen}
-          style={{ position: 'absolute', top: 0, right: 0 }}
-        >
-          Add Location
-        </Button>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Add Location</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Enter the details for the new location:
-            </DialogContentText>
-            <TextField
-              autoFocus
-              margin='dense'
-              id='location'
-              name='location'
-              label='Location Name'
-              type='text'
-              fullWidth
-              variant='standard'
-              value={newLocation.location}
-              onChange={handleChange}
-            />
-            <TextField
-              margin='dense'
-              id='coordinate'
-              name='coordinate'
-              label='Coordinates'
-              type='text'
-              fullWidth
-              variant='standard'
-              value={newLocation.coordinate}
-              onChange={handleChange}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleSubmit}>Add</Button>
-          </DialogActions>
-        </Dialog>
-        <div style={{ margin: '50px auto', maxWidth: '800px', height: 400 }}>
-          <DataGrid
-            getRowId={(row) => row._id}
-            rows={data}
-            columns={columns}
-            // initialState={{
-            //   pagination: {
-            //     paginationModel: { page: 0, pageSize: 5 },
-            //   },
-            // }}
-            // pageSizeOptions={[5, 10]}
-            // checkboxSelection
+    <div style={{ position: 'relative', zIndex: 1 }}>
+      <Drawer
+        variant='permanent'
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+          },
+        }}
+      >
+        <Toolbar />
+        <Box sx={{ overflow: 'auto' }}>
+          <List>
+            {['Locations'].map((text, index) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <LocationOnIcon />
+                    {/* {index % 2 === 0 ? <LocationOnIcon /> : <PeopleAltIcon />} */}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>{' '}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <div style={{ position: 'relative', maxWidth: '800px', width: '100%' }}>
+          {/* Button positioned at the top right corner */}
+          <Button
+            variant='outlined'
+            onClick={handleClickOpen}
+            style={{ position: 'absolute', top: 0, right: 0 }}
+          >
+            Add Location
+          </Button>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Add Location</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Enter the details for the new location:
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin='dense'
+                id='location'
+                name='location'
+                label='Location Name'
+                type='text'
+                fullWidth
+                variant='standard'
+                value={newLocation.location}
+                onChange={handleChange}
+              />
+              <TextField
+                margin='dense'
+                id='coordinate'
+                name='coordinate'
+                label='Coordinates'
+                type='text'
+                fullWidth
+                variant='standard'
+                value={newLocation.coordinate}
+                onChange={handleChange}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={handleSubmit}>Add</Button>
+            </DialogActions>
+          </Dialog>
+          <div style={{ margin: '50px auto', maxWidth: '800px', height: 400 }}>
+            <DataGrid
+              getRowId={(row) => row._id}
+              rows={data}
+              columns={columns}
+              // initialState={{
+              //   pagination: {
+              //     paginationModel: { page: 0, pageSize: 5 },
+              //   },
+              // }}
+              // pageSizeOptions={[5, 10]}
+              // checkboxSelection
 
-            hideFooter={true}
-          />
+              hideFooter={true}
+            />
+          </div>
         </div>
       </div>
     </div>
