@@ -3,7 +3,7 @@ import { Request } from "../models/requestModel.js";
 
 const router = express.Router();
 
-//Route for add request
+// Route for add request
 router.post("/", async (req, res) => {
   try {
     if (
@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-//Route to get all requests
+// Route to get all requests
 router.get("/", async (req, res) => {
   try {
     const requests = await Request.find({});
@@ -50,6 +50,21 @@ router.get("/", async (req, res) => {
       count: requests.length,
       data: requests,
     });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// Route to get request by username
+router.get("/:username", async (req, res) => {
+  try {
+    const { username } = req.params;
+    const result = await Request.find({ requesterUsername: username });
+    if (!result) {
+      return res.status(404).json({ message: "Requests not found" });
+    }
+    return res.status(404).json({ data: result });
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });

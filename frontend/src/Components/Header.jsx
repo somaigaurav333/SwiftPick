@@ -9,9 +9,13 @@ const Header = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const sendLogoutReq = async () => {
-    const res = await axios.post("http://localhost:5000/auth/userLogout", null, {
-      withCredentials: true,
-    });
+    const res = await axios.post(
+      "http://localhost:5000/auth/userLogout",
+      null,
+      {
+        withCredentials: true,
+      }
+    );
     if (res.status === 200) {
       return res;
     }
@@ -25,7 +29,7 @@ const Header = () => {
 
   return (
     <div>
-      <AppBar position="sticky">
+      <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h3">SwiftPick</Typography>
           <Box sx={{ marginLeft: "auto" }}>
@@ -36,10 +40,10 @@ const Header = () => {
               textColor="inherit"
             >
               {!isLoggedIn && (
-                  <Tab to="/auth/login" LinkComponent={Link} label="Login" />
+                <Tab to="/auth/login" LinkComponent={Link} label="Login" />
               )}
-              {!isLoggedIn && (    
-                  <Tab to="/auth/signup" LinkComponent={Link} label="Signup" />
+              {!isLoggedIn && (
+                <Tab to="/auth/signup" LinkComponent={Link} label="Signup" />
               )}
               {isLoggedIn && (
                 <Tab
