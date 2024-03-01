@@ -62,6 +62,41 @@ const drawerWidth = 240;
 // ];
 
 const ViewAllLocations = () => {
+  let firstRender = true;
+  const [user, setUser] = useState();
+
+  const refreshToken = async () => {
+    const res = await axios
+      .get('http://localhost:5000/auth/refresh', {
+        withCredentials: true,
+      })
+      .catch((err) => console.log(err));
+
+    const data = await res.data;
+    return data;
+  };
+
+  const sendReq = async () => {
+    const res = await axios
+      .get('http://localhost:5000/auth/verifyLogin', {
+        withCredentials: true,
+      })
+      .catch((err) => console.log(err));
+    const data = await res.data;
+    return data;
+  };
+  useEffect(() => {
+    if (firstRender) {
+      firstRender = false;
+      sendReq().then((data) => setUser(data.user));
+    }
+    let interval = setInterval(() => {
+      refreshToken().then((data) => setUser(data.user));
+    }, 1000 * 60 * 9);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
   const [newLocation, setNewLocation] = useState({
