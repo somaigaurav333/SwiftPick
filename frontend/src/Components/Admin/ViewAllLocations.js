@@ -51,6 +51,31 @@ const ViewAllLocations = () => {
     coordinate: '',
   });
 
+  const onButtonClick = async (e, row) => {
+    e.stopPropagation();
+    try {
+      const response = await fetch(
+        `http://localhost:5000/locations/${row._id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add any other headers if needed
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Failed to delete location');
+      }
+      // Assuming you want to remove the row from the UI after successful deletion
+      // You would need to implement this logic in your application
+      console.log('Location deleted successfully');
+    } catch (error) {
+      console.error('Error deleting location:', error.message);
+    }
+    fetchData();
+  };
+
   const columns = [
     {
       field: '_id',
@@ -72,6 +97,23 @@ const ViewAllLocations = () => {
       width: 200,
       align: 'right',
       headerAlign: 'right',
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 150,
+      align: 'right',
+      headerAlign: 'right',
+      renderCell: (params) => {
+        return (
+          <Button
+            onClick={(e) => onButtonClick(e, params.row)}
+            variant='contained'
+          >
+            Delete
+          </Button>
+        );
+      },
     },
   ];
 
@@ -140,63 +182,65 @@ const ViewAllLocations = () => {
       }}
     >
       <div style={{ position: 'relative', maxWidth: '800px', width: '100%' }}>
-    {/* Button positioned at the top right corner */}
-    <Button
-      variant='outlined'
-      onClick={handleClickOpen}
-      style={{ position: 'absolute', top: 0, right: 0 }}
-    >
-      Add Location
-    </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add Location</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Enter the details for the new location:
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin='dense'
-            id='location'
-            name='location'
-            label='Location Name'
-            type='text'
-            fullWidth
-            variant='standard'
-            value={newLocation.location}
-            onChange={handleChange}
+        {/* Button positioned at the top right corner */}
+        <Button
+          variant='outlined'
+          onClick={handleClickOpen}
+          style={{ position: 'absolute', top: 0, right: 0 }}
+        >
+          Add Location
+        </Button>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Add Location</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Enter the details for the new location:
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin='dense'
+              id='location'
+              name='location'
+              label='Location Name'
+              type='text'
+              fullWidth
+              variant='standard'
+              value={newLocation.location}
+              onChange={handleChange}
+            />
+            <TextField
+              margin='dense'
+              id='coordinate'
+              name='coordinate'
+              label='Coordinates'
+              type='text'
+              fullWidth
+              variant='standard'
+              value={newLocation.coordinate}
+              onChange={handleChange}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleSubmit}>Add</Button>
+          </DialogActions>
+        </Dialog>
+        <div style={{ margin: '50px auto', maxWidth: '800px', height: 400 }}>
+          <DataGrid
+            getRowId={(row) => row._id}
+            rows={data}
+            columns={columns}
+            // initialState={{
+            //   pagination: {
+            //     paginationModel: { page: 0, pageSize: 5 },
+            //   },
+            // }}
+            // pageSizeOptions={[5, 10]}
+            // checkboxSelection
+
+            hideFooter={true}
           />
-          <TextField
-            margin='dense'
-            id='coordinate'
-            name='coordinate'
-            label='Coordinates'
-            type='text'
-            fullWidth
-            variant='standard'
-            value={newLocation.coordinate}
-            onChange={handleChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Add</Button>
-        </DialogActions>
-      </Dialog>
-      <div style={{ margin: '50px auto', maxWidth: '800px' }}>
-        <DataGrid
-          getRowId={(row) => row._id}
-          rows={data}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-          // checkboxSelection
-        />
-      </div>
+        </div>
       </div>
     </div>
   );
