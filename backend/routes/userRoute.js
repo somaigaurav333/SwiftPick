@@ -3,8 +3,12 @@ import { User } from "../models/userModel.js";
 import { Admin } from "../models/adminModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import nodemailer from 'nodemailer';
-import {verifyToken, getUser, refreshToken} from "../Middlewares/authMiddleware.js"
+import nodemailer from "nodemailer";
+import {
+  verifyToken,
+  getUser,
+  refreshToken,
+} from "../Middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -14,7 +18,7 @@ const router = express.Router();
     2) The time the user would be allowed to be on the website
 */
 
-// Route for SignUp 
+// Route for SignUp
 router.post("/signup", async (req, res) => {
   try {
     if (
@@ -37,12 +41,12 @@ router.post("/signup", async (req, res) => {
       roomNumber,
       hostelName,
       gender,
-      phoneNumber
+      phoneNumber,
     } = req.body;
 
     // Check if user is already existing
-    const userEmailExists = await User.findOne({ 'email': email });
-    const userNameExists = await User.findOne({ 'username': username });
+    const userEmailExists = await User.findOne({ email: email });
+    const userNameExists = await User.findOne({ username: username });
     // console.log(userEmailExists)
     if (userEmailExists || userNameExists) {
       return res.json({ status: false, message: "User already exists" });
@@ -74,7 +78,7 @@ router.post("/signup", async (req, res) => {
 });
 
 // Route for login
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const existingUser = await User.findOne({ email });
   if (!existingUser) {
@@ -96,59 +100,68 @@ router.post('/login', async (req, res) => {
       requesterRating: existingUser.requesterRating,
       requesteeRating: existingUser.requesteeRating,
       totalRequests: existingUser.totalRequests,
-      totalDeliveries: existingUser.totalDeliveries
-    }
-    const token = jwt.sign(payLoad, process.env.jwtTokenKey, { expiresIn: "35s" });
-    
-    
-    if(req.cookies[`${existingUser._id}`]){
+      totalDeliveries: existingUser.totalDeliveries,
+    };
+    const token = jwt.sign(payLoad, process.env.jwtTokenKey, {
+      expiresIn: "11m",
+    });
+
+    if (req.cookies[`${existingUser._id}`]) {
       req.cookies[`${existingUser._id}`] = "";
     }
 
     const cookieOptions = {
-      path: '/',
-      expires: new Date(Date.now() + 1000 * 60 * 0.5),
+      path: "/",
+      expires: new Date(Date.now() + 1000 * 60 * 10),
       httpOnly: true,
-      sameSite: 'lax'
-    }
+      sameSite: "lax",
+    };
 
     res.cookie(String(existingUser._id), token, cookieOptions);
 
-    return res.json({ status: true, message: "login successfully", user: payLoad});
+    return res.json({
+      status: true,
+      message: "login successfully",
+      user: payLoad,
+    });
   }
-
-})
+});
 
 //Route for forgot password
-router.post('/forgotPassword', async (req, res) => {
+router.post("/forgotPassword", async (req, res) => {
   const { email } = req.body;
 
   try {
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email });
     if (!user) {
-      return res.json({ status: false, message: "User Not Registered" })
+      return res.json({ status: false, message: "User Not Registered" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.jwtTokenKey, { expiresIn: '5m' })
+    const token = jwt.sign({ id: user._id }, process.env.jwtTokenKey, {
+      expiresIn: "5m",
+    });
 
     var transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
-        user: process.env.adminEmail,  // Send email from address and password
-        pass: process.env.adminPass
-      }
+        user: process.env.adminEmail, // Send email from address and password
+        pass: process.env.adminPass,
+      },
     });
-    const encodedToken = encodeURIComponent(token).replace(/\./g, "%2E")
+    const encodedToken = encodeURIComponent(token).replace(/\./g, "%2E");
     var mailOptions = {
       from: process.env.adminEmail,
       to: email,
-      subject: 'Reset Password',
-      text: `http://localhost:3000/auth/resetPassword/${encodedToken}`
+      subject: "Reset Password",
+      text: `http://localhost:3000/auth/resetPassword/${encodedToken}`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        return res.json({ status: false, message: "Error sending email" + info });
+        return res.json({
+          status: false,
+          message: "Error sending email" + info,
+        });
       } else {
         return res.json({ status: true, message: "Email Sent" });
       }
@@ -159,7 +172,7 @@ router.post('/forgotPassword', async (req, res) => {
 });
 
 // Route for Rest Password
-router.post('/resetPassword/:token', async (req, res) => {
+router.post("/resetPassword/:token", async (req, res) => {
   const { token } = req.params;
   const { password } = req.body;
 
@@ -167,34 +180,26 @@ router.post('/resetPassword/:token', async (req, res) => {
     const decoded = await jwt.verify(token, process.env.jwtTokenKey);
     const id = decoded.id;
     const hashPassword = await bcrypt.hash(password, 10);
-    await User.findByIdAndUpdate({ _id: id }, { password: hashPassword })
-    return res.json({ status: true, message: "Updated Password" })
+    await User.findByIdAndUpdate({ _id: id }, { password: hashPassword });
+    return res.json({ status: true, message: "Updated Password" });
   } catch (error) {
     return res.json("Invalid token");
   }
-})
+});
 
-// Route for Admin SignUp 
+// Route for Admin SignUp
 router.post("/adminSignup", async (req, res) => {
   try {
-    if (
-      !req.body.username ||
-      !req.body.email ||
-      !req.body.password
-    ) {
+    if (!req.body.username || !req.body.email || !req.body.password) {
       return res.status(400).send({
         message: "Required fields not found",
       });
     }
-    const {
-      username,
-      email,
-      password
-    } = req.body;
+    const { username, email, password } = req.body;
 
     // Check if user is already existing
-    const userEmailExists = await Admin.findOne({ 'email': email });
-    const userNameExists = await Admin.findOne({ 'username': username });
+    const userEmailExists = await Admin.findOne({ email: email });
+    const userNameExists = await Admin.findOne({ username: username });
     // console.log(userEmailExists)
     if (userEmailExists || userNameExists) {
       return res.json({ status: false, message: "Admin already exists" });
@@ -206,7 +211,7 @@ router.post("/adminSignup", async (req, res) => {
     const newUser = {
       username: username,
       email: email,
-      password: hashPassword
+      password: hashPassword,
     };
 
     const item = await Admin.create(newUser);
@@ -218,7 +223,7 @@ router.post("/adminSignup", async (req, res) => {
 });
 
 // Route for Admin Login
-router.post('/adminLogin', async (req, res) => {
+router.post("/adminLogin", async (req, res) => {
   const { email, password } = req.body;
   const admin = await Admin.findOne({ email });
   if (!admin) {
@@ -232,27 +237,33 @@ router.post('/adminLogin', async (req, res) => {
     const payLoad = {
       _id: admin._id,
       username: admin.username,
-      email: admin.email
-    }
-    const token = jwt.sign(payLoad, process.env.jwtTokenKey, { expiresIn: "60s" });
+      email: admin.email,
+    };
+    const token = jwt.sign(payLoad, process.env.jwtTokenKey, {
+      expiresIn: "11m",
+    });
     const options = {
-      path: '/',
-      expires: new Date(Date.now() + 1000 * 60 * 1),
+      path: "/",
+      expires: new Date(Date.now() + 1000 * 60 * 10),
       httpOnly: true,
-      sameSite: 'lax'
-    }
+      sameSite: "lax",
+    };
     res.cookie(String(admin._id), token, options);
 
-    return res.json({ status: true, message: "login successfully", user: admin, token });
+    return res.json({
+      status: true,
+      message: "login successfully",
+      user: admin,
+      token,
+    });
   }
-  
 });
 
 //Route for Logout
-router.post('/userLogout', verifyToken, async (req, res) =>{
+router.post("/userLogout", verifyToken, async (req, res) => {
   try {
     const cookies = req.headers.cookie;
-    const prevToken = cookies.split('=')[1];
+    const prevToken = cookies.split("=")[1];
     if (!prevToken) {
       return res.status(401).json({ message: "No token found" });
     }
@@ -264,8 +275,8 @@ router.post('/userLogout', verifyToken, async (req, res) =>{
 
       res.clearCookie(`${user._id}`);
       req.cookies[`${user._id}`] = "";
-      
-      return res.status(200).json({message: "Logout Success"});
+
+      return res.status(200).json({ message: "Logout Success" });
     });
   } catch (error) {
     return res.status(401).json({ message: "Invalid Token" });
@@ -273,11 +284,9 @@ router.post('/userLogout', verifyToken, async (req, res) =>{
 });
 
 // Route for login verification
-router.get('/verifyLogin', verifyToken, getUser);
+router.get("/verifyLogin", verifyToken, getUser);
 
 // Route for Token Refresh
-router.get('/refresh', refreshToken, verifyToken, getUser);
-
-
+router.get("/refresh", refreshToken, verifyToken, getUser);
 
 export default router;
