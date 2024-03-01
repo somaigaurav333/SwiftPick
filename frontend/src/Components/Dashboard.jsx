@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-let firstRender = true;
 
 const Dashboard = () => {
+  let firstRender = true;
   const [user, setUser] = useState();
 
   const refreshToken = async () => {

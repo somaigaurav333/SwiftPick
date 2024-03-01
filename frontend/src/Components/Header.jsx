@@ -21,7 +21,7 @@ const Header = () => {
     sendLogoutReq().then(() => dispatch(authActions.logout()));
   };
 
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(0);
 
   return (
     <div>
@@ -36,10 +36,10 @@ const Header = () => {
               textColor="inherit"
             >
               {!isLoggedIn && (
-                <>
                   <Tab to="/auth/login" LinkComponent={Link} label="Login" />
+              )}
+              {!isLoggedIn && (    
                   <Tab to="/auth/signup" LinkComponent={Link} label="Signup" />
-                </>
               )}
               {isLoggedIn && (
                 <Tab

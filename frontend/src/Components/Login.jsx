@@ -17,7 +17,15 @@ const Login = () => {
         const res = axios.post('http://localhost:5000/auth/login', {
             email,
             password,
-        }).catch(err => {
+        }).then(response => {
+            if(response.data.message === "Wrong Password"){
+              alert("Wrong Password");
+            }
+            else{
+              alert("Successufully Logged In");
+              navigate('/requests');
+            }
+          }).catch(err => {
             console.log(err);
         })
         const data = await res.data;

@@ -114,7 +114,7 @@ router.post('/login', async (req, res) => {
 
     res.cookie(String(existingUser._id), token, cookieOptions);
 
-    return res.json({ status: true, message: "login successfully", user: payLoad, token });
+    return res.json({ status: true, message: "login successfully", user: payLoad});
   }
 
 })
