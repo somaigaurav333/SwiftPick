@@ -10,9 +10,23 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import "./PostNewRequest.css";
 
+const locationsURL = "/locations";
+
 export default function PostNewRequest() {
   const [open, setOpen] = React.useState(false);
   const [itemList, setItems] = useState([""]);
+  const [locations, setLocations] = useState([""]);
+  const [pickupLocation, setPickupLocation] = useState([]);
+  const [deliveryLocation, setDeliveryLocation] = useState([]);
+
+  useEffect(() => {
+    async function fetchLocations() {
+      const response = await axios_instance.get(locationsURL);
+      setLocations(response.data.data);
+      return;
+    }
+    fetchLocations();
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,7 +40,7 @@ export default function PostNewRequest() {
     setItems([...itemList, ""]);
   };
 
-  const handleChange = (event, index) => {
+  const handleItemChange = (event, index) => {
     console.log(event.target.value);
     let value = event.target.value;
     let onChangeValue = [...itemList];
@@ -38,6 +52,14 @@ export default function PostNewRequest() {
     const newArray = [...itemList];
     newArray.splice(index, 1);
     setItems(newArray);
+  };
+
+  const handlePickupChange = (event) => {
+    setPickupLocation(event.target.value);
+  };
+
+  const handleDeliveryChange = (event) => {
+    setDeliveryLocation(event.target.value);
   };
 
   const month = [
@@ -121,6 +143,20 @@ export default function PostNewRequest() {
           <DialogContentText>
             Please fill the following details to post a new request
           </DialogContentText>
+          <FormControl fullWidth>
+            <InputLabel id="pickupLocation">Pickup Location</InputLabel>
+            <Select
+              labelId="pickupLocation"
+              id="pickupLocation"
+              value={pickupLocation}
+              label="pickupLocation"
+              onChange={handlePickupChange}
+            >
+              {locations.map((location, index) => (
+                <MenuItem value={locations[index]}>locations[index]</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
             autoFocus
             required
@@ -162,7 +198,7 @@ export default function PostNewRequest() {
                   type="text"
                   name="itemName"
                   value={item.itemName}
-                  onChange={(event) => handleChange(event, index)}
+                  onChange={(event) => handleItemChange(event, index)}
                 />
                 {itemList.length > 1 && (
                   <button onClick={() => handleDeleteItem(index)}>
