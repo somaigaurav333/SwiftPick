@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,6 +12,7 @@ import "./PostNewRequest.css";
 
 export default function PostNewRequest() {
   const [open, setOpen] = React.useState(false);
+  const [itemList, setItems] = useState([""]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -18,6 +20,24 @@ export default function PostNewRequest() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleAddItem = () => {
+    setItems([...itemList, ""]);
+  };
+
+  const handleChange = (event, index) => {
+    console.log(event.target.value);
+    let value = event.target.value;
+    let onChangeValue = [...itemList];
+    onChangeValue[index] = value;
+    setItems(onChangeValue);
+  };
+
+  const handleDeleteItem = (index) => {
+    const newArray = [...itemList];
+    newArray.splice(index, 1);
+    setItems(newArray);
   };
 
   const month = [
@@ -37,9 +57,9 @@ export default function PostNewRequest() {
 
   return (
     <React.Fragment>
-      <a href="#" class="button" onClick={handleClickOpen}>
-        <span class="iconh">+</span>
-        <span class="texth">New Request</span>
+      <a href="#" className="button" onClick={handleClickOpen}>
+        <span className="iconh">+</span>
+        <span className="texth">New Request</span>
       </a>
       <Dialog
         open={open}
@@ -56,7 +76,7 @@ export default function PostNewRequest() {
             const deliveryLocation = formJson.deliveryLocation;
             const phoneNumber = "0123456789";
             const paymentMethod = formJson.paymentMethod;
-            const items = formJson.items;
+            const items = itemList;
             const requesterNote = formJson.requesterNote;
             const status = "open";
             const date =
@@ -134,17 +154,29 @@ export default function PostNewRequest() {
             fullWidth
             variant="standard"
           />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="items"
-            name="items"
-            label="Items"
-            type="items"
-            fullWidth
-            variant="standard"
-          />
+          <span>Items</span>
+          <div className="Item Container">
+            {itemList.map((item, index) => (
+              <div className="input_container" key={index}>
+                <input
+                  type="text"
+                  name="itemName"
+                  value={item.itemName}
+                  onChange={(event) => handleChange(event, index)}
+                />
+                {itemList.length > 1 && (
+                  <button onClick={() => handleDeleteItem(index)}>
+                    Delete
+                  </button>
+                )}
+                {index === itemList.length - 1 && (
+                  <button onClick={() => handleAddItem()}>Add</button>
+                )}
+              </div>
+            ))}
+
+            {/* <div className="body"> {JSON.stringify(itemList)} </div> */}
+          </div>
           <TextField
             autoFocus
             margin="dense"
