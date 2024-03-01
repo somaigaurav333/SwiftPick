@@ -27,6 +27,18 @@
   right: 0;
 }
 
+.deliveryLocation {
+  margin-top: 10px;
+}
+
+.paymentMethod {
+  margin-top: 10px;
+}
+
+.items-text {
+  margin-top: 10px;
+}
+
 .button:hover {
   max-width: 300px;
 }

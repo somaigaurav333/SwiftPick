@@ -1,6 +1,7 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import axios_instance from "../axios";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -8,6 +9,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import "./PostNewRequest.css";
 
 const locationsURL = "/locations";
@@ -16,13 +22,14 @@ export default function PostNewRequest() {
   const [open, setOpen] = React.useState(false);
   const [itemList, setItems] = useState([""]);
   const [locations, setLocations] = useState([""]);
-  const [pickupLocation, setPickupLocation] = useState([]);
-  const [deliveryLocation, setDeliveryLocation] = useState([]);
+  const [pickupLoc, setPickupLocation] = useState([]);
+  const [deliveryLoc, setDeliveryLocation] = useState([]);
 
   useEffect(() => {
     async function fetchLocations() {
       const response = await axios_instance.get(locationsURL);
       setLocations(response.data.data);
+      console.log(response);
       return;
     }
     fetchLocations();
@@ -94,8 +101,8 @@ export default function PostNewRequest() {
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
             const requesterUsername = "Kush";
-            const pickupLocation = formJson.pickupLocation;
-            const deliveryLocation = formJson.deliveryLocation;
+            const pickupLocation = pickupLoc;
+            const deliveryLocation = deliveryLoc;
             const phoneNumber = "0123456789";
             const paymentMethod = formJson.paymentMethod;
             const items = itemList;
@@ -143,54 +150,52 @@ export default function PostNewRequest() {
           <DialogContentText>
             Please fill the following details to post a new request
           </DialogContentText>
-          <FormControl fullWidth>
+          <FormControl fullWidth className="pickupLocation">
             <InputLabel id="pickupLocation">Pickup Location</InputLabel>
             <Select
               labelId="pickupLocation"
               id="pickupLocation"
-              value={pickupLocation}
+              value={pickupLoc}
               label="pickupLocation"
               onChange={handlePickupChange}
             >
               {locations.map((location, index) => (
-                <MenuItem value={locations[index]}>locations[index]</MenuItem>
+                <MenuItem value={locations[index].location}>
+                  {locations[index].location}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth className="deliveryLocation">
+            <InputLabel id="deliveryLocation">Delivery Location</InputLabel>
+            <Select
+              labelId="deliveryLocation"
+              id="deliveryLocation"
+              value={deliveryLoc}
+              label="deliveryLocation"
+              onChange={handleDeliveryChange}
+            >
+              {locations.map((location, index) => (
+                <MenuItem value={locations[index].location}>
+                  {locations[index].location}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
           <TextField
             autoFocus
             required
-            margin="dense"
-            id="pickupLocation"
-            name="pickupLocation"
-            label="Pickup Location"
-            type="pickupLocation"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="deliveryLocation"
-            name="deliveryLocation"
-            label="Delivery Location"
-            type="deliveryLocation"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
+            // margin="dense"
             id="paymentMethod"
             name="paymentMethod"
+            className="paymentMethod"
             label="Payment Method"
             type="paymentMethod"
             fullWidth
             variant="standard"
           />
-          <span>Items</span>
+          <span className="items-text">Items</span>
           <div className="Item Container">
             {itemList.map((item, index) => (
               <div className="input_container" key={index}>

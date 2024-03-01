@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ViewAllRequestsRow from "./ViewAllRequestsRow";
 import PostNewRequest from "./PostNewRequest";
 import axios_instance from "../axios";
+import axios from "axios";
 
 const requestsURL = "/requests";
 const pickupLocationsURL = "/locations";
@@ -27,6 +28,40 @@ const pickupLocationsURL = "/locations";
 // }
 
 function ViewAllRequests() {
+  let firstRender = true;
+  const [user, setUser] = useState();
+
+  const refreshToken = async () => {
+    const res = await axios
+      .get("http://localhost:5000/auth/refresh", {
+        withCredentials: true,
+      })
+      .catch((err) => console.log(err));
+
+    const data = await res.data;
+    return data;
+  };
+
+  const sendReq = async () => {
+    const res = await axios
+      .get("http://localhost:5000/auth/verifyLogin", {
+        withCredentials: true,
+      })
+      .catch((err) => console.log(err));
+    const data = await res.data;
+    return data;
+  };
+  useEffect(() => {
+    if (firstRender) {
+      firstRender = false;
+      sendReq().then((data) => setUser(data.user));
+    }
+    let interval = setInterval(() => {
+      refreshToken().then((data) => setUser(data.user));
+    }, 1000 * 60 * 9);
+
+    return () => clearInterval(interval);
+  }, []);
   //fetch requests data
   const [requests, setRequests] = useState([]);
 
