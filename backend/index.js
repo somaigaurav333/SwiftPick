@@ -1,12 +1,11 @@
 import express, { response } from "express";
-import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import { Location } from "./models/locationModel.js";
 import { Request } from "./models/requestModel.js";
 import locationRoute from "./routes/locationRoute.js";
 import requestRoute from "./routes/requestRoute.js";
 import userRoute from "./routes/userRoute.js";
-import verifyToken from './routes/userRoute.js'
+import { config } from "dotenv";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 
@@ -15,6 +14,7 @@ const app = express();
 //Middleware for parsing request body
 app.use(express.json());
 app.use(cookieParser());
+config();
 
 //Middleware for handling CORS Policy
 //Option 1: Allow All origins with default of cors(*)
@@ -44,11 +44,11 @@ app.use("/requests", requestRoute);
 app.use("/auth", userRoute);
 
 mongoose
-  .connect(mongoDBURL)
+  .connect(process.env.mongoDBURL)
   .then(() => {
     console.log("App connected to location database");
-    app.listen(PORT, () => {
-      console.log(`App is listening on port: ${PORT}`);
+    app.listen(process.env.PORT, () => {
+      console.log(`App is listening on port: ${process.env.PORT}`);
     });
   })
   .catch((error) => {
