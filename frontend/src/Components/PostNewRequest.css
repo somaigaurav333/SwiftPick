@@ -7,7 +7,28 @@
   }
 }
 
-.button {
+.deliveryDropdown {
+  margin-top: 10px;
+}
+
+.paymentMethod {
+  margin-top: 10px;
+}
+
+.textDiv {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.input-field {
+  margin-right: 10px;
+}
+
+.delete-button {
+  margin-right: 10px;
+}
+
+.add-request-button {
   background-color: #03dac6;
   color: white;
   text-decoration: none;
@@ -27,22 +48,10 @@
   right: 0;
 }
 
-.deliveryLocation {
-  margin-top: 10px;
-}
-
-.paymentMethod {
-  margin-top: 10px;
-}
-
-.items-text {
-  margin-top: 10px;
-}
-
-.button:hover {
+.add-request-button:hover {
   max-width: 300px;
 }
-.button:hover .iconh {
+.add-request-button:hover .iconh {
   animation: spin 1s;
 }
 
@@ -60,8 +69,3 @@
   white-space: nowrap;
   padding-right: 15px;
 }
-
-/* .container {
-  position: absolute;
-  
-} */
