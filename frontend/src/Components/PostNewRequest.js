@@ -20,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 const locationsURL = "/locations";
 
 export default function PostNewRequest() {
+  const navigate = useNavigate();
+
   let firstRender = true;
   const [user, setUser] = useState();
 
@@ -289,7 +291,9 @@ export default function PostNewRequest() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Post</Button>
+          <Button type="submit" onClick={(event) => navigate("/myRequests")}>
+            Post
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
