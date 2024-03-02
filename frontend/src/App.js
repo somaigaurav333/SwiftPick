@@ -42,6 +42,9 @@ const App = () => {
           {isLoggedIn && (
             <Route path="/admin/locations" element={<ViewAllLocations />} />
           )}
+          {isLoggedIn && (
+            <Route path="/myRequests" element={<ViewMyRequests />} />
+          )}
         </Routes>
       </main>
     </React.Fragment>

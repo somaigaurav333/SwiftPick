@@ -64,7 +64,7 @@ router.get("/:username", async (req, res) => {
     if (!result) {
       return res.status(404).json({ message: "Requests not found" });
     }
-    return res.status(404).json({ data: result });
+    return res.status(200).json({ data: result });
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });
