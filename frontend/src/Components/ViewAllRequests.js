@@ -4,31 +4,40 @@ import PostNewRequest from "./PostNewRequest";
 import axios_instance from "../axios";
 import axios from "axios";
 import "./ViewAllRequests.css";
+import { DataGrid } from "@mui/x-data-grid";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import AppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import ViewMyRequests from "./ViewMyRequests";
+import { useNavigate } from "react-router-dom";
 
 const requestsURL = "/requests";
 const pickupLocationsURL = "/locations";
-
-// export default function FloatingActionButtons() {
-//   return (
-//     <Box sx={{ '& > :not(style)': { m: 1 } }}>
-//       <Fab color="primary" aria-label="add">
-//         <AddIcon />
-//       </Fab>
-//       <Fab color="secondary" aria-label="edit">
-//         <EditIcon />
-//       </Fab>
-//       <Fab variant="extended">
-//         <NavigationIcon sx={{ mr: 1 }} />
-//         Navigate
-//       </Fab>
-//       <Fab disabled aria-label="like">
-//         <FavoriteIcon />
-//       </Fab>
-//     </Box>
-//   );
-// }
+const drawerWidth = 240;
 
 function ViewAllRequests() {
+  const navigate = useNavigate();
+
   let firstRender = true;
   const [user, setUser] = useState();
 
@@ -89,6 +98,37 @@ function ViewAllRequests() {
 
   return (
     <div className="bgvir">
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <Drawer
+          variant="permanent"
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
+          }}
+        >
+          <Toolbar />
+          <Box sx={{ overflow: "auto" }}>
+            <List>
+              <ListItem disablePadding>
+                <ListItemButton onClick={(event) => navigate("/requests")}>
+                  <ListItemIcon>{<InboxIcon />}</ListItemIcon>
+                  <ListItemText primary="All Requests" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton onClick={(event) => navigate("/myRequests")}>
+                  <ListItemIcon>{<InboxIcon />}</ListItemIcon>
+                  <ListItemText primary="My Requests" />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </Box>
+        </Drawer>
+      </div>
       <div className="ViewAllRequests">
         {pickupLocations.map((pickupLocation) => {
           return (
