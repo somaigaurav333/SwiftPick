@@ -20,14 +20,16 @@ const Login = () => {
         password,
       })
       .then((response) => {
-        if (response.data.message === "Wrong Password") {
-          alert("Wrong Password");
-        } else {
+        if (response.status == 200) {
           navigate("/requests");
+          dispatch(authActions.login());
+        } else {
+          alert("Error Occurred");
         }
       })
       .catch((err) => {
-        console.log(err);
+        alert(err.response.data.message);
+        window.location.reload();
       });
     const data = await res.data;
     return data;
@@ -35,7 +37,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendLoginReq().then(() => dispatch(authActions.login()));
+    sendLoginReq();
   };
 
   return (

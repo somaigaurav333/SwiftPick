@@ -17,17 +17,19 @@ const Login = () => {
         const res = axios.post('http://localhost:5000/auth/adminLogin', {
             email,
             password,
-        }).then(response => {
-            if(response.data.message === "Wrong Password"){
-              alert("Wrong Password");
-            }
-            else{
-              alert("Successufully Logged In");
-              navigate('/admin/locations');
-            }
-          }).catch(err => {
-            console.log(err);
         })
+        .then((response) => {
+            if (response.status == 200) {
+              navigate("/admin/locations");
+              dispatch(authActions.login())
+            } else {
+              alert("Error Occurred");
+            }
+          })
+          .catch((err) => {
+            alert(err.response.data.message);
+            window.location.reload();
+          });
         const data = await res.data;
         return data;
     }
@@ -35,7 +37,6 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         sendLoginReq()
-            .then(() => dispatch(authActions.login()))
     }
 
     return (

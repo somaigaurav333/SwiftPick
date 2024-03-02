@@ -139,12 +139,12 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const existingUser = await User.findOne({ email });
   if (!existingUser) {
-    return res.json({ message: "User is not registered" });
+    return res.status(401).json({ message: "User is not registered" });
   }
 
   const validPass = await bcrypt.compare(password, existingUser.password);
   if (!validPass) {
-    return res.json({ status: false, message: "Wrong Password" });
+    return res.status(400).json({ message: "Wrong Password" });
   } else {
     const payLoad = {
       _id: existingUser._id,
@@ -284,12 +284,12 @@ router.post("/adminLogin", async (req, res) => {
   const { email, password } = req.body;
   const admin = await Admin.findOne({ email });
   if (!admin) {
-    return res.json({ message: "Admin Not Found" });
+    return res.status(401).json({ message: "Admin not found" });
   }
 
   const validPass = await bcrypt.compare(password, admin.password);
   if (!validPass) {
-    return res.json({ status: false, message: "Wrong Password" });
+    return res.status(400).json({ message: "Wrong Password" });
   } else {
     const payLoad = {
       _id: admin._id,
