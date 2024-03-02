@@ -15,6 +15,14 @@ const userSchema = mongoose.Schema(
             type: String,
             required: true,
         },
+        isVerified: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        verificationToken: {
+            type: String
+        },
         roomNumber: {
             type: String,
             required: true,

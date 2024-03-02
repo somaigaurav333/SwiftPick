@@ -4,6 +4,7 @@ import { Admin } from "../models/adminModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import crypto from 'crypto'
 import {
   verifyToken,
   getUser,
@@ -54,11 +55,13 @@ router.post("/signup", async (req, res) => {
     // Hash Password
 
     const hashPassword = await bcrypt.hash(password, 10);
+    const verToken = crypto.randomBytes(32).toString('hex');
     // Validate Email
     const newUser = {
       username: username,
       email: email,
       password: hashPassword,
+      verificationToken: verToken,
       roomNumber: roomNumber,
       hostelName: hostelName,
       gender: gender,
@@ -70,10 +73,62 @@ router.post("/signup", async (req, res) => {
     };
 
     const item = await User.create(newUser);
-    return res.json({ status: true, message: "Record Registered" });
+    //Send Gmail verification
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.adminEmail, // Send email from address and password
+        pass: process.env.adminPass,
+      },
+    });
+    const encodedToken = encodeURIComponent(verToken).replace(/\./g, "%2E");
+    const verificationLink = `http://localhost:3000/auth/verifySignup/${encodedToken}`;
+    var mailOptions = {
+      from: process.env.adminEmail,
+      to: email,
+      subject: "Verify Signup",
+      html: `<p>Click the following link to verify your email: <a href="${verificationLink}">${verificationLink}</a></p>`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        return res.json({
+          status: false,
+          message: "Error sending email" + info,
+        });
+      } else {
+        return res.json({ status: true, message: "Verification Email Sent" });
+      }
+    });
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });
+  }
+});
+
+// Route for SignUp Verification
+router.post("/verifySignup/:token", async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    // Find user by verification token
+    const user = await User.findOne({ verificationToken: token });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // Update user's verification status
+    user.isVerified = true;
+    user.verificationToken = undefined;
+
+    // Save the user after verifying
+    await user.save();
+
+    res.status(200).json({ message: 'Email verified successfully.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
@@ -137,7 +192,7 @@ router.post("/forgotPassword", async (req, res) => {
       return res.json({ status: false, message: "User Not Registered" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.jwtTokenKey, {
+    const token = jwt.sign({ id: user._id }, process.env.verificationTKey, {
       expiresIn: "5m",
     });
 
@@ -177,7 +232,7 @@ router.post("/resetPassword/:token", async (req, res) => {
   const { password } = req.body;
 
   try {
-    const decoded = await jwt.verify(token, process.env.jwtTokenKey);
+    const decoded = await jwt.verify(token, process.env.verificationTKey);
     const id = decoded.id;
     const hashPassword = await bcrypt.hash(password, 10);
     await User.findByIdAndUpdate({ _id: id }, { password: hashPassword });

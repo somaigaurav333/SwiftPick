@@ -6,6 +6,7 @@ import Login from "./Components/Login";
 import ForgotPassword from "./Components/ForgotPassword";
 import ViewAllRequests from "./Components/ViewAllRequests";
 import ResetPassword from "./Components/ResetPassword";
+import SignupVerify from "./Components/SignupVerify";
 import Dashboard from "./Components/Dashboard";
 import AdminLogin from "./Components/AdminLogin";
 import ViewAllLocations from "./Components/Admin/ViewAllLocations";
@@ -33,6 +34,7 @@ const App = () => {
             path="/auth/resetPassword/:token"
             element={<ResetPassword />}
           />
+          <Route path="/auth/verifySignup/:token" element={<SignupVerify/>}/>
           {isLoggedIn && <Route path="/dashboard" element={<Dashboard />} />}
           {isLoggedIn && (
             <Route path="/requests" element={<ViewAllRequests />} />
