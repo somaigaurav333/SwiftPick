@@ -121,7 +121,7 @@ export default function PostNewRequest() {
 
   return (
     <React.Fragment>
-      <a href="#" className="button" onClick={handleClickOpen}>
+      <a href="#" className="add-request-button" onClick={handleClickOpen}>
         <span className="iconh">+</span>
         <span className="texth">New Request</span>
       </a>
@@ -186,13 +186,14 @@ export default function PostNewRequest() {
             Please fill the following details to post a new request
           </DialogContentText>
           <FormControl fullWidth className="pickupLocation">
-            <InputLabel id="pickupLocation">Pickup Location</InputLabel>
+            <InputLabel id="pickupLocation">Pickup Location *</InputLabel>
             <Select
               labelId="pickupLocation"
               id="pickupLocation"
               value={pickupLoc}
               label="pickupLocation"
               onChange={handlePickupChange}
+              required
             >
               {locations.map((location, index) => (
                 <MenuItem value={locations[index].location}>
@@ -201,23 +202,26 @@ export default function PostNewRequest() {
               ))}
             </Select>
           </FormControl>
+          <div className="deliveryDropdown">
+            <FormControl fullWidth className="deliveryLocation">
+              <InputLabel id="deliveryLocation">Delivery Location *</InputLabel>
+              <Select
+                labelId="deliveryLocation"
+                id="deliveryLocation"
+                value={deliveryLoc}
+                label="deliveryLocation"
+                onChange={handleDeliveryChange}
+                required
+              >
+                {locations.map((location, index) => (
+                  <MenuItem value={locations[index].location}>
+                    {locations[index].location}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
 
-          <FormControl fullWidth className="deliveryLocation">
-            <InputLabel id="deliveryLocation">Delivery Location</InputLabel>
-            <Select
-              labelId="deliveryLocation"
-              id="deliveryLocation"
-              value={deliveryLoc}
-              label="deliveryLocation"
-              onChange={handleDeliveryChange}
-            >
-              {locations.map((location, index) => (
-                <MenuItem value={locations[index].location}>
-                  {locations[index].location}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
           <TextField
             autoFocus
             required
@@ -228,25 +232,42 @@ export default function PostNewRequest() {
             label="Payment Method"
             type="paymentMethod"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
-          <span className="items-text">Items</span>
-          <div className="Item Container">
+          <span className="items-text">Items *</span>
+          <div className="Item-container">
             {itemList.map((item, index) => (
-              <div className="input_container" key={index}>
+              <div className="input-container" key={index}>
                 <input
                   type="text"
                   name="itemName"
+                  className="input-field"
+                  style={{
+                    borderWidth: 2,
+                    borderColorborder: "rgba(0, 0, 0, 1)",
+                  }}
                   value={item.itemName}
                   onChange={(event) => handleItemChange(event, index)}
                 />
                 {itemList.length > 1 && (
-                  <button onClick={() => handleDeleteItem(index)}>
+                  <button
+                    variant="outlined"
+                    className="delete-button"
+                    color="error"
+                    onClick={() => handleDeleteItem(index)}
+                  >
                     Delete
                   </button>
                 )}
                 {index === itemList.length - 1 && (
-                  <button onClick={() => handleAddItem()}>Add</button>
+                  <button
+                    variant="outlined"
+                    className="add-button"
+                    color="success"
+                    onClick={() => handleAddItem()}
+                  >
+                    Add
+                  </button>
                 )}
               </div>
             ))}
@@ -261,7 +282,7 @@ export default function PostNewRequest() {
             label="Requester's Note"
             type="requesterNote"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </DialogContent>
         <DialogActions>
