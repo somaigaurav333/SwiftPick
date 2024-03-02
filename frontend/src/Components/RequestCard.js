@@ -51,7 +51,7 @@ function RequestCard({ request }) {
       class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 RequestCard"
     >
       <div className="Head">
-        <div className="Username">{request.requesterUsername} Agrawal</div>
+        <div className="Username">{request.requesterUsername}</div>
         <div className="Phone">{request.phoneNumber} </div>
       </div>
       <div className="DropLocation">To: {request.deliveryLocation}</div>
