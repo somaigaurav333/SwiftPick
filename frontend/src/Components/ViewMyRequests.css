@@ -2,10 +2,11 @@
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+
 }
 
 .ViewMyRequests {
-    margin-top: 100px;
+    margin-top: 30px;
     margin-left: 240px;
 }
 

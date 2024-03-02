@@ -5,13 +5,15 @@
     padding-right: 10px;
     padding-top: 5px;
     padding-bottom: 5px;
-    margin-left: 10px;
+    margin-left: 20px;
+
     min-width: max-content;
-    /* background-color: #E3F0FF; */
-    background-color: #E6F4F1;
+    background-color: #E3F0FF;
+    /* background-color: #E6F4F1; */
     /* background-color: #ABE3FF; */
     border-radius: 10px;
     margin-bottom: 20px;
+    min-height: 20vh;
 }
 
 .Head {
