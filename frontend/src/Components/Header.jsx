@@ -25,37 +25,35 @@ const Header = () => {
     sendLogoutReq().then(() => dispatch(authActions.logout()));
   };
 
-  const [value, setValue] = useState(0);
-
   return (
-    <AppBar position='fixed'>
-      <Toolbar>
-        <Typography variant='h3'>SwiftPick</Typography>
-        <Box sx={{ marginLeft: 'auto' }}>
-          <Tabs
-            indicatorColor='secondary'
-            onChange={(e, val) => setValue(val)}
-            value={value}
-            textColor='inherit'
-          >
-            {!isLoggedIn && (
-              <Tab to='/auth/login' LinkComponent={Link} label='Login' />
-            )}
-            {!isLoggedIn && (
-              <Tab to='/auth/signup' LinkComponent={Link} label='Signup' />
-            )}
-            {isLoggedIn && (
-              <Tab
-                onClick={handleLogout}
-                to='/'
-                LinkComponent={Link}
-                label='Logout'
-              />
-            )}
-          </Tabs>
-        </Box>
-      </Toolbar>
-    </AppBar>
+    <div>
+      <AppBar position='fixed'>
+        <Toolbar>
+          <Typography variant='h3'>SwiftPick</Typography>
+          <Box sx={{ marginLeft: 'auto' }}>
+            <Tabs
+              textColor='whitespace'
+            >
+              {!isLoggedIn && (
+                <Tab to='/auth/login' LinkComponent={Link} label='Login' />
+              )}
+              {!isLoggedIn && (
+                <Tab to='/auth/signup' LinkComponent={Link} label='Signup' />
+              )}
+              {isLoggedIn && (
+                <Tab
+                  onClick={handleLogout}
+                  to='/'
+                  LinkComponent={Link}
+                  label='Logout'
+                />
+              )}
+            </Tabs>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Toolbar/>
+    </div>
   );
 };
 
