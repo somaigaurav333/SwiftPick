@@ -15,6 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import "./PostNewRequest.css";
+import { useNavigate } from "react-router-dom";
 
 const locationsURL = "/locations";
 
@@ -169,6 +170,7 @@ export default function PostNewRequest() {
                 console.log(response);
                 if (response.status === 201) {
                   alert("Successfull Added");
+                  
                 } else {
                   alert("Retry");
                 }

@@ -145,7 +145,10 @@ router.post("/login", async (req, res) => {
   const validPass = await bcrypt.compare(password, existingUser.password);
   if (!validPass) {
     return res.status(400).json({ message: "Wrong Password" });
-  } else {
+  } else if(!existingUser.isVerified){
+    return res.status(400).json({ message: "Verify Your email" });
+  }
+  else {
     const payLoad = {
       _id: existingUser._id,
       username: existingUser.username,
