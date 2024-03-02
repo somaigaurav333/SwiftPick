@@ -19,6 +19,41 @@ import "./PostNewRequest.css";
 const locationsURL = "/locations";
 
 export default function PostNewRequest() {
+  let firstRender = true;
+  const [user, setUser] = useState();
+
+  const refreshToken = async () => {
+    const res = await axios
+      .get("http://localhost:5000/auth/refresh", {
+        withCredentials: true,
+      })
+      .catch((err) => console.log(err));
+
+    const data = await res.data;
+    return data;
+  };
+
+  const sendReq = async () => {
+    const res = await axios
+      .get("http://localhost:5000/auth/verifyLogin", {
+        withCredentials: true,
+      })
+      .catch((err) => console.log(err));
+    const data = await res.data;
+    return data;
+  };
+  useEffect(() => {
+    if (firstRender) {
+      firstRender = false;
+      sendReq().then((data) => setUser(data.user));
+    }
+    let interval = setInterval(() => {
+      refreshToken().then((data) => setUser(data.user));
+    }, 1000 * 60 * 9);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const [open, setOpen] = React.useState(false);
   const [itemList, setItems] = useState([""]);
   const [locations, setLocations] = useState([""]);
@@ -100,20 +135,20 @@ export default function PostNewRequest() {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
-            const requesterUsername = "Kush";
+            const requesterUsername = user.username;
             const pickupLocation = pickupLoc;
             const deliveryLocation = deliveryLoc;
-            const phoneNumber = "0123456789";
+            const phoneNumber = user.phoneNumber;
             const paymentMethod = formJson.paymentMethod;
             const items = itemList;
             const requesterNote = formJson.requesterNote;
             const status = "open";
             const date =
-              today.getDay() +
+              today.getDate() +
               " " +
               month[today.getMonth()] +
               " " +
-              today.getYear();
+              today.getFullYear();
             const time =
               today.getHours().toString() + ":" + today.getMinutes().toString();
             // console.log(email);
