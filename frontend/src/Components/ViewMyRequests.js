@@ -122,6 +122,9 @@ function ViewMyRequests() {
         </Drawer>
       </div>
       <div className="RequestCards">
+        {!requests.length && (
+          <span className="Nothing">Nothing to show here</span>
+        )}
         {requests.map((request) => {
           return (
             <MyRequestCard

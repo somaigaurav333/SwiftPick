@@ -2,10 +2,12 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(-180deg);
   }
 }
+
 
 .deliveryDropdown {
   margin-top: 10px;
@@ -26,6 +28,17 @@
 
 .delete-button {
   margin-right: 10px;
+  background-color: rgb(214, 185, 185);
+  padding: 2px;
+  margin-bottom: 5px;
+  border-radius: 2px;
+}
+
+.add-button {
+  background-color: #c7ebe6;
+  padding: 3px;
+  margin-bottom: 5px;
+  border-radius: 2px;
 }
 
 .add-request-button {
@@ -51,6 +64,7 @@
 .add-request-button:hover {
   max-width: 300px;
 }
+
 .add-request-button:hover .iconh {
   animation: spin 1s;
 }
