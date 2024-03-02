@@ -9,6 +9,8 @@ import {
   verifyToken,
   getUser,
   refreshToken,
+  getAdmin,
+  refreshAdminToken
 } from "../Middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -341,7 +343,11 @@ router.post("/userLogout", verifyToken, async (req, res) => {
 // Route for login verification
 router.get("/verifyLogin", verifyToken, getUser);
 
+router.get("/verifyAdminLogin", verifyToken, getAdmin);
+
 // Route for Token Refresh
 router.get("/refresh", refreshToken, verifyToken, getUser);
+
+router.get("/refreshAdmin", refreshAdminToken, verifyToken, getAdmin);
 
 export default router;

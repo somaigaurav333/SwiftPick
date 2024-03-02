@@ -68,7 +68,7 @@ const ViewAllLocations = () => {
 
   const refreshToken = async () => {
     const res = await axios
-      .get("http://localhost:5000/auth/refresh", {
+      .get("http://localhost:5000/auth/refreshAdmin", {
         withCredentials: true,
       })
       .catch((err) => console.log(err));
@@ -79,7 +79,7 @@ const ViewAllLocations = () => {
 
   const sendReq = async () => {
     const res = await axios
-      .get("http://localhost:5000/auth/verifyLogin", {
+      .get("http://localhost:5000/auth/verifyAdminLogin", {
         withCredentials: true,
       })
       .catch((err) => console.log(err));

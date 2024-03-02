@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/userModel.js";
+import { Admin } from "../models/adminModel.js";
 
 const verifyToken = async (req, res, next) => {
   try {
@@ -31,6 +32,21 @@ const getUser = async (req, res, next) => {
 
   if (!user) {
     return res.status(404).json({ message: "User not found" });
+  }
+  return res.status(200).json({ user });
+};
+
+const getAdmin = async (req, res, next) => {
+  const userId = req.id;
+  let user;
+  try {
+    user = await Admin.findById(userId, "-password");
+  } catch (error) {
+    return new Error(error);
+  }
+
+  if (!user) {
+    return res.status(404).json({ message: "Admin not found" });
   }
   return res.status(200).json({ user });
 };
@@ -89,4 +105,46 @@ const refreshToken = async (req, res, next) => {
   }
 };
 
-export { verifyToken, getUser, refreshToken };
+const refreshAdminToken = async (req, res, next) => {
+  try {
+    const cookies = req.headers.cookie;
+    const prevToken = cookies.split("=")[1];
+    if (!prevToken) {
+      return res.status(401).json({ message: "No token found" });
+    }
+    jwt.verify(String(prevToken), process.env.jwtTokenKey, (err, admin) => {
+      if (err) {
+        console.log(err);
+        return res.status(401).json({ message: "Invalid Token" });
+      }
+
+      // console.log(user);
+
+      res.clearCookie(`${admin._id}`);
+      req.cookies[`${admin._id}`] = "";
+
+      const payLoad = {
+        _id: admin._id,
+        username: admin.username,
+        email: admin.email,
+      };
+      const token = jwt.sign(payLoad, process.env.jwtTokenKey, {
+        expiresIn: "11m",
+      });
+      const options = {
+        path: "/",
+        expires: new Date(Date.now() + 1000 * 60 * 10),
+        httpOnly: true,
+        sameSite: "lax",
+      };
+      res.cookie(String(admin._id), token, options);
+
+      req.id = admin._id;
+      next();
+    });
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid Token" });
+  }
+};
+
+export { verifyToken, getUser, refreshToken, getAdmin, refreshAdminToken };
