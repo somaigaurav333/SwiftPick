@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const requestSchema = mongoose.Schema({
+  requesterId: {
+    type: String,
+    required: true,
+  },
   requesterUsername: {
     type: String,
     required: true,

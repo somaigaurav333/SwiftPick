@@ -8,6 +8,7 @@ router.post("/", async (req, res) => {
   try {
     if (
       !req.body.requesterUsername ||
+      !req.body.requesterId ||
       !req.body.pickupLocation ||
       !req.body.deliveryLocation ||
       !req.body.phoneNumber ||
@@ -23,6 +24,7 @@ router.post("/", async (req, res) => {
       });
     }
     const newReq = {
+      requesterId: req.body.requesterId,
       requesterUsername: req.body.requesterUsername,
       pickupLocation: req.body.pickupLocation,
       deliveryLocation: req.body.deliveryLocation,
@@ -57,10 +59,10 @@ router.get("/", async (req, res) => {
 });
 
 // Route to get request by username
-router.get("/:username", async (req, res) => {
+router.get("/:userid", async (req, res) => {
   try {
-    const { username } = req.params;
-    const result = await Request.find({ requesterUsername: username });
+    const { userid } = req.params;
+    const result = await Request.find({ requesterId: userid });
     if (!result) {
       return res.status(404).json({ message: "Requests not found" });
     }
@@ -70,5 +72,6 @@ router.get("/:username", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
+
 
 export default router;

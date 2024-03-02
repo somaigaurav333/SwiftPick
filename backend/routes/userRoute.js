@@ -139,13 +139,16 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const existingUser = await User.findOne({ email });
   if (!existingUser) {
+    console.log("1");
     return res.status(401).json({ message: "User is not registered" });
   }
 
   const validPass = await bcrypt.compare(password, existingUser.password);
   if (!validPass) {
+    console.log("2");
     return res.status(400).json({ message: "Wrong Password" });
   } else if(!existingUser.isVerified){
+    console.log("3");
     return res.status(400).json({ message: "Verify Your email" });
   }
   else {
@@ -178,6 +181,7 @@ router.post("/login", async (req, res) => {
     };
 
     res.cookie(String(existingUser._id), token, cookieOptions);
+    console.log("Done");
 
     return res.json({
       status: true,

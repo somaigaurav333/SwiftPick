@@ -1,23 +1,23 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import axios_instance from "../axios";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import "./PostNewRequest.css";
-import { useNavigate } from "react-router-dom";
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import axios_instance from '../axios';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import './PostNewRequest.css';
+import { useNavigate } from 'react-router-dom';
 
-const locationsURL = "/locations";
+const locationsURL = '/locations';
 
 export default function PostNewRequest() {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export default function PostNewRequest() {
 
   const refreshToken = async () => {
     const res = await axios
-      .get("http://localhost:5000/auth/refresh", {
+      .get('http://localhost:5000/auth/refresh', {
         withCredentials: true,
       })
       .catch((err) => console.log(err));
@@ -38,7 +38,7 @@ export default function PostNewRequest() {
 
   const sendReq = async () => {
     const res = await axios
-      .get("http://localhost:5000/auth/verifyLogin", {
+      .get('http://localhost:5000/auth/verifyLogin', {
         withCredentials: true,
       })
       .catch((err) => console.log(err));
@@ -58,8 +58,8 @@ export default function PostNewRequest() {
   }, []);
 
   const [open, setOpen] = React.useState(false);
-  const [itemList, setItems] = useState([""]);
-  const [locations, setLocations] = useState([""]);
+  const [itemList, setItems] = useState(['']);
+  const [locations, setLocations] = useState(['']);
   const [pickupLoc, setPickupLocation] = useState([]);
   const [deliveryLoc, setDeliveryLocation] = useState([]);
 
@@ -82,7 +82,7 @@ export default function PostNewRequest() {
   };
 
   const handleAddItem = () => {
-    setItems([...itemList, ""]);
+    setItems([...itemList, '']);
   };
 
   const handleItemChange = (event, index) => {
@@ -108,55 +108,57 @@ export default function PostNewRequest() {
   };
 
   const month = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
 
   return (
     <React.Fragment>
-      <a href="#" className="add-request-button" onClick={handleClickOpen}>
-        <span className="iconh">+</span>
-        <span className="texth">New Request</span>
+      <a href='#' className='add-request-button' onClick={handleClickOpen}>
+        <span className='iconh'>+</span>
+        <span className='texth'>New Request</span>
       </a>
       <Dialog
         open={open}
         onClose={handleClose}
         PaperProps={{
-          component: "form",
+          component: 'form',
           onSubmit: async (event) => {
             let today = new Date();
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
             const requesterUsername = user.username;
+            const requesterId = user._id;
             const pickupLocation = pickupLoc;
             const deliveryLocation = deliveryLoc;
             const phoneNumber = user.phoneNumber;
             const paymentMethod = formJson.paymentMethod;
             const items = itemList;
             const requesterNote = formJson.requesterNote;
-            const status = "open";
+            const status = 'open';
             const date =
               today.getDate() +
-              " " +
+              ' ' +
               month[today.getMonth()] +
-              " " +
+              ' ' +
               today.getFullYear();
             const time =
-              today.getHours().toString() + ":" + today.getMinutes().toString();
+              today.getHours().toString() + ':' + today.getMinutes().toString();
             // console.log(email);
             await axios
-              .post("http://localhost:5000/requests", {
+              .post('http://localhost:5000/requests', {
+                requesterId,
                 requesterUsername,
                 pickupLocation,
                 deliveryLocation,
@@ -171,10 +173,9 @@ export default function PostNewRequest() {
               .then((response) => {
                 console.log(response);
                 if (response.status === 201) {
-                  alert("Successfull Added");
-                  
+                  alert('Successfull Added');
                 } else {
-                  alert("Retry");
+                  alert('Retry');
                 }
               })
               .catch((err) => {
@@ -189,13 +190,13 @@ export default function PostNewRequest() {
           <DialogContentText>
             Please fill the following details to post a new request
           </DialogContentText>
-          <FormControl fullWidth className="pickupLocation">
-            <InputLabel id="pickupLocation">Pickup Location *</InputLabel>
+          <FormControl fullWidth className='pickupLocation'>
+            <InputLabel id='pickupLocation'>Pickup Location *</InputLabel>
             <Select
-              labelId="pickupLocation"
-              id="pickupLocation"
+              labelId='pickupLocation'
+              id='pickupLocation'
               value={pickupLoc}
-              label="pickupLocation"
+              label='pickupLocation'
               onChange={handlePickupChange}
               required
             >
@@ -206,14 +207,14 @@ export default function PostNewRequest() {
               ))}
             </Select>
           </FormControl>
-          <div className="deliveryDropdown">
-            <FormControl fullWidth className="deliveryLocation">
-              <InputLabel id="deliveryLocation">Delivery Location *</InputLabel>
+          <div className='deliveryDropdown'>
+            <FormControl fullWidth className='deliveryLocation'>
+              <InputLabel id='deliveryLocation'>Delivery Location *</InputLabel>
               <Select
-                labelId="deliveryLocation"
-                id="deliveryLocation"
+                labelId='deliveryLocation'
+                id='deliveryLocation'
                 value={deliveryLoc}
-                label="deliveryLocation"
+                label='deliveryLocation'
                 onChange={handleDeliveryChange}
                 required
               >
@@ -230,34 +231,34 @@ export default function PostNewRequest() {
             autoFocus
             required
             // margin="dense"
-            id="paymentMethod"
-            name="paymentMethod"
-            className="paymentMethod"
-            label="Payment Method"
-            type="paymentMethod"
+            id='paymentMethod'
+            name='paymentMethod'
+            className='paymentMethod'
+            label='Payment Method'
+            type='paymentMethod'
             fullWidth
-            variant="outlined"
+            variant='outlined'
           />
-          <span className="items-text">Items *</span>
-          <div className="Item-container">
+          <span className='items-text'>Items *</span>
+          <div className='Item-container'>
             {itemList.map((item, index) => (
-              <div className="input-container" key={index}>
+              <div className='input-container' key={index}>
                 <input
-                  type="text"
-                  name="itemName"
-                  className="input-field"
+                  type='text'
+                  name='itemName'
+                  className='input-field'
                   style={{
                     borderWidth: 2,
-                    borderColorborder: "rgba(0, 0, 0, 1)",
+                    borderColorborder: 'rgba(0, 0, 0, 1)',
                   }}
                   value={item.itemName}
                   onChange={(event) => handleItemChange(event, index)}
                 />
                 {itemList.length > 1 && (
                   <button
-                    variant="outlined"
-                    className="delete-button"
-                    color="error"
+                    variant='outlined'
+                    className='delete-button'
+                    color='error'
                     onClick={() => handleDeleteItem(index)}
                   >
                     Delete
@@ -265,9 +266,9 @@ export default function PostNewRequest() {
                 )}
                 {index === itemList.length - 1 && (
                   <button
-                    variant="outlined"
-                    className="add-button"
-                    color="success"
+                    variant='outlined'
+                    className='add-button'
+                    color='success'
                     onClick={() => handleAddItem()}
                   >
                     Add
@@ -280,20 +281,18 @@ export default function PostNewRequest() {
           </div>
           <TextField
             autoFocus
-            margin="dense"
-            id="requesterNote"
-            name="requesterNote"
+            margin='dense'
+            id='requesterNote'
+            name='requesterNote'
             label="Requester's Note"
-            type="requesterNote"
+            type='requesterNote'
             fullWidth
-            variant="outlined"
+            variant='outlined'
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit" onClick={(event) => navigate("/myRequests")}>
-            Post
-          </Button>
+          <Button type='submit'>Post</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
