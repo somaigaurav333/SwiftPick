@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import axios_instance from '../axios';
 
 function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -9,7 +10,7 @@ function ForgotPassword() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:5000/auth/forgotPassword', {
+        axios_instance.post('/auth/forgotPassword', {
             email,
         }).then(response => {
           if(response.data.status){

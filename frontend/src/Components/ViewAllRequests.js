@@ -42,8 +42,8 @@ function ViewAllRequests() {
   const [user, setUser] = useState();
 
   const refreshToken = async () => {
-    const res = await axios
-      .get("http://localhost:5000/auth/refresh", {
+    const res = await axios_instance
+      .get("/auth/refresh", {
         withCredentials: true,
       })
       .catch((err) => console.log(err));
@@ -53,8 +53,8 @@ function ViewAllRequests() {
   };
 
   const sendReq = async () => {
-    const res = await axios
-      .get("http://localhost:5000/auth/verifyLogin", {
+    const res = await axios_instance
+      .get("/auth/verifyLogin", {
         withCredentials: true,
       })
       .catch((err) => console.log(err));

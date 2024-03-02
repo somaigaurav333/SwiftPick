@@ -1,35 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import PostNewRequest from './PostNewRequest';
-import axios_instance from '../axios';
-import RequestCard from './RequestCard';
-import './ViewMyRequests.css';
-import axios from 'axios';
-import MyRequestCard from './MyRequestCard';
-import { DataGrid } from '@mui/x-data-grid';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
-import CssBaseline from '@mui/material/CssBaseline';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import PostNewRequest from "./PostNewRequest";
+import axios_instance from "../axios";
+import RequestCard from "./RequestCard";
+import "./ViewMyRequests.css";
+import axios from "axios";
+import MyRequestCard from "./MyRequestCard";
+import { DataGrid } from "@mui/x-data-grid";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import AppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -40,8 +40,8 @@ function ViewMyRequests() {
   const [userName, setUserName] = useState();
 
   const refreshToken = async () => {
-    const res = await axios
-      .get('http://localhost:5000/auth/refresh', {
+    const res = await axios_instance
+      .get("/auth/refresh", {
         withCredentials: true,
       })
       .catch((err) => console.log(err));
@@ -51,8 +51,8 @@ function ViewMyRequests() {
   };
 
   const sendReq = async () => {
-    const res = await axios
-      .get('http://localhost:5000/auth/verifyLogin', {
+    const res = await axios_instance
+      .get("/auth/verifyLogin", {
         withCredentials: true,
       })
       .catch((err) => console.log(err));
@@ -77,8 +77,7 @@ function ViewMyRequests() {
   useEffect(() => {
     async function fetchRequests() {
       if (user) {
-        console.log('/requests/' + user.username);
-        const response = await axios_instance.get('/requests/' + user._id);
+        const response = await axios_instance.get("/requests/" + user._id);
         console.log(response);
         setRequests(response.data.data);
       }
@@ -89,32 +88,32 @@ function ViewMyRequests() {
   }, [user]);
 
   return (
-    <div className='ViewMyRequests'>
-      <div style={{ position: 'relative', zIndex: 1 }}>
+    <div className="ViewMyRequests">
+      <div style={{ position: "relative", zIndex: 1 }}>
         <Drawer
-          variant='permanent'
+          variant="permanent"
           sx={{
             width: drawerWidth,
             flexShrink: 0,
             [`& .MuiDrawer-paper`]: {
               width: drawerWidth,
-              boxSizing: 'border-box',
+              boxSizing: "border-box",
             },
           }}
         >
           <Toolbar />
-          <Box sx={{ overflow: 'auto' }}>
+          <Box sx={{ overflow: "auto" }}>
             <List>
               <ListItem disablePadding>
-                <ListItemButton onClick={(event) => navigate('/requests')}>
+                <ListItemButton onClick={(event) => navigate("/requests")}>
                   <ListItemIcon>{<InboxIcon />}</ListItemIcon>
-                  <ListItemText primary='All Requests' />
+                  <ListItemText primary="All Requests" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
-                <ListItemButton onClick={(event) => navigate('/myRequests')}>
+                <ListItemButton onClick={(event) => navigate("/myRequests")}>
                   <ListItemIcon>{<InboxIcon />}</ListItemIcon>
-                  <ListItemText primary='My Requests' />
+                  <ListItemText primary="My Requests" />
                 </ListItemButton>
               </ListItem>
             </List>
@@ -128,7 +127,7 @@ function ViewMyRequests() {
         {requests.map((request) => {
           return (
             <MyRequestCard
-              className='RequestCardOuter'
+              className="RequestCardOuter"
               key={request._id}
               request={request}
             ></MyRequestCard>

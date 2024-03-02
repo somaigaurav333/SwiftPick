@@ -24,6 +24,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import axios from "axios";
+import axios_instance from "../../axios";
 
 const drawerWidth = 240;
 
@@ -67,8 +68,8 @@ const ViewAllLocations = () => {
   const [user, setUser] = useState();
 
   const refreshToken = async () => {
-    const res = await axios
-      .get("http://localhost:5000/auth/refreshAdmin", {
+    const res = await axios_instance
+      .get("/auth/refreshAdmin", {
         withCredentials: true,
       })
       .catch((err) => console.log(err));
@@ -79,7 +80,7 @@ const ViewAllLocations = () => {
 
   const sendReq = async () => {
     const res = await axios
-      .get("http://localhost:5000/auth/verifyAdminLogin", {
+      .get("/auth/verifyAdminLogin", {
         withCredentials: true,
       })
       .catch((err) => console.log(err));

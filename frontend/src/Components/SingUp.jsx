@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import axios_instance from '../axios';
 
 const SingUp = () => {
     const [username, setUserName] = useState('');
@@ -15,7 +16,7 @@ const SingUp = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:5000/auth/signup', {
+        axios_instance.post('/auth/signup', {
             username,
             email,
             password,

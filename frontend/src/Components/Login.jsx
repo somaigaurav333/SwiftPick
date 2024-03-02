@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store";
+import axios_instance from "../axios";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -11,11 +12,11 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  axios.defaults.withCredentials = true;
+  axios_instance.defaults.withCredentials = true;
 
   const sendLoginReq = async () => {
-    const res = axios
-      .post("http://localhost:5000/auth/login", {
+    const res = axios_instance
+      .post("/auth/login", {
         email,
         password,
       })

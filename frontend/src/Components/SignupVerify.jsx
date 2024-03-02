@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import axios_instance from '../axios';
 const SignupVerify = () => {
     const { token } = useParams();
     const navigate = useNavigate();
@@ -10,7 +10,7 @@ const SignupVerify = () => {
         const verifyEmail = async () => {
             try {
                 // Send the verification token to the server
-                const response = await axios.post(`http://localhost:5000/auth/verifySignup/${token}`);
+                const response = await axios_instance.post(`/auth/verifySignup/${token}`);
                 if(response.status == 200){
                     navigate('/auth/login');
                 }

@@ -4,13 +4,16 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { authActions } from '../store';
-axios.defaults.withCredentials = true;
+import axios_instance from '../axios';
+
+
+axios_instance.defaults.withCredentials = true;
 const Header = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const sendLogoutReq = async () => {
-    const res = await axios.post(
-      'http://localhost:5000/auth/userLogout',
+    const res = await axios_instance.post(
+      '/auth/userLogout',
       null,
       {
         withCredentials: true,

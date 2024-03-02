@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import axios_instance from '../axios';
 
 
 const Dashboard = () => {
@@ -7,7 +8,7 @@ const Dashboard = () => {
   const [user, setUser] = useState();
 
   const refreshToken = async () => {
-    const res = await axios.get("http://localhost:5000/auth/refresh", {
+    const res = await axios_instance.get("/auth/refresh", {
       withCredentials: true
     }).catch(err => console.log(err));
 
@@ -16,7 +17,7 @@ const Dashboard = () => {
   }
 
   const sendReq = async () => {
-    const res = await axios.get('http://localhost:5000/auth/verifyLogin', {
+    const res = await axios_instance.get('/auth/verifyLogin', {
       withCredentials: true
     }).catch(err => console.log(err));
     const data = await res.data;
