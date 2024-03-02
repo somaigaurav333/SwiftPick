@@ -7,6 +7,11 @@ const Home = () => {
     <div>Home<br/>
       <button className='p-2 m-2 border border-black'><Link to="/dashboard">Dashboard</Link></button>
       <button className='p-2 m-2 border border-black' >Logout</button>
+      <button className='p-2 m-2 border border-black' >Logout</button>
+      <button className='p-2 m-2 border border-black' >Logout</button>
+      <button className='p-2 m-2 border border-black' >Logout</button>
+      <button className='p-2 m-2 border border-black' >Logout</button>
+      <button className='p-2 m-2 border border-black' >Logout</button>
     </div>
   )
 }
