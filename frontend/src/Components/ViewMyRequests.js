@@ -33,14 +33,11 @@ import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
-// const myid = "65db1ae2405593688c4f6cfe";
-const myid = "";
-const requestsURL = "/requests/" + myid;
-
 function ViewMyRequests() {
   const navigate = useNavigate();
   let firstRender = true;
   const [user, setUser] = useState();
+  const [userName, setUserName] = useState();
 
   const refreshToken = async () => {
     const res = await axios
@@ -79,12 +76,17 @@ function ViewMyRequests() {
 
   useEffect(() => {
     async function fetchRequests() {
-      const response = await axios_instance.get(requestsURL);
-      setRequests(response.data.data);
+      if (user) {
+        console.log("/requests/" + user.username);
+        const response = await axios_instance.get("/requests/" + user.username);
+        console.log(response);
+        setRequests(response.data.data);
+      }
+
       return;
     }
     fetchRequests();
-  }, []);
+  }, [user]);
 
   return (
     <div className="ViewMyRequests">
