@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axios_instance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://swiftpick.onrender.com",
 });
 
 export default axios_instance;
