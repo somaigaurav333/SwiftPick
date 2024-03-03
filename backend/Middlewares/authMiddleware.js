@@ -89,10 +89,11 @@ const refreshToken = async (req, res, next) => {
       // console.log("Regenerated Token\n", token);
 
       const options = {
-        path: "/",
+        path: '/',
         expires: new Date(Date.now() + 1000 * 60 * 10),
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: 'None',
+        secure: true,
       };
 
       res.cookie(String(user._id), token, options);
@@ -132,10 +133,11 @@ const refreshAdminToken = async (req, res, next) => {
         expiresIn: "11m",
       });
       const options = {
-        path: "/",
+        path: '/',
         expires: new Date(Date.now() + 1000 * 60 * 10),
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: 'None',
+        secure: true,
       };
       res.cookie(String(admin._id), token, options);
 

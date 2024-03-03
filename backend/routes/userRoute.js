@@ -173,14 +173,15 @@ router.post("/login", async (req, res) => {
       req.cookies[`${existingUser._id}`] = "";
     }
 
-    const cookieOptions = {
-      path: "/",
+    const options = {
+      path: '/',
       expires: new Date(Date.now() + 1000 * 60 * 10),
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: 'None',
+      secure: true,
     };
 
-    res.cookie(String(existingUser._id), token, cookieOptions);
+    res.cookie(String(existingUser._id), token, options);
     console.log("Done");
 
     return res.json({
@@ -307,10 +308,11 @@ router.post("/adminLogin", async (req, res) => {
       expiresIn: "11m",
     });
     const options = {
-      path: "/",
+      path: '/',
       expires: new Date(Date.now() + 1000 * 60 * 10),
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: 'None',
+      secure: true,
     };
     res.cookie(String(admin._id), token, options);
 
