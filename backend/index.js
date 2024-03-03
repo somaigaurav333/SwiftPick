@@ -19,7 +19,7 @@ config();
 //Middleware for handling CORS Policy
 //Option 1: Allow All origins with default of cors(*)
 const corsOptions = {
-  origin: 'https://swift-pick-frontend.vercel.app',
+  origin: 'https://swift-pick.vercel.app',
   optionsSuccessStatus: 200,
   credentials: true,
 };
