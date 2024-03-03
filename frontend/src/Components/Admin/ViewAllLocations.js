@@ -209,8 +209,8 @@ const ViewAllLocations = () => {
     try {
       const response = await axios_instance.get('/locations');
       // response = response.json();
-      console.log(response.data);
-      setData(response.data);
+      console.log(response.data.data);
+      setData(response.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
