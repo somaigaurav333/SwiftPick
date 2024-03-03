@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
       coordinate: req.body.coordinate,
     };
     const item = await Location.create(newLoc);
-    return res.status(201).send(item);
+    return res.status(200).send(item);
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });

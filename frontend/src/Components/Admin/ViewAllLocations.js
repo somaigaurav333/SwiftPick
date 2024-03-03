@@ -110,7 +110,7 @@ const ViewAllLocations = () => {
     e.stopPropagation();
     try {
       const response = await axios_instance.delete(`/locations/${row._id}`);
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error('Failed to delete location');
       }
       // Assuming you want to remove the row from the UI after successful deletion
@@ -184,7 +184,7 @@ const ViewAllLocations = () => {
           'Content-Type': 'application/json',
         },
       });
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error('Failed to add location');
       }
       // Refresh data after successfully adding the location
