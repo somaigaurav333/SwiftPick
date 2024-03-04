@@ -84,7 +84,7 @@ router.post("/signup", async (req, res) => {
       },
     });
     const encodedToken = encodeURIComponent(verToken).replace(/\./g, "%2E");
-    const verificationLink = `http://localhost:3000/auth/verifySignup/${encodedToken}`;
+    const verificationLink = `https://swift-pick-frontend.vercel.app/auth/verifySignup/${encodedToken}`;
     var mailOptions = {
       from: process.env.adminEmail,
       to: email,
@@ -218,7 +218,7 @@ router.post("/forgotPassword", async (req, res) => {
       from: process.env.adminEmail,
       to: email,
       subject: "Reset Password",
-      text: `http://localhost:3000/auth/resetPassword/${encodedToken}`,
+      text: `https://swift-pick-frontend.vercel.app/auth/resetPassword/${encodedToken}`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
