@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const requestSchema = mongoose.Schema({
   requesterId: {
@@ -9,7 +9,7 @@ const requestSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  requesteeUsername: {
+  requesteeId: {
     type: String,
   },
   pickupLocation: {
@@ -54,4 +54,4 @@ const requestSchema = mongoose.Schema({
   },
 });
 
-export const Request = mongoose.model('Request', requestSchema);
+export const Request = mongoose.model("Request", requestSchema);

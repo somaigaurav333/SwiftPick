@@ -3,6 +3,9 @@ import { Request } from "../models/requestModel.js";
 
 const router = express.Router();
 
+const STATUS_OPEN = "open";
+const STATUS_ACCEPTED = "ACCEPTED";
+
 // Route for add request
 router.post("/", async (req, res) => {
   try {
@@ -26,6 +29,7 @@ router.post("/", async (req, res) => {
     const newReq = {
       requesterId: req.body.requesterId,
       requesterUsername: req.body.requesterUsername,
+      requesteeId: null,
       pickupLocation: req.body.pickupLocation,
       deliveryLocation: req.body.deliveryLocation,
       phoneNumber: req.body.phoneNumber,
@@ -73,5 +77,28 @@ router.get("/:userid", async (req, res) => {
   }
 });
 
+// Route to accept a request
+router.post("/accept/:requestid/:requesteeid", async (req, res) => {
+  try {
+    const { requestid } = req.params.requestid;
+    const { requesteeid } = req.params.requesteeid;
+    const userRequest = await Request.find({
+      _id: requestid,
+      status: STATUS_OPEN,
+    });
+    if (userRequest) {
+      await Request.findByIdAndUpdate(
+        { _id: requestid },
+        { requesteeid: requesteeid, status: STATUS_ACCEPTED }
+      );
+      return res.status(200).send({ message: "Request Accepted" });
+    } else {
+      res.status(400).send({ message: "No such open request exists" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).send({ message: error.message });
+  }
+});
 
 export default router;
