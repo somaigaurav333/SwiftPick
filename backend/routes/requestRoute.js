@@ -62,6 +62,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Route to get all requests
+router.get("/open", async (req, res) => {
+  try {
+    const requests = await Request.find({ status: STATUS_OPEN });
+    return res.status(200).json({
+      count: requests.length,
+      data: requests,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
+  }
+});
+
 // Route to get all requests by userid
 router.get("/:userid", async (req, res) => {
   try {

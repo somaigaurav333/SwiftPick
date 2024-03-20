@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import ViewAllRequestsRow from "./ViewAllRequestsRow";
 import PostNewRequest from "./PostNewRequest";
 import axios_instance from "../axios";
+import RequestCard from "./RequestCard";
+import "./ViewMyHistory.css";
 import axios from "axios";
-import "./ViewAllRequests.css";
+import MyRequestCard from "./MyRequestCard";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -31,18 +32,15 @@ import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import MailIcon from "@mui/icons-material/Mail";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import ViewMyRequests from "./ViewMyRequests";
 import { useNavigate } from "react-router-dom";
 
-const requestsURL = "/requests/open";
-const pickupLocationsURL = "/locations";
 const drawerWidth = 240;
 
-function ViewAllRequests() {
+function PendingRequests() {
   const navigate = useNavigate();
-
   let firstRender = true;
   const [user, setUser] = useState();
+  const [userName, setUserName] = useState();
 
   const refreshToken = async () => {
     const res = await axios_instance
@@ -75,32 +73,25 @@ function ViewAllRequests() {
 
     return () => clearInterval(interval);
   }, []);
+
   //fetch requests data
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
     async function fetchRequests() {
-      const response = await axios_instance.get(requestsURL);
-      setRequests(response.data.data);
+      if (user) {
+        const response = await axios_instance.get("/requests/" + user._id);
+        console.log(response);
+        setRequests(response.data.data);
+      }
+
       return;
     }
     fetchRequests();
-  }, []);
-
-  //fetch pickup locations data
-  const [pickupLocations, setpickupLocations] = useState([]);
-
-  useEffect(() => {
-    async function fetchPickUpLocations() {
-      const response = await axios_instance.get(pickupLocationsURL);
-      setpickupLocations(response.data.data);
-      return;
-    }
-    fetchPickUpLocations();
-  }, []);
+  }, [user]);
 
   return (
-    <div className="bgvir">
+    <div className="PendingRequests">
       <div style={{ position: "relative", zIndex: 1 }}>
         <Drawer
           variant="permanent"
@@ -135,9 +126,7 @@ function ViewAllRequests() {
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
-                <ListItemButton
-                  onClick={(event) => navigate("/pendingRequests")}
-                >
+                <ListItemButton onClick={(event) => navigate("/pendingRequests")}>
                   <ListItemIcon>{<PendingActionsIcon />}</ListItemIcon>
                   <ListItemText primary="Pending Requests" />
                 </ListItemButton>
@@ -146,23 +135,9 @@ function ViewAllRequests() {
           </Box>
         </Drawer>
       </div>
-      <div className="ViewAllRequests">
-        {pickupLocations.map((pickupLocation) => {
-          return (
-            <ViewAllRequestsRow
-              key={pickupLocation.location}
-              title={pickupLocation.location}
-              requests={requests}
-              pickupLocation={pickupLocation}
-            ></ViewAllRequestsRow>
-          );
-        })}
-      </div>
-      <div className="PostNewRequest">
-        <PostNewRequest />
-      </div>
+      <div className="RequestCards"></div>
     </div>
   );
 }
 
-export default ViewAllRequests;
+export default PendingRequests;

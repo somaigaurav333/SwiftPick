@@ -49,6 +49,9 @@ const App = () => {
           {isLoggedIn && (
             <Route path="/myHistory" element={<ViewMyHistory />} />
           )}
+          {isLoggedIn && (
+            <Route path="/pendingRequests" element={<ViewMyHistory />} />
+          )}
         </Routes>
       </main>
     </React.Fragment>
