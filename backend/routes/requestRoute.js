@@ -3,7 +3,7 @@ import { Request } from "../models/requestModel.js";
 
 const router = express.Router();
 
-const STATUS_OPEN = "open";
+const STATUS_OPEN = "OPEN";
 const STATUS_ACCEPTED = "ACCEPTED";
 
 // Route for add request
@@ -83,7 +83,7 @@ router.get("/open/:userid", async (req, res) => {
     const { userid } = req.params;
     const result = await Request.find({
       requesterId: userid,
-      status: "open",
+      status: STATUS_OPEN,
     });
     if (!result) {
       return res.status(404).json({ message: "Requests not found" });

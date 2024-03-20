@@ -12,6 +12,7 @@ import AdminLogin from "./Components/AdminLogin";
 import ViewAllLocations from "./Components/Admin/ViewAllLocations";
 import PostNewRequest from "./Components/PostNewRequest";
 import ViewMyRequests from "./Components/ViewMyRequests";
+import ViewMyHistory from "./Components/ViewMyHistory";
 import { useSelector } from "react-redux";
 import Header from "./Components/Header";
 
@@ -34,7 +35,7 @@ const App = () => {
             path="/auth/resetPassword/:token"
             element={<ResetPassword />}
           />
-          <Route path="/auth/verifySignup/:token" element={<SignupVerify/>}/>
+          <Route path="/auth/verifySignup/:token" element={<SignupVerify />} />
           {isLoggedIn && <Route path="/dashboard" element={<Dashboard />} />}
           {isLoggedIn && (
             <Route path="/requests" element={<ViewAllRequests />} />
@@ -44,6 +45,9 @@ const App = () => {
           )}
           {isLoggedIn && (
             <Route path="/myRequests" element={<ViewMyRequests />} />
+          )}
+          {isLoggedIn && (
+            <Route path="/myHistory" element={<ViewMyHistory />} />
           )}
         </Routes>
       </main>

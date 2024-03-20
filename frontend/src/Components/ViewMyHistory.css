@@ -1,0 +1,16 @@
+.MyRequestCards {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.ViewMyHistory {
+  margin-top: 30px;
+  margin-left: 240px;
+}
+
+.Nothing {
+  font-size: x-large;
+  align-items: center;
+  margin-left: 20px;
+}
