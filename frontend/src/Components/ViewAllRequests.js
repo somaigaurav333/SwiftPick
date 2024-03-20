@@ -25,6 +25,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import HistoryIcon from "@mui/icons-material/History";
 import MailIcon from "@mui/icons-material/Mail";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
@@ -115,7 +117,7 @@ function ViewAllRequests() {
             <List>
               <ListItem disablePadding>
                 <ListItemButton onClick={(event) => navigate("/requests")}>
-                  <ListItemIcon>{<InboxIcon />}</ListItemIcon>
+                  <ListItemIcon>{<ListAltIcon />}</ListItemIcon>
                   <ListItemText primary="All Requests" />
                 </ListItemButton>
               </ListItem>
@@ -123,6 +125,12 @@ function ViewAllRequests() {
                 <ListItemButton onClick={(event) => navigate("/myRequests")}>
                   <ListItemIcon>{<InboxIcon />}</ListItemIcon>
                   <ListItemText primary="My Requests" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton onClick={(event) => navigate("/myHistory")}>
+                  <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
+                  <ListItemText primary="History" />
                 </ListItemButton>
               </ListItem>
             </List>
