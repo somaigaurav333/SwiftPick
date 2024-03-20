@@ -62,11 +62,29 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Route to get request by username
+// Route to get all requests by userid
 router.get("/:userid", async (req, res) => {
   try {
     const { userid } = req.params;
     const result = await Request.find({ requesterId: userid });
+    if (!result) {
+      return res.status(404).json({ message: "Requests not found" });
+    }
+    return res.status(200).json({ data: result });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// Route to get all open requests by userid
+router.get("/open/:userid", async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const result = await Request.find({
+      requesterId: userid,
+      status: "open",
+    });
     if (!result) {
       return res.status(404).json({ message: "Requests not found" });
     }
@@ -98,6 +116,21 @@ router.post("/accept/:requestid/:requesteeid", async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(400).send({ message: error.message });
+  }
+});
+
+//Route to delete request by id
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await Request.findByIdAndDelete(id);
+    if (!result) {
+      return res.status(404).json({ message: "Request not found" });
+    }
+    return res.status(200).send({ message: "Request deleted successfully" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
   }
 });
 
