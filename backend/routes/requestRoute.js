@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
       paymentMethod: req.body.paymentMethod,
       items: req.body.items,
       requesterNote: req.body.requesterNote,
-      status: req.body.status,
+      status: STATUS_OPEN,
       date: req.body.date,
       time: req.body.time,
     };
