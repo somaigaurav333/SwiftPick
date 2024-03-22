@@ -14,9 +14,16 @@ function RequestCard({ request, user }) {
         "/" +
         user._id
     );
-    await axios_instance.post(
-      "/requests/accept/" + request._id + "/" + user._id
-    );
+    const response = await axios_instance
+      .post("/requests/accept/" + request._id + "/" + user._id)
+      .then((response) => {
+        console.log(response);
+        if (response.status == 200) {
+          alert("Request Accepted Successfully");
+        } else {
+          alert("Could not accept request");
+        }
+      });
   };
 
   return (
