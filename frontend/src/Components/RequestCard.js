@@ -1,7 +1,24 @@
 import React from "react";
 import "./RequestCard.css";
+import axios_instance from "../axios";
+import { Button } from "@mui/material";
 
-function RequestCard({ request }) {
+function RequestCard({ request, user }) {
+  const handleAcceptRequest = async () => {
+    console.log(user);
+    console.log(request);
+    console.log(
+      "http://localhost:5000" +
+        "/requests/accept/" +
+        request._id +
+        "/" +
+        user._id
+    );
+    await axios_instance.post(
+      "/requests/accept/" + request._id + "/" + user._id
+    );
+  };
+
   return (
     // <div className=" RequestCard shadow-md">
     //   <div className="Head">
@@ -46,6 +63,7 @@ function RequestCard({ request }) {
     //     <div className="Time"> {request.time} </div>
     //   </div>
     // </div>
+
     <span
       href="#"
       class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 RequestCard"
@@ -69,6 +87,9 @@ function RequestCard({ request }) {
       <div className="Footer" style={{ marginTop: "auto" }}>
         <div className="Date">{request.date}</div>
         <div className="Time"> {request.time} </div>
+      </div>
+      <div>
+        <Button onClick={handleAcceptRequest}>Accept</Button>
       </div>
     </span>
   );

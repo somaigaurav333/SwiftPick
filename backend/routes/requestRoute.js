@@ -1,6 +1,6 @@
 import express from "express";
 import { Request } from "../models/requestModel.js";
-
+import mongoose, { Mongoose } from "mongoose";
 const router = express.Router();
 
 const STATUS_OPEN = "OPEN";
@@ -112,8 +112,8 @@ router.get("/open/:userid", async (req, res) => {
 // Route to accept a request
 router.post("/accept/:requestid/:requesteeid", async (req, res) => {
   try {
-    const { requestid } = req.params.requestid;
-    const { requesteeid } = req.params.requesteeid;
+    const requestid = req.params.requestid;
+    const requesteeid = req.params.requesteeid;
     const userRequest = await Request.find({
       _id: requestid,
       status: STATUS_OPEN,
@@ -129,7 +129,7 @@ router.post("/accept/:requestid/:requesteeid", async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(400).send({ message: error.message });
+    res.status(401).send({ message: error.message });
   }
 });
 
