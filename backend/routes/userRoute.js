@@ -4,13 +4,13 @@ import { Admin } from "../models/adminModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
-import crypto from 'crypto'
+import crypto from "crypto";
 import {
   verifyToken,
   getUser,
   refreshToken,
   getAdmin,
-  refreshAdminToken
+  refreshAdminToken,
 } from "../Middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -57,7 +57,7 @@ router.post("/signup", async (req, res) => {
     // Hash Password
 
     const hashPassword = await bcrypt.hash(password, 10);
-    const verToken = crypto.randomBytes(32).toString('hex');
+    const verToken = crypto.randomBytes(32).toString("hex");
     // Validate Email
     const newUser = {
       username: username,
@@ -117,7 +117,7 @@ router.post("/verifySignup/:token", async (req, res) => {
     const user = await User.findOne({ verificationToken: token });
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found.' });
+      return res.status(404).json({ message: "User not found." });
     }
 
     // Update user's verification status
@@ -127,10 +127,10 @@ router.post("/verifySignup/:token", async (req, res) => {
     // Save the user after verifying
     await user.save();
 
-    res.status(200).json({ message: 'Email verified successfully.' });
+    res.status(200).json({ message: "Email verified successfully." });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
@@ -147,11 +147,10 @@ router.post("/login", async (req, res) => {
   if (!validPass) {
     console.log("2");
     return res.status(400).json({ message: "Wrong Password" });
-  } else if(!existingUser.isVerified){
+  } else if (!existingUser.isVerified) {
     console.log("3");
     return res.status(400).json({ message: "Verify Your email" });
-  }
-  else {
+  } else {
     const payLoad = {
       _id: existingUser._id,
       username: existingUser.username,
@@ -174,10 +173,10 @@ router.post("/login", async (req, res) => {
     }
 
     const options = {
-      path: '/',
+      path: "/",
       expires: new Date(Date.now() + 1000 * 60 * 10),
       httpOnly: true,
-      sameSite: 'None',
+      sameSite: "None",
       secure: true,
     };
 
@@ -308,10 +307,10 @@ router.post("/adminLogin", async (req, res) => {
       expiresIn: "11m",
     });
     const options = {
-      path: '/',
+      path: "/",
       expires: new Date(Date.now() + 1000 * 60 * 10),
       httpOnly: true,
-      sameSite: 'None',
+      sameSite: "None",
       secure: true,
     };
     res.cookie(String(admin._id), token, options);
@@ -358,5 +357,31 @@ router.get("/verifyAdminLogin", verifyToken, getAdmin);
 router.get("/refresh", refreshToken, verifyToken, getUser);
 
 router.get("/refreshAdmin", refreshAdminToken, verifyToken, getAdmin);
+
+//Route to get all users
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find({});
+    return res.status(200).json({
+      count: users.length,
+      data: users,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
+  }
+});
+
+//Route to get user by id
+router.get("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
+  }
+});
 
 export default router;
