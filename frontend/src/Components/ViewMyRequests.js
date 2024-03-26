@@ -90,6 +90,16 @@ function ViewMyRequests() {
     fetchRequests();
   }, [user]);
 
+  const handleDelete = async (id) => {
+    const res = await axios_instance
+      .delete("/requests/" + id, {
+        withCredentials: false,
+      })
+      .catch((err) => console.log(err));
+    const data = await res.data;
+    return data;
+  };
+
   return (
     <div className="ViewMyRequests">
       <div style={{ position: "relative", zIndex: 1 }}>
@@ -143,17 +153,18 @@ function ViewMyRequests() {
         )}
         {requests.map((request) => {
           return (
-            <MyRequestCard
-              className="RequestCardOuter"
-              key={request._id}
-              request={request}
-            ></MyRequestCard>
+            <div>
+              <MyRequestCard
+                className="RequestCardOuter"
+                key={request._id}
+                request={request}
+                func={"Delete"}
+                handleFunc={handleDelete}
+              ></MyRequestCard>
+            </div>
           );
         })}
       </div>
-      {/* <div className="PostNewRequest">
-        <PostNewRequest />
-      </div> */}
     </div>
   );
 }

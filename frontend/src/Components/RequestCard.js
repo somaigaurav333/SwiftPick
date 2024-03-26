@@ -1,7 +1,7 @@
 import React from "react";
 import "./RequestCard.css";
 
-function RequestCard({ request }) {
+function RequestCard({ request, func, handleFunc }) {
   return (
     // <div className=" RequestCard shadow-md">
     //   <div className="Head">
@@ -69,6 +69,15 @@ function RequestCard({ request }) {
       <div className="Footer" style={{ marginTop: "auto" }}>
         <div className="Date">{request.date}</div>
         <div className="Time"> {request.time} </div>
+      </div>
+      <div className="delete-div">
+        <button
+          className="delete-button"
+          variant="outlined"
+          onClick={handleFunc}
+        >
+          {func}
+        </button>
       </div>
     </span>
   );

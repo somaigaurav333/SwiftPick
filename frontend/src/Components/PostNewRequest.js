@@ -291,8 +291,12 @@ export default function PostNewRequest() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Post</Button>
+          <Button onClick={handleClose} variant="contained">
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained">
+            Post
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
