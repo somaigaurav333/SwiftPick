@@ -1,7 +1,31 @@
 import React from "react";
 import "./RequestCard.css";
+import axios_instance from "../axios";
+import { Button } from "@mui/material";
 
-function RequestCard({ request, func, handleFunc }) {
+function RequestCard({ request, user }) {
+  const handleAcceptRequest = async () => {
+    console.log(user);
+    console.log(request);
+    console.log(
+      "http://localhost:5000" +
+        "/requests/accept/" +
+        request._id +
+        "/" +
+        user._id
+    );
+    const response = await axios_instance
+      .post("/requests/accept/" + request._id + "/" + user._id)
+      .then((response) => {
+        console.log(response);
+        if (response.status == 200) {
+          alert("Request Accepted Successfully");
+        } else {
+          alert("Could not accept request");
+        }
+      });
+  };
+
   return (
     // <div className=" RequestCard shadow-md">
     //   <div className="Head">
@@ -46,6 +70,7 @@ function RequestCard({ request, func, handleFunc }) {
     //     <div className="Time"> {request.time} </div>
     //   </div>
     // </div>
+
     <span
       href="#"
       class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 RequestCard"
@@ -70,14 +95,8 @@ function RequestCard({ request, func, handleFunc }) {
         <div className="Date">{request.date}</div>
         <div className="Time"> {request.time} </div>
       </div>
-      <div className="delete-div">
-        <button
-          className="delete-button"
-          variant="outlined"
-          onClick={handleFunc}
-        >
-          {func}
-        </button>
+      <div>
+        <Button onClick={handleAcceptRequest}>Accept</Button>
       </div>
     </span>
   );

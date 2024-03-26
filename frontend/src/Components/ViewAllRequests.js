@@ -154,6 +154,7 @@ function ViewAllRequests() {
               title={pickupLocation.location}
               requests={requests}
               pickupLocation={pickupLocation}
+              user={user}
             ></ViewAllRequestsRow>
           );
         })}
