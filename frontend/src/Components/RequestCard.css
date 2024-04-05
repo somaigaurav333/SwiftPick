@@ -9,7 +9,7 @@
 
   min-width: max-content;
   background-color: #e3f0ff;
-  /* background-color: #E6F4F1; */
+  /* background-color: rgb(236, 219, 222); */
   /* background-color: #ABE3FF; */
   border-radius: 10px;
   margin-bottom: 20px;
@@ -66,4 +66,58 @@
 
 .delete-div {
   align-self: center;
+}
+
+
+/* .RequestDescriptionDialog {
+  background-color: pink !important;
+} */
+
+.RequestDescriptionDialogText {
+  font-size: x-large !important;
+  margin-top: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  /* background-color: pink !important; */
+
+}
+
+.RequestDescriptionDialogTitle {
+  font-size: xx-large !important;
+  text-align: center;
+  background-color: rgb(236, 219, 222) !important;
+
+}
+
+.RequestDescriptionDialogButtonDiv {
+  display: flex;
+  align-items: center;
+}
+
+.RequestDescriptionDialogButton {
+  flex: 1;
+  margin-top: 20px;
+  font-size: medium;
+  align-items: center !important;
+  font-weight: 545;
+  color: rgb(240, 79, 79);
+  /* background-color: rgb(240, 79, 79); */
+  border-color: rgb(240, 79, 79);
+}
+
+.RequestDescriptionDialogButton:hover {
+  flex: 1;
+  margin-top: 20px;
+  font-size: medium;
+  align-items: center !important;
+  font-weight: 545;
+  color: white;
+  background-color: rgb(240, 79, 79);
+  border-color: rgb(240, 79, 79);
+}
+
+
+
+.RequestDescriptionDialogItems {
+  text-align: center;
 }

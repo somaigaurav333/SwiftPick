@@ -28,6 +28,7 @@ function ViewAllRequestsRow({ title, requests, pickupLocation, user }) {
                   key={request._id}
                   request={request}
                   user={user}
+                  accepted={false}
                 ></RequestCard>
               );
             })}

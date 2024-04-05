@@ -98,7 +98,6 @@ function ViewAllRequests() {
     }
     fetchPickUpLocations();
   }, []);
-
   return (
     <div className="bgvir">
       <div className="ViewAllRequests">
