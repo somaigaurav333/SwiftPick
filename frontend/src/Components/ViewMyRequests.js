@@ -3,8 +3,7 @@ import PostNewRequest from "./PostNewRequest";
 import axios_instance from "../axios";
 import RequestCard from "./RequestCard";
 import "./ViewMyRequests.css";
-import ViewAllRequestsRow from "./ViewAllRequestsRow";
-import "./ViewAllRequests.css";
+import ViewMyRequestsRow from "./ViewMyRequestsRow";
 import axios from "axios";
 import MyRequestCard from "./MyRequestCard";
 import { DataGrid } from "@mui/x-data-grid";
@@ -110,13 +109,16 @@ function ViewMyRequests() {
         )}
         {["OPEN", "ACCEPTED", "COLLECTED"].map((status) => {
           return (
-            <ViewAllRequestsRow
+            <div>
+            <ViewMyRequestsRow
               key={status}
               title={status}
               requests={requests}
               pickupLocation={status}
               user={user}
-            ></ViewAllRequestsRow>
+            ></ViewMyRequestsRow>
+            <br/>
+            </div>
           );
         })}
       </div>
