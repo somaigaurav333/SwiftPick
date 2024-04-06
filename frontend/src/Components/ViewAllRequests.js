@@ -75,6 +75,7 @@ function ViewAllRequests() {
 
     return () => clearInterval(interval);
   }, []);
+  
   //fetch requests data
   const [requests, setRequests] = useState([]);
 

@@ -40,7 +40,8 @@ function PendingRequests() {
   const navigate = useNavigate();
   let firstRender = true;
   const [user, setUser] = useState();
-  const [userName, setUserName] = useState();
+  //fetch requests data
+  const [requests, setRequests] = useState([]);
 
   const refreshToken = async () => {
     const res = await axios_instance
@@ -74,13 +75,12 @@ function PendingRequests() {
     return () => clearInterval(interval);
   }, []);
 
-  //fetch requests data
-  const [requests, setRequests] = useState([]);
-
   useEffect(() => {
     async function fetchRequests() {
       if (user) {
-        const response = await axios_instance.get("/requests/" + user._id);
+        const response = await axios_instance.get(
+          "/requests/pending/" + user._id
+        );
         console.log(response);
         setRequests(response.data.data);
       }
@@ -92,50 +92,20 @@ function PendingRequests() {
 
   return (
     <div className="PendingRequests">
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <Drawer
-          variant="permanent"
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            [`& .MuiDrawer-paper`]: {
-              width: drawerWidth,
-              boxSizing: "border-box",
-            },
-          }}
-        >
-          <Toolbar />
-          <Box sx={{ overflow: "auto" }}>
-            <List>
-              <ListItem disablePadding>
-                <ListItemButton onClick={(event) => navigate("/requests")}>
-                  <ListItemIcon>{<ListAltIcon />}</ListItemIcon>
-                  <ListItemText primary="All Requests" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton onClick={(event) => navigate("/myRequests")}>
-                  <ListItemIcon>{<InboxIcon />}</ListItemIcon>
-                  <ListItemText primary="My Requests" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton onClick={(event) => navigate("/myHistory")}>
-                  <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
-                  <ListItemText primary="History" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton onClick={(event) => navigate("/pendingRequests")}>
-                  <ListItemIcon>{<PendingActionsIcon />}</ListItemIcon>
-                  <ListItemText primary="Pending Requests" />
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </Box>
-        </Drawer>
+      <div className="RequestCards">
+        {!requests.length && (
+          <span className="Nothing">Nothing to show here</span>
+        )}
+        {requests.data.map((request) => {
+          return (
+            <RequestCard
+              className="RequestCardOuter"
+              key={request._id}
+              request={request}
+            ></RequestCard>
+          );
+        })}
       </div>
-      <div className="RequestCards"></div>
     </div>
   );
 }

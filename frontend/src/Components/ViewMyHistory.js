@@ -80,7 +80,9 @@ function ViewMyHistory() {
   useEffect(() => {
     async function fetchRequests() {
       if (user) {
-        const response = await axios_instance.get("/requests/" + user._id);
+        const response = await axios_instance.get(
+          "/requests/delivered/" + user._id
+        );
         console.log(response);
         setRequests(response.data.data);
       }

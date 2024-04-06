@@ -195,18 +195,20 @@ export default function Header() {
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: "none" }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
+          {isLoggedIn && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: "none" }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
           <Typography variant="h3">SwiftPick</Typography>
           <Box sx={{ marginLeft: "auto" }}>
             <Tabs textColor="whitespace">
@@ -228,44 +230,46 @@ export default function Header() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          <ListItem disablePadding>
-            <ListItemButton onClick={(event) => navigate("/requests")}>
-              <ListItemIcon>{<ListAltIcon />}</ListItemIcon>
-              <ListItemText primary="All Requests" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton onClick={(event) => navigate("/myRequests")}>
-              <ListItemIcon>{<InboxIcon />}</ListItemIcon>
-              <ListItemText primary="My Requests" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton onClick={(event) => navigate("/pendingRequests")}>
-              <ListItemIcon>{<PendingActionsIcon />}</ListItemIcon>
-              <ListItemText primary="Pending Requests" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton onClick={(event) => navigate("/myHistory")}>
-              <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
-              <ListItemText primary="History" />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </Drawer>
+      {isLoggedIn && (
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/requests")}>
+                <ListItemIcon>{<ListAltIcon />}</ListItemIcon>
+                <ListItemText primary="All Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/myRequests")}>
+                <ListItemIcon>{<InboxIcon />}</ListItemIcon>
+                <ListItemText primary="My Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/pendingRequests")}>
+                <ListItemIcon>{<PendingActionsIcon />}</ListItemIcon>
+                <ListItemText primary="Pending Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/myHistory")}>
+                <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
+                <ListItemText primary="History" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Drawer>
+      )}
     </Box>
   );
 }
