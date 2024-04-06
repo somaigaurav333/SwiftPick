@@ -10,6 +10,7 @@ import SignupVerify from "./Components/SignupVerify";
 import Dashboard from "./Components/Dashboard";
 import AdminLogin from "./Components/AdminLogin";
 import ViewAllLocations from "./Components/Admin/ViewAllLocations";
+import ViewAllUsers from "./Components/Admin/ViewAllUsers";
 import PostNewRequest from "./Components/PostNewRequest";
 import ViewMyRequests from "./Components/ViewMyRequests";
 import ViewMyHistory from "./Components/ViewMyHistory";
@@ -42,6 +43,9 @@ const App = () => {
           )}
           {isLoggedIn && (
             <Route path="/admin/locations" element={<ViewAllLocations />} />
+          )}
+          {isLoggedIn && (
+            <Route path="/admin/getAllUsers" element={<ViewAllUsers />} />
           )}
           {isLoggedIn && (
             <Route path="/myRequests" element={<ViewMyRequests />} />

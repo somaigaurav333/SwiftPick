@@ -2,9 +2,10 @@ import express, { response } from "express";
 import mongoose from "mongoose";
 import { Location } from "./models/locationModel.js";
 import { Request } from "./models/requestModel.js";
-import locationRoute from "./routes/locationRoute.js";
+// import locationRoute from "./routes/locationRoute.js";
 import requestRoute from "./routes/requestRoute.js";
 import userRoute from "./routes/userRoute.js";
+import adminRoutes from "./routes/adminRoutes.js"
 import { config } from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -26,32 +27,14 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-//
-// const corsOptions = {
-//   origin: 'http://localhost:3000',
-//   optionsSuccessStatus: 200,
-//   credentials: true,
-// };
-// app.use(cors(corsOptions));
-//
-//Option 2: Allow Coustom Origin
-// app.use(
-//   cors({
-//     origin: 'https://localhost:3000',
-//     methods: ["GET", "POST", "PUT", "DELETE"],
-//     credentials: true,
-//   })
-// );
-
 app.get("/", (requset, response) => {
   // console.log(requset);
   return response.status(234).send("Welcome");
 });
 
-app.use("/locations", locationRoute);
 app.use("/requests", requestRoute);
 app.use("/auth", userRoute);
-
+app.use("/admin", adminRoutes);
 mongoose
   .connect(process.env.mongoDBURL)
   .then(() => {

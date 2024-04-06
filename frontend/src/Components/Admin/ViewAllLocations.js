@@ -79,7 +79,7 @@ const ViewAllLocations = () => {
   };
 
   const sendReq = async () => {
-    const res = await axios
+    const res = await axios_instance
       .get('/auth/verifyAdminLogin', {
         withCredentials: true,
       })
@@ -109,7 +109,7 @@ const ViewAllLocations = () => {
   const onButtonClick = async (e, row) => {
     e.stopPropagation();
     try {
-      const response = await axios_instance.delete(`/locations/${row._id}`);
+      const response = await axios_instance.delete(`/admin/location/${row._id}`);
       if (response.status !== 200) {
         throw new Error('Failed to delete location');
       }
@@ -179,7 +179,7 @@ const ViewAllLocations = () => {
   };
   const handleSubmit = async () => {
     try {
-      const response = await axios_instance.post('/locations', newLocation, {
+      const response = await axios_instance.post('/admin/locations', newLocation, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -207,7 +207,7 @@ const ViewAllLocations = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios_instance.get('/locations');
+      const response = await axios_instance.get('/admin/locations');
       // response = response.json();
       console.log(response.data.data);
       setData(response.data.data);
