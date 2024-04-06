@@ -98,17 +98,19 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
                   </Button>
                 </div>
               )}
-              {showAccept && request.requesterUsername != user.username && (
-                <div className="RequestDescriptionDialogButtonDiv">
-                  <Button
-                    onClick={handleAcceptRequest}
-                    variant="outlined"
-                    className="RequestDescriptionDialogButton"
-                  >
-                    Accept
-                  </Button>
-                </div>
-              )}
+              {user &&
+                showAccept &&
+                request.requesterUsername != user.username && (
+                  <div className="RequestDescriptionDialogButtonDiv">
+                    <Button
+                      onClick={handleAcceptRequest}
+                      variant="outlined"
+                      className="RequestDescriptionDialogButton"
+                    >
+                      Accept
+                    </Button>
+                  </div>
+                )}
             </DialogContentText>
           </DialogContent>
         </Dialog>
