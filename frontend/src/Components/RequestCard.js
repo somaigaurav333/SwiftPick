@@ -6,7 +6,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-function RequestCard({ request, user, accepted }) {
+function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
   const [showRequestDescription, setShowRequestDescription] = useState(false);
 
   const handleClose = () => {
@@ -55,7 +55,7 @@ function RequestCard({ request, user, accepted }) {
               <div className="RequestDescriptionDialogText">
                 Requester: {request.requesterUsername}
               </div>
-              {accepted && (
+              {showAccept && (
                 <div className="RequestDescriptionDialogText">
                   Requester Phone: {request.phoneNumber}
                 </div>
@@ -89,7 +89,7 @@ function RequestCard({ request, user, accepted }) {
               <div className="RequestDescriptionDialogText">
                 Requester Note: {request.requesterNote}
               </div>
-              {accepted ? (
+              {showAccept && (
                 <div className="RequestDescriptionDialogButtonDiv">
                   <Button
                     onClick={handleCollect}
@@ -98,7 +98,8 @@ function RequestCard({ request, user, accepted }) {
                     Collect
                   </Button>
                 </div>
-              ) : (
+              )}
+              {showCollect && (
                 <div className="RequestDescriptionDialogButtonDiv">
                   <Button
                     onClick={handleAcceptRequest}

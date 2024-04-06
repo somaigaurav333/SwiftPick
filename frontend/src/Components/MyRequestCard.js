@@ -7,8 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { useState } from "react";
 
-function RequestCard({ request }) {
-  const accepted = false;
+function RequestCard({ request, showAccept, showCollect, showDelete }) {
   const [showRequestDescription, setShowRequestDescription] = useState(false);
   const handleClose = () => {
     setShowRequestDescription(false);
@@ -54,12 +53,11 @@ function RequestCard({ request }) {
             <div className="RequestDescriptionDialogText">
               Requester: {request.requesterUsername}
             </div>
-            {accepted && (
+            {showAccept && (
               <div className="RequestDescriptionDialogText">
                 Requester Phone: {request.phoneNumber}
               </div>
             )}
-
             <div className="RequestDescriptionDialogText">
               Date: {request.date}
             </div>
@@ -88,7 +86,7 @@ function RequestCard({ request }) {
             <div className="RequestDescriptionDialogText">
               Requester Note: {request.requesterNote}
             </div>
-            {accepted ? (
+            {showAccept && (
               <div className="RequestDescriptionDialogButtonDiv">
                 <Button
                   onClick={handleCollect}
@@ -97,7 +95,8 @@ function RequestCard({ request }) {
                   Collect
                 </Button>
               </div>
-            ) : (
+            )}
+            {showCollect && (
               <div className="RequestDescriptionDialogButtonDiv">
                 <Button
                   onClick={handleAcceptRequest}
