@@ -141,7 +141,7 @@ router.post("/accept/:requestid/:requesteeid", async (req, res) => {
     if (userRequest) {
       await Request.findByIdAndUpdate(
         { _id: requestid },
-        { requesteeid: requesteeid, status: STATUS_ACCEPTED }
+        { requesteeId: requesteeid, status: STATUS_ACCEPTED }
       );
       return res.status(200).send({ message: "Request Accepted" });
     } else {
