@@ -26,19 +26,18 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
       });
   };
   const handleCollect = async () => {
-    console.log(user);
-    console.log(request);
-    // const response = await axios_instance
-    //   .post("/requests/accept/" + request._id + "/" + user._id)
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.status == 200) {
-    //       alert("Request Accepted Successfully");
-    //     } else {
-    //       alert("Could not accept request");
-    //     }
-    //   });
+    const response = await axios_instance
+      .post("/requests/collect/" + request._id)
+      .then((response) => {
+        console.log(response);
+        if (response.status == 200) {
+          alert("Request Marked as Collected");
+        } else {
+          alert("Could not mark request as collected");
+        }
+      });
   };
+
   return (
     <span>
       <div className="RequestDetail">
@@ -99,7 +98,7 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
                   </Button>
                 </div>
               )}
-              {showAccept && (
+              {showAccept && request.requesterUsername != user.username && (
                 <div className="RequestDescriptionDialogButtonDiv">
                   <Button
                     onClick={handleAcceptRequest}
