@@ -21,8 +21,8 @@ const Login = () => {
             password,
         })
         .then((response) => {
-            if (response.status == 200) {
-              navigate("/admin/locations");
+            if (response.status === 200) {
+              navigate("/admin/getAllUsers");
               dispatch(authActions.login())
             } else {
               alert("Error Occurred");
