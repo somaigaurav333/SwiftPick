@@ -96,7 +96,7 @@ function PendingRequests() {
         {!requests.length && (
           <span className="Nothing">Nothing to show here</span>
         )}
-        {requests.data.map((request) => {
+        {requests.map((request) => {
           return (
             <RequestCard
               className="RequestCardOuter"

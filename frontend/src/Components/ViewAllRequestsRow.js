@@ -28,7 +28,9 @@ function ViewAllRequestsRow({ title, requests, pickupLocation, user }) {
                   key={request._id}
                   request={request}
                   user={user}
-                  accepted={false}
+                  showAccept={true}
+                  showCollect={false}
+                  showDelete={false}
                 ></RequestCard>
               );
             })}

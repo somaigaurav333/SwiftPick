@@ -104,6 +104,9 @@ function ViewMyHistory() {
               className="RequestCardOuter"
               key={request._id}
               request={request}
+              showAccept={false}
+              showCollect={false}
+              showDelete={false}
             ></MyRequestCard>
           );
         })}
