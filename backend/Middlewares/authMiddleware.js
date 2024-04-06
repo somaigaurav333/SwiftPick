@@ -26,14 +26,13 @@ const getUser = async (req, res, next) => {
   let user;
   try {
     user = await User.findById(userId, "-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({ user });
   } catch (error) {
     return res.status(404).json({ message: "Error" });
   }
-
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
-  }
-  return res.status(200).json({ user });
 };
 
 const getAdmin = async (req, res, next) => {
