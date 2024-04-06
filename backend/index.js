@@ -5,7 +5,7 @@ import { Request } from "./models/requestModel.js";
 // import locationRoute from "./routes/locationRoute.js";
 import requestRoute from "./routes/requestRoute.js";
 import userRoute from "./routes/userRoute.js";
-import adminRoutes from "./routes/adminRoutes.js"
+import adminRoutes from "./routes/adminRoutes.js";
 import { config } from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -20,8 +20,8 @@ config();
 //Middleware for handling CORS Policy
 //Option 1: Allow All origins with default of cors(*)
 const corsOptions = {
-  // origin: "https://swift-pick-frontend.vercel.app",
-  origin: "http://localhost:3000",
+  origin: "https://swift-pick-frontend.vercel.app",
+  // origin: "http://localhost:3000",
   optionsSuccessStatus: 200,
   credentials: true,
 };

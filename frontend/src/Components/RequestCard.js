@@ -23,6 +23,7 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
         } else {
           alert("Could not accept request");
         }
+        setShowRequestDescription(false);
       });
   };
   const handleCollect = async () => {
@@ -35,6 +36,7 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
         } else {
           alert("Could not mark request as collected");
         }
+        setShowRequestDescription(false);
       });
   };
   const handleDelete = async () => {
@@ -47,6 +49,7 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
         } else {
           alert("Could not Delete Request");
         }
+        setShowRequestDescription(false);
       });
   };
 

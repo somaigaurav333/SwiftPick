@@ -24,6 +24,7 @@ function RequestCard({ request, showAccept, showCollect, showDelete }) {
         } else {
           alert("Could not Delete Request");
         }
+        setShowRequestDescription(false);
       });
   };
   return (
