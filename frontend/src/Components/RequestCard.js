@@ -1,19 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import "./RequestCard.css";
 import axios_instance from "../axios";
 import { Button } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+function RequestCard({ request, user, accepted }) {
+  const [showRequestDescription, setShowRequestDescription] = useState(false);
 
-function RequestCard({ request, user }) {
+  const handleClose = () => {
+    setShowRequestDescription(false);
+  };
+
   const handleAcceptRequest = async () => {
-    console.log(user);
-    console.log(request);
-    console.log(
-      "http://localhost:5000" +
-        "/requests/accept/" +
-        request._id +
-        "/" +
-        user._id
-    );
     const response = await axios_instance
       .post("/requests/accept/" + request._id + "/" + user._id)
       .then((response) => {
@@ -25,79 +25,122 @@ function RequestCard({ request, user }) {
         }
       });
   };
-
+  const handleCollect = async () => {
+    console.log(user);
+    console.log(request);
+    // const response = await axios_instance
+    //   .post("/requests/accept/" + request._id + "/" + user._id)
+    //   .then((response) => {
+    //     console.log(response);
+    //     if (response.status == 200) {
+    //       alert("Request Accepted Successfully");
+    //     } else {
+    //       alert("Could not accept request");
+    //     }
+    //   });
+  };
   return (
-    // <div className=" RequestCard shadow-md">
-    //   <div className="Head">
-    //     <div className="Username">{request.requesterUsername} </div>
-    //     <div className="Phone">{request.phoneNumber} </div>
-    //   </div>
-    //   <div className="DropLocation">{request.deliveryLocation}</div>
-    //   {request.items.map((item) => {
-    //     return (
-    //       <div className="Items" key={item}>
-    //         {item}
-    //       </div>
-    //     );
-    //   })}
-    //   <div className="Footer">
-    //     <div className="Date">{request.date}</div>
-    //     <div className="Time">{request.time}</div>
-    //   </div>
-    // </div>
-
-    // <div className="card mb-3 shadow-md RequestCard" styles="max-width: 18rem;">
-    //   <div className="card-header">
-    //     <div className="Head">
-    //       <div className="Username">{request.requesterUsername} Agrawal</div>
-    //       <div className="Phone">{request.phoneNumber} </div>
-    //     </div>
-    //     <div className="DropLocation">To: {request.deliveryLocation}</div>
-    //   </div>
-    //   <div className="card-body">
-    //     <p className="card-text">
-    //       {request.items.map((item) => {
-    //         return (
-    //           <div className="Items" key={item}>
-    //             {item}
-    //           </div>
-    //         );
-    //       })}
-    //     </p>
-    //   </div>
-    //   <div className="Footer">
-    //     <div className="Date">{request.date}</div>
-    //     <div className="Time"> {request.time} </div>
-    //   </div>
-    // </div>
-
-    <span
-      href="#"
-      class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 RequestCard"
-    >
-      <div className="Head">
-        <div className="Username">{request.requesterUsername}</div>
-        <div className="Phone">{request.phoneNumber} </div>
-      </div>
-      <div className="DropLocation">To: {request.deliveryLocation}</div>
-      <div className="card-body">
-        <p className="card-text">
-          {request.items.map((item) => {
-            return (
-              <div className="Items" key={item}>
-                {item}
+    <span>
+      <div className="RequestDetail">
+        <Dialog
+          open={showRequestDescription}
+          onClose={handleClose}
+          className="RequestDescriptionDialog"
+        >
+          <DialogTitle className="RequestDescriptionDialogTitle">
+            Request Details
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText className="RequestDescriptionDialogText">
+              <div className="RequestDescriptionDialogText">
+                Requester: {request.requesterUsername}
               </div>
-            );
-          })}
-        </p>
+              {accepted && (
+                <div className="RequestDescriptionDialogText">
+                  Requester Phone: {request.phoneNumber}
+                </div>
+              )}
+
+              <div className="RequestDescriptionDialogText">
+                Date: {request.date}
+              </div>
+              <div className="RequestDescriptionDialogText">
+                Time: {request.time}
+              </div>
+              <div className="RequestDescriptionDialogText">
+                Pickp Location: {request.pickupLocation}
+              </div>
+              <div className="RequestDescriptionDialogText">
+                Delivery Location: {request.deliveryLocation}
+              </div>
+              <div className="RequestDescriptionDialogText">
+                Items:
+                {request.items.map((item) => {
+                  return (
+                    <div className="RequestDescriptionDialogItems" key={item}>
+                      {item}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="RequestDescriptionDialogText">
+                Payment Method: {request.paymentMethod}
+              </div>
+              <div className="RequestDescriptionDialogText">
+                Requester Note: {request.requesterNote}
+              </div>
+              {accepted ? (
+                <div className="RequestDescriptionDialogButtonDiv">
+                  <Button
+                    onClick={handleCollect}
+                    className="RequestDescriptionDialogButton"
+                  >
+                    Collect
+                  </Button>
+                </div>
+              ) : (
+                <div className="RequestDescriptionDialogButtonDiv">
+                  <Button
+                    onClick={handleAcceptRequest}
+                    variant="outlined"
+                    className="RequestDescriptionDialogButton"
+                  >
+                    Accept
+                  </Button>
+                </div>
+              )}
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
       </div>
-      <div className="Footer" style={{ marginTop: "auto" }}>
-        <div className="Date">{request.date}</div>
-        <div className="Time"> {request.time} </div>
-      </div>
-      <div>
-        <Button onClick={handleAcceptRequest}>Accept</Button>
-      </div>
+      <span
+        href="#"
+        class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 RequestCard"
+        onClick={() => {
+          setShowRequestDescription(true);
+        }}
+      >
+        <div className="Head">
+          <div className="Username">{request.requesterUsername}</div>
+          <div className="Phone">{request.phoneNumber} </div>
+        </div>
+        <div className="DropLocation">To: {request.deliveryLocation}</div>
+        <div className="card-body">
+          <p className="card-text">
+            {request.items.map((item) => {
+              return (
+                <div className="Items" key={item}>
+                  {item}
+                </div>
+              );
+            })}
+          </p>
+        </div>
+        <div className="Footer" style={{ marginTop: "auto" }}>
+          <div className="Date">{request.date}</div>
+          <div className="Time"> {request.time} </div>
+        </div>
+      </span>
     </span>
   );
 }
