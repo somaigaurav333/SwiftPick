@@ -7,16 +7,16 @@ const verifyToken = async (req, res, next) => {
     const cookies = req.headers.cookie;
     const token = cookies.split("=")[1];
     if (!token) {
-      return res.status(401).json({ message: "No token found" });
+      return res.status(402).json({ message: "No token found" });
     }
     jwt.verify(String(token), process.env.jwtTokenKey, (err, user) => {
       if (err) {
-        return res.status(401).json({ message: "Invalid Token" });
+        return res.status(403).json({ message: "Invalid Token" });
       }
       req.id = user._id;
     });
   } catch (error) {
-    return res.status(401).json({ message: "Invalid Token" });
+    return res.status(404).json({ message: "Invalid Token" });
   }
   next();
 };
@@ -27,11 +27,11 @@ const getUser = async (req, res, next) => {
   try {
     user = await User.findById(userId, "-password");
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(405).json({ message: "User not found" });
     }
     return res.status(200).json({ user });
   } catch (error) {
-    return res.status(404).json({ message: "Error" });
+    return res.status(406).json({ message: "Error" });
   }
 };
 
@@ -55,12 +55,12 @@ const refreshToken = async (req, res, next) => {
     const cookies = req.headers.cookie;
     const prevToken = cookies.split("=")[1];
     if (!prevToken) {
-      return res.status(401).json({ message: "No token found" });
+      return res.status(407).json({ message: "No token found" });
     }
     jwt.verify(String(prevToken), process.env.jwtTokenKey, (err, user) => {
       if (err) {
         console.log(err);
-        return res.status(401).json({ message: "Invalid Token" });
+        return res.status(408).json({ message: "Invalid Token" });
       }
 
       // console.log(user);
@@ -101,7 +101,7 @@ const refreshToken = async (req, res, next) => {
       next();
     });
   } catch (error) {
-    return res.status(401).json({ message: "Invalid Token" });
+    return res.status(409).json({ message: "Invalid Token" });
   }
 };
 
@@ -110,12 +110,12 @@ const refreshAdminToken = async (req, res, next) => {
     const cookies = req.headers.cookie;
     const prevToken = cookies.split("=")[1];
     if (!prevToken) {
-      return res.status(401).json({ message: "No token found" });
+      return res.status(410).json({ message: "No token found" });
     }
     jwt.verify(String(prevToken), process.env.jwtTokenKey, (err, admin) => {
       if (err) {
         console.log(err);
-        return res.status(401).json({ message: "Invalid Token" });
+        return res.status(411).json({ message: "Invalid Token" });
       }
 
       // console.log(user);
@@ -144,7 +144,7 @@ const refreshAdminToken = async (req, res, next) => {
       next();
     });
   } catch (error) {
-    return res.status(401).json({ message: "Invalid Token" });
+    return res.status(412).json({ message: "Invalid Token" });
   }
 };
 

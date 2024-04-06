@@ -330,12 +330,12 @@ router.post("/userLogout", verifyToken, async (req, res) => {
     const cookies = req.headers.cookie;
     const prevToken = cookies.split("=")[1];
     if (!prevToken) {
-      return res.status(401).json({ message: "No token found" });
+      return res.status(402).json({ message: "No token found" });
     }
     jwt.verify(String(prevToken), process.env.jwtTokenKey, (err, user) => {
       if (err) {
         console.log(err);
-        return res.status(401).json({ message: "Invalid Token" });
+        return res.status(403).json({ message: "Invalid Token" });
       }
 
       res.clearCookie(`${user._id}`);
@@ -344,7 +344,7 @@ router.post("/userLogout", verifyToken, async (req, res) => {
       return res.status(200).json({ message: "Logout Success" });
     });
   } catch (error) {
-    return res.status(401).json({ message: "Invalid Token" });
+    return res.status(404).json({ message: "Invalid Token" });
   }
 });
 
