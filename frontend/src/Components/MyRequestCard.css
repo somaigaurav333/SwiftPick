@@ -15,6 +15,13 @@
 
 }
 
+.MyRequestCard:hover {
+    transform: scale(1.04);
+    cursor: pointer;
+
+
+}
+
 .PickupLocation {
     flex: 1;
     text-align: center;
