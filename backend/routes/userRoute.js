@@ -104,7 +104,7 @@ router.post("/signup", async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 });
 
@@ -127,10 +127,10 @@ router.post("/verifySignup/:token", async (req, res) => {
     // Save the user after verifying
     await user.save();
 
-    res.status(200).json({ message: "Email verified successfully." });
+    return res.status(200).json({ message: "Email verified successfully." });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
@@ -282,7 +282,7 @@ router.post("/adminSignup", async (req, res) => {
     return res.json({ status: true, message: "Record Registered" });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 });
 
@@ -368,7 +368,7 @@ router.get("/users", async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 });
 
@@ -380,7 +380,7 @@ router.get("/users/:id", async (req, res) => {
     return res.status(200).json(user);
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 });
 
