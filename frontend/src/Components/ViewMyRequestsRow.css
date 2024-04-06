@@ -1,0 +1,38 @@
+.ViewAllReqRow {
+  margin-left: 20px;
+  padding-bottom: 40px;
+  padding-left: 20px;
+  text-align: start;
+  font-size: x-large;
+}
+
+.RequestCards {
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  padding: 20px;
+  padding-left: 0px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.RequestCards::-webkit-scrollbar {
+  display: none;
+}
+
+.RequestCardOuter {
+  object-fit: contain;
+  width: 100%;
+  max-height: 150px;
+  transition: transform 400ms;
+  margin-right: 8px;
+}
+
+.RequestCard:hover {
+  transform: scale(1.04);
+  cursor: pointer;
+}
+
+.PostNewRequest {
+  text-align: right;
+}
