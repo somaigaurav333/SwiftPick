@@ -5,6 +5,8 @@ import { Button } from "@mui/material";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import axios_instance from "../axios";
+
 import { useState } from "react";
 
 function RequestCard({ request, showAccept, showCollect, showDelete }) {
@@ -12,31 +14,17 @@ function RequestCard({ request, showAccept, showCollect, showDelete }) {
   const handleClose = () => {
     setShowRequestDescription(false);
   };
-
-  const handleAcceptRequest = async () => {
-    // const response = await axios_instance
-    //   .post("/requests/accept/" + request._id + "/" + user._id)
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.status == 200) {
-    //       alert("Request Accepted Successfully");
-    //     } else {
-    //       alert("Could not accept request");
-    //     }
-    //   });
-  };
-  const handleCollect = async () => {
-    console.log(request);
-    // const response = await axios_instance
-    //   .post("/requests/accept/" + request._id + "/" + user._id)
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.status == 200) {
-    //       alert("Request Accepted Successfully");
-    //     } else {
-    //       alert("Could not accept request");
-    //     }
-    //   });
+  const handleDelete = async () => {
+    const response = await axios_instance
+      .post("/requests/delete/" + request._id)
+      .then((response) => {
+        console.log(response);
+        if (response.status == 200) {
+          alert("Request Deleted Successfully");
+        } else {
+          alert("Could not Delete Request");
+        }
+      });
   };
   return (
     <span>
@@ -86,24 +74,13 @@ function RequestCard({ request, showAccept, showCollect, showDelete }) {
             <div className="RequestDescriptionDialogText">
               Requester Note: {request.requesterNote}
             </div>
-            {showCollect && request.status == "ACCEPTED" && (
+            {showDelete && request.status == "OPEN" && (
               <div className="RequestDescriptionDialogButtonDiv">
                 <Button
-                  onClick={handleCollect}
+                  onClick={handleDelete}
                   className="RequestDescriptionDialogButton"
                 >
-                  Collect
-                </Button>
-              </div>
-            )}
-            {showAccept && (
-              <div className="RequestDescriptionDialogButtonDiv">
-                <Button
-                  onClick={handleAcceptRequest}
-                  variant="outlined"
-                  className="RequestDescriptionDialogButton"
-                >
-                  Accept
+                  Delete
                 </Button>
               </div>
             )}
