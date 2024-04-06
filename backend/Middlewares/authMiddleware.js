@@ -42,7 +42,7 @@ const getAdmin = async (req, res, next) => {
   try {
     user = await Admin.findById(userId, "-password");
   } catch (error) {
-    return new Error(error);
+    return res.status(404).json({ message: "Error" });
   }
 
   if (!user) {
