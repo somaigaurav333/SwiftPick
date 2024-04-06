@@ -101,6 +101,9 @@ function PendingRequests() {
               className="RequestCardOuter"
               key={request._id}
               request={request}
+              showAccept={false}
+              showCollect={true}
+              showDelete={false}
             ></RequestCard>
           );
         })}

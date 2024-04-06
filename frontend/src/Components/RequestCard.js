@@ -89,7 +89,7 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
               <div className="RequestDescriptionDialogText">
                 Requester Note: {request.requesterNote}
               </div>
-              {showCollect && (
+              {showCollect && request.status == "ACCEPTED" && (
                 <div className="RequestDescriptionDialogButtonDiv">
                   <Button
                     onClick={handleCollect}
