@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PostNewRequest from "./PostNewRequest";
 import axios_instance from "../axios";
 import RequestCard from "./RequestCard";
-import "./ViewMyHistory.css";
+import "./PendingRequests.css";
 import axios from "axios";
 import MyRequestCard from "./MyRequestCard";
 import { DataGrid } from "@mui/x-data-grid";
