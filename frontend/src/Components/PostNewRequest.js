@@ -17,7 +17,7 @@ import Select from "@mui/material/Select";
 import "./PostNewRequest.css";
 import { useNavigate } from "react-router-dom";
 
-const locationsURL = "/locations";
+const locationsURL = "admin/locations";
 
 export default function PostNewRequest() {
   const navigate = useNavigate();
