@@ -113,7 +113,7 @@ function ViewMyRequests() {
             <ViewAllRequestsRow
               key={status}
               title={status}
-              requests={requests.data}
+              requests={requests}
               pickupLocation={status}
               user={user}
             ></ViewAllRequestsRow>

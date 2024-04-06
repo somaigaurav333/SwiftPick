@@ -129,6 +129,29 @@ router.get("/delivered/:userid", async (req, res) => {
   }
 });
 
+//Route to collect a request
+router.post("/collect/:requestid", async (req, res) => {
+  try {
+    const requestid = req.params.requestid;
+    const userRequest = await Request.find({
+      _id: requestid,
+      status: STATUS_ACCEPTED,
+    });
+    if (userRequest) {
+      await Request.findByIdAndUpdate(
+        { _id: requestid },
+        { status: STATUS_COLLECTED }
+      );
+      return res.status(200).send({ message: "Request Collected" });
+    } else {
+      res.status(400).send({ message: "No such accepted request exists" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(401).send({ message: error.message });
+  }
+});
+
 // Route to accept a request
 router.post("/accept/:requestid/:requesteeid", async (req, res) => {
   try {
