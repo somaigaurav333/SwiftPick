@@ -35,7 +35,7 @@ import ViewMyRequests from "./ViewMyRequests";
 import { useNavigate } from "react-router-dom";
 
 const requestsURL = "/requests/open";
-const pickupLocationsURL = "/locations";
+const pickupLocationsURL = "/admin/locations";
 const drawerWidth = 240;
 
 function ViewAllRequests() {
@@ -75,7 +75,7 @@ function ViewAllRequests() {
 
     return () => clearInterval(interval);
   }, []);
-  
+
   //fetch requests data
   const [requests, setRequests] = useState([]);
 

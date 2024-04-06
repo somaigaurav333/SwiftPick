@@ -37,6 +37,18 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
         }
       });
   };
+  const handleDelete = async () => {
+    const response = await axios_instance
+      .post("/requests/delete/" + request._id)
+      .then((response) => {
+        console.log(response);
+        if (response.status == 200) {
+          alert("Request Deleted Successfully");
+        } else {
+          alert("Could not Delete Request");
+        }
+      });
+  };
 
   return (
     <span>
@@ -111,6 +123,16 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
                     </Button>
                   </div>
                 )}
+              {showDelete && request.status == "OPEN" && (
+                <div className="RequestDescriptionDialogButtonDiv">
+                  <Button
+                    onClick={handleDelete}
+                    className="RequestDescriptionDialogButton"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              )}
             </DialogContentText>
           </DialogContent>
         </Dialog>
