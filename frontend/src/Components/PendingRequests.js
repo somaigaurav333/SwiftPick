@@ -81,7 +81,6 @@ function PendingRequests() {
         const response = await axios_instance.get(
           "/requests/pending/" + user._id
         );
-        console.log(response);
         setRequests(response.data.data);
       }
 
@@ -96,7 +95,7 @@ function PendingRequests() {
         {!requests.length && (
           <span className="Nothing">Nothing to show here</span>
         )}
-        {requests.data.map((request) => {
+        {requests.map((request) => {
           return (
             <RequestCard
               className="RequestCardOuter"

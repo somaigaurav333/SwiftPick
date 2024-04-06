@@ -15,6 +15,7 @@ import ViewMyRequests from "./Components/ViewMyRequests";
 import ViewMyHistory from "./Components/ViewMyHistory";
 import { useSelector } from "react-redux";
 import Header from "./Components/Header";
+import PendingRequests from "./Components/PendingRequests";
 
 const App = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
@@ -50,7 +51,7 @@ const App = () => {
             <Route path="/myHistory" element={<ViewMyHistory />} />
           )}
           {isLoggedIn && (
-            <Route path="/pendingRequests" element={<ViewMyHistory />} />
+            <Route path="/pendingRequests" element={<PendingRequests />} />
           )}
         </Routes>
       </main>

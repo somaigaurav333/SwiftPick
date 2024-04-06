@@ -158,7 +158,7 @@ router.get("/pending/:requesteeid", async (req, res) => {
   try {
     const { requesteeid } = req.params;
     const result = await Request.find({
-      requesteeid: requesteeid,
+      requesteeId: requesteeid,
       status: { $in: [STATUS_ACCEPTED, STATUS_COLLECTED] },
     });
     if (!result) {

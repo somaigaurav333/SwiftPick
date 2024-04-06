@@ -94,6 +94,7 @@ function ViewMyHistory() {
 
   return (
     <div className="ViewMyHistory">
+      <h1>Your History</h1>
       <div className="RequestCards">
         {!requests.length && (
           <span className="Nothing">Nothing to show here</span>

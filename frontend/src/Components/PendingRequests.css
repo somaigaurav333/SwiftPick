@@ -1,3 +1,19 @@
+.RequestCards {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-left: 40px;
+}
+
 .PendingRequests {
-  padding-top: 40px;
+  margin-top: 30px;
+  margin-left: 40px;
+  padding-top: 50px;
+  padding-left: 40px;
+}
+
+.Nothing {
+  font-size: x-large;
+  align-items: center;
+  margin-left: 20px;
 }
