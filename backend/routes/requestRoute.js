@@ -195,7 +195,7 @@ router.get("/pending/:requesteeid", async (req, res) => {
 });
 
 //Route to delete request by id
-router.delete("/:id", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const result = await Request.findByIdAndDelete(id);
