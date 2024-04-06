@@ -27,7 +27,7 @@ const getUser = async (req, res, next) => {
   try {
     user = await User.findById(userId, "-password");
   } catch (error) {
-    return new Error(error);
+    return res.status(404).json({ message: "Error" });
   }
 
   if (!user) {
@@ -89,10 +89,10 @@ const refreshToken = async (req, res, next) => {
       // console.log("Regenerated Token\n", token);
 
       const options = {
-        path: '/',
+        path: "/",
         expires: new Date(Date.now() + 1000 * 60 * 10),
         httpOnly: true,
-        sameSite: 'None',
+        sameSite: "None",
         secure: true,
       };
 
@@ -133,10 +133,10 @@ const refreshAdminToken = async (req, res, next) => {
         expiresIn: "11m",
       });
       const options = {
-        path: '/',
+        path: "/",
         expires: new Date(Date.now() + 1000 * 60 * 10),
         httpOnly: true,
-        sameSite: 'None',
+        sameSite: "None",
         secure: true,
       };
       res.cookie(String(admin._id), token, options);

@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
     return res.status(201).send(item);
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 });
 
@@ -60,7 +60,7 @@ router.get("/", async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 });
 
@@ -74,7 +74,7 @@ router.get("/open", async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 });
 
@@ -89,7 +89,7 @@ router.get("/:userid", async (req, res) => {
     return res.status(200).json({ data: result });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 });
 
@@ -107,7 +107,7 @@ router.get("/open/:userid", async (req, res) => {
     return res.status(200).json({ data: result });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 });
 
@@ -125,7 +125,7 @@ router.get("/delivered/:userid", async (req, res) => {
     return res.status(200).json({ data: result });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 });
 
@@ -144,11 +144,13 @@ router.post("/collect/:requestid", async (req, res) => {
       );
       return res.status(200).send({ message: "Request Collected" });
     } else {
-      res.status(400).send({ message: "No such accepted request exists" });
+      return res
+        .status(400)
+        .send({ message: "No such accepted request exists" });
     }
   } catch (error) {
     console.log(error.message);
-    res.status(401).send({ message: error.message });
+    return res.status(401).send({ message: error.message });
   }
 });
 
@@ -168,11 +170,11 @@ router.post("/accept/:requestid/:requesteeid", async (req, res) => {
       );
       return res.status(200).send({ message: "Request Accepted" });
     } else {
-      res.status(400).send({ message: "No such open request exists" });
+      return res.status(400).send({ message: "No such open request exists" });
     }
   } catch (error) {
     console.log(error.message);
-    res.status(401).send({ message: error.message });
+    return res.status(401).send({ message: error.message });
   }
 });
 
@@ -190,7 +192,7 @@ router.get("/pending/:requesteeid", async (req, res) => {
     return res.status(200).json({ data: result });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 });
 
@@ -205,7 +207,7 @@ router.delete("/delete/:id", async (req, res) => {
     return res.status(200).send({ message: "Request deleted successfully" });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 });
 
