@@ -5,6 +5,8 @@ const router = express.Router();
 
 const STATUS_OPEN = "OPEN";
 const STATUS_ACCEPTED = "ACCEPTED";
+const STATUS_COLLECTED = "COLLECTED";
+const STATUS_DELIVERED = "DELIVERED";
 
 // Route for add request
 router.post("/", async (req, res) => {
@@ -29,7 +31,7 @@ router.post("/", async (req, res) => {
     const newReq = {
       requesterId: req.body.requesterId,
       requesterUsername: req.body.requesterUsername,
-      requesteeId: null,
+      requesteeId: "null",
       pickupLocation: req.body.pickupLocation,
       deliveryLocation: req.body.deliveryLocation,
       phoneNumber: req.body.phoneNumber,
@@ -91,13 +93,13 @@ router.get("/:userid", async (req, res) => {
   }
 });
 
-// Route to get all open requests by userid
+// Route to get all open, accepted, collected requests by userid
 router.get("/open/:userid", async (req, res) => {
   try {
     const { userid } = req.params;
     const result = await Request.find({
       requesterId: userid,
-      status: STATUS_OPEN,
+      status: { $in: [STATUS_OPEN, STATUS_ACCEPTED, STATUS_COLLECTED] },
     });
     if (!result) {
       return res.status(404).json({ message: "Requests not found" });
@@ -106,6 +108,47 @@ router.get("/open/:userid", async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });
+  }
+});
+
+// Route to get all delivered requests by userid
+router.get("/delivered/:userid", async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const result = await Request.find({
+      requesterId: userid,
+      status: STATUS_DELIVERED,
+    });
+    if (!result) {
+      return res.status(404).json({ message: "Requests not found" });
+    }
+    return res.status(200).json({ data: result });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
+  }
+});
+
+//Route to collect a request
+router.post("/collect/:requestid", async (req, res) => {
+  try {
+    const requestid = req.params.requestid;
+    const userRequest = await Request.find({
+      _id: requestid,
+      status: STATUS_ACCEPTED,
+    });
+    if (userRequest) {
+      await Request.findByIdAndUpdate(
+        { _id: requestid },
+        { status: STATUS_COLLECTED }
+      );
+      return res.status(200).send({ message: "Request Collected" });
+    } else {
+      res.status(400).send({ message: "No such accepted request exists" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(401).send({ message: error.message });
   }
 });
 
@@ -121,7 +164,7 @@ router.post("/accept/:requestid/:requesteeid", async (req, res) => {
     if (userRequest) {
       await Request.findByIdAndUpdate(
         { _id: requestid },
-        { requesteeid: requesteeid, status: STATUS_ACCEPTED }
+        { requesteeId: requesteeid, status: STATUS_ACCEPTED }
       );
       return res.status(200).send({ message: "Request Accepted" });
     } else {
@@ -130,6 +173,24 @@ router.post("/accept/:requestid/:requesteeid", async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(401).send({ message: error.message });
+  }
+});
+
+// Route to fetch pending requests
+router.get("/pending/:requesteeid", async (req, res) => {
+  try {
+    const { requesteeid } = req.params;
+    const result = await Request.find({
+      requesteeId: requesteeid,
+      status: { $in: [STATUS_ACCEPTED, STATUS_COLLECTED] },
+    });
+    if (!result) {
+      return res.status(404).json({ message: "Requests not found" });
+    }
+    return res.status(200).json({ data: result });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
   }
 });
 

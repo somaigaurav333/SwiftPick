@@ -80,7 +80,9 @@ function ViewMyHistory() {
   useEffect(() => {
     async function fetchRequests() {
       if (user) {
-        const response = await axios_instance.get("/requests/" + user._id);
+        const response = await axios_instance.get(
+          "/requests/delivered/" + user._id
+        );
         console.log(response);
         setRequests(response.data.data);
       }
@@ -92,6 +94,7 @@ function ViewMyHistory() {
 
   return (
     <div className="ViewMyHistory">
+      <h1>Your History</h1>
       <div className="RequestCards">
         {!requests.length && (
           <span className="Nothing">Nothing to show here</span>
@@ -102,6 +105,9 @@ function ViewMyHistory() {
               className="RequestCardOuter"
               key={request._id}
               request={request}
+              showAccept={false}
+              showCollect={false}
+              showDelete={false}
             ></MyRequestCard>
           );
         })}

@@ -3,6 +3,8 @@ import PostNewRequest from "./PostNewRequest";
 import axios_instance from "../axios";
 import RequestCard from "./RequestCard";
 import "./ViewMyRequests.css";
+import ViewAllRequestsRow from "./ViewAllRequestsRow";
+import "./ViewAllRequests.css";
 import axios from "axios";
 import MyRequestCard from "./MyRequestCard";
 import { DataGrid } from "@mui/x-data-grid";
@@ -106,17 +108,15 @@ function ViewMyRequests() {
         {!requests.length && (
           <span className="Nothing">Nothing to show here</span>
         )}
-        {requests.map((request) => {
+        {["OPEN", "ACCEPTED", "COLLECTED"].map((status) => {
           return (
-            <div>
-              <MyRequestCard
-                className="RequestCardOuter"
-                key={request._id}
-                request={request}
-                func={"Delete"}
-                handleFunc={handleDelete}
-              ></MyRequestCard>
-            </div>
+            <ViewAllRequestsRow
+              key={status}
+              title={status}
+              requests={requests}
+              pickupLocation={status}
+              user={user}
+            ></ViewAllRequestsRow>
           );
         })}
       </div>

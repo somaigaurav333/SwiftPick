@@ -6,7 +6,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-function RequestCard({ request, user, accepted }) {
+function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
   const [showRequestDescription, setShowRequestDescription] = useState(false);
 
   const handleClose = () => {
@@ -26,19 +26,18 @@ function RequestCard({ request, user, accepted }) {
       });
   };
   const handleCollect = async () => {
-    console.log(user);
-    console.log(request);
-    // const response = await axios_instance
-    //   .post("/requests/accept/" + request._id + "/" + user._id)
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.status == 200) {
-    //       alert("Request Accepted Successfully");
-    //     } else {
-    //       alert("Could not accept request");
-    //     }
-    //   });
+    const response = await axios_instance
+      .post("/requests/collect/" + request._id)
+      .then((response) => {
+        console.log(response);
+        if (response.status == 200) {
+          alert("Request Marked as Collected");
+        } else {
+          alert("Could not mark request as collected");
+        }
+      });
   };
+
   return (
     <span>
       <div className="RequestDetail">
@@ -55,7 +54,7 @@ function RequestCard({ request, user, accepted }) {
               <div className="RequestDescriptionDialogText">
                 Requester: {request.requesterUsername}
               </div>
-              {accepted && (
+              {showAccept && (
                 <div className="RequestDescriptionDialogText">
                   Requester Phone: {request.phoneNumber}
                 </div>
@@ -89,7 +88,7 @@ function RequestCard({ request, user, accepted }) {
               <div className="RequestDescriptionDialogText">
                 Requester Note: {request.requesterNote}
               </div>
-              {accepted ? (
+              {showCollect && request.status == "ACCEPTED" && (
                 <div className="RequestDescriptionDialogButtonDiv">
                   <Button
                     onClick={handleCollect}
@@ -98,7 +97,8 @@ function RequestCard({ request, user, accepted }) {
                     Collect
                   </Button>
                 </div>
-              ) : (
+              )}
+              {showAccept && request.requesterUsername != user.username && (
                 <div className="RequestDescriptionDialogButtonDiv">
                   <Button
                     onClick={handleAcceptRequest}
