@@ -31,6 +31,7 @@ function ViewMyRequestsRow({ title, requests, pickupLocation, user }) {
                   showAccept={false}
                   showCollect={false}
                   showDelete={true}
+                  showClose={true}
                 ></RequestCard>
               );
             })}

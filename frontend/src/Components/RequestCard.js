@@ -6,10 +6,10 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
+function RequestCard({ request, user, showAccept, showCollect, showDelete, showClose }) {
   const [showRequestDescription, setShowRequestDescription] = useState(false);
 
-  const handleClose = () => {
+  const handleCloseDialog = () => {
     setShowRequestDescription(false);
   };
 
@@ -41,7 +41,7 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
   };
   const handleDelete = async () => {
     const response = await axios_instance
-      .post("/requests/delete/" + request._id)
+      .post("/request/delete/" + request._id)
       .then((response) => {
         console.log(response);
         if (response.status == 200) {
@@ -52,13 +52,26 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
         setShowRequestDescription(false);
       });
   };
+  const handleClose = async () =>{
+    const response = await axios_instance
+      .post("/requests/close/" + request._id)
+      .then((response) => {
+        console.log(response)
+        if(response.status == 200){
+          alert("Request Closed")
+        }else{
+          alert("Could not close the request")
+        }
+        setShowRequestDescription(false);
+      })
+  }
 
   return (
     <span>
       <div className="RequestDetail">
         <Dialog
           open={showRequestDescription}
-          onClose={handleClose}
+          onClose={handleCloseDialog}
           className="RequestDescriptionDialog"
         >
           <DialogTitle className="RequestDescriptionDialogTitle">
@@ -133,6 +146,16 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete }) {
                     className="RequestDescriptionDialogButton"
                   >
                     Delete
+                  </Button>
+                </div>
+              )}
+              {showClose && request.status == "COLLECTED" && (
+                <div className="RequestDescriptionDialogButtonDiv">
+                  <Button
+                    onClick={handleClose}
+                    className="RequestDescriptionDialogButton"
+                  >
+                    Close
                   </Button>
                 </div>
               )}
