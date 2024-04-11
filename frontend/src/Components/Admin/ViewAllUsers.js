@@ -275,7 +275,7 @@ const ViewAllUsers = () => {
             style={{
               margin: "50px 0 50px auto",
               maxWidth: "62.5rem",
-              height: "37.5rem",
+              height: "28.125rem",
             }}
           >
             <DataGrid
