@@ -1,19 +1,30 @@
-.RequestCards {
+.HistoryRequestCards {
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
+  /* margin-left: 240px; */
   /* margin-left: 40px; */
 }
 
-.ViewMyHistory {
+.YourHistory {
+  margin-bottom: 20px;
+  /* font-weight: bold; */
+  font-size: x-large;
+}
+
+.bgvir {
   margin-top: 30px;
-  margin-left: 40px;
-  padding-top: 50px;
-  padding-left: 40px;
+}
+
+.ViewMyHistory {
+  margin-top: 40px;
+  margin-left: 240px;
+  padding-top: 40px;
+  padding-left: 20px;
 }
 
 .Nothing {
   font-size: x-large;
   align-items: center;
-  margin-left: 20px;
+  margin-left: 240px;
 }

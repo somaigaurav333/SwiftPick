@@ -3,6 +3,22 @@ import axios_instance from "../axios";
 import "./ViewMyHistory.css";
 import MyRequestCard from "./MyRequestCard";
 import { useNavigate } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import AppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import HistoryIcon from "@mui/icons-material/History";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
 
 const drawerWidth = 240;
 
@@ -63,25 +79,70 @@ function ViewMyHistory() {
   }, [user]);
 
   return (
-    <div className="ViewMyHistory">
-      <h1>Your History</h1>
-      <div className="RequestCards">
-        {!requests.length && (
-          <span className="Nothing">Nothing to show here</span>
-        )}
-        {requests.map((request) => {
-          return (
-            <MyRequestCard
-              className="RequestCardOuter"
-              key={request._id}
-              request={request}
-              showAccept={false}
-              showCollect={false}
-              showDelete={false}
-              showClose={false}
-            ></MyRequestCard>
-          );
-        })}
+    <div className="bgvir">
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+      >
+        <Divider />
+        <Toolbar />
+        <Box sx={{ overflow: "auto" }}>
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/requests")}>
+                <ListItemIcon>{<ListAltIcon />}</ListItemIcon>
+                <ListItemText primary="All Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/myRequests")}>
+                <ListItemIcon>{<InboxIcon />}</ListItemIcon>
+                <ListItemText primary="My Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/pendingRequests")}>
+                <ListItemIcon>{<PendingActionsIcon />}</ListItemIcon>
+                <ListItemText primary="Pending Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/myHistory")}>
+                <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
+                <ListItemText primary="History" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
+
+      <div className="ViewMyHistory">
+        <h1 className="YourHistory">Your History</h1>
+        <div className="HistoryRequestCards">
+          {!requests.length && (
+            <span className="Nothing">Nothing to show here</span>
+          )}
+          {requests.map((request) => {
+            return (
+              <MyRequestCard
+                className="RequestCardOuter"
+                key={request._id}
+                request={request}
+                showAccept={false}
+                showCollect={false}
+                showDelete={false}
+                showClose={false}
+              ></MyRequestCard>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

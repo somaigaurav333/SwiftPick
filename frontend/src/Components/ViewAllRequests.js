@@ -101,6 +101,49 @@ function ViewAllRequests() {
   }, []);
   return (
     <div className="bgvir">
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+      >
+        <Divider />
+        <Toolbar />
+        <Box sx={{ overflow: "auto" }}>
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/requests")}>
+                <ListItemIcon>{<ListAltIcon />}</ListItemIcon>
+                <ListItemText primary="All Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/myRequests")}>
+                <ListItemIcon>{<InboxIcon />}</ListItemIcon>
+                <ListItemText primary="My Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/pendingRequests")}>
+                <ListItemIcon>{<PendingActionsIcon />}</ListItemIcon>
+                <ListItemText primary="Pending Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/myHistory")}>
+                <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
+                <ListItemText primary="History" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
+
       <div className="ViewAllRequests">
         {pickupLocations.map((pickupLocation) => {
           return (

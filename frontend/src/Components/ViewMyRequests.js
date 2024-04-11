@@ -3,6 +3,25 @@ import axios_instance from "../axios";
 import "./ViewMyRequests.css";
 import ViewMyRequestsRow from "./ViewMyRequestsRow";
 import { useNavigate } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import AppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import HistoryIcon from "@mui/icons-material/History";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
+
+const drawerWidth = 240;
+
 
 function ViewMyRequests() {
   const navigate = useNavigate();
@@ -69,25 +88,69 @@ function ViewMyRequests() {
   };
 
   return (
-    <div className="ViewMyRequests">
-      <div className="RequestCards">
-        {!requests.length && (
-          <span className="Nothing">Nothing to show here</span>
-        )}
-        {["OPEN", "ACCEPTED", "COLLECTED"].map((status) => {
-          return (
-            <div>
-            <ViewMyRequestsRow
-              key={status}
-              title={status}
-              requests={requests}
-              pickupLocation={status}
-              user={user}
-            ></ViewMyRequestsRow>
-            <br/>
-            </div>
-          );
-        })}
+    <div className="bgvir">
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+      >
+        <Divider />
+        <Toolbar />
+        <Box sx={{ overflow: "auto" }}>
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/requests")}>
+                <ListItemIcon>{<ListAltIcon />}</ListItemIcon>
+                <ListItemText primary="All Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/myRequests")}>
+                <ListItemIcon>{<InboxIcon />}</ListItemIcon>
+                <ListItemText primary="My Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/pendingRequests")}>
+                <ListItemIcon>{<PendingActionsIcon />}</ListItemIcon>
+                <ListItemText primary="Pending Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/myHistory")}>
+                <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
+                <ListItemText primary="History" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
+      <div className="ViewMyRequests">
+        <div className="RequestCards">
+          {!requests.length && (
+            <span className="Nothing">Nothing to show here</span>
+          )}
+          {["OPEN", "ACCEPTED", "COLLECTED"].map((status) => {
+            return (
+              <div>
+                <ViewMyRequestsRow
+                  key={status}
+                  title={status}
+                  requests={requests}
+                  pickupLocation={status}
+                  user={user}
+                ></ViewMyRequestsRow>
+                <br />
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

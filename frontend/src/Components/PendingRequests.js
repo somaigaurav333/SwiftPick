@@ -90,23 +90,69 @@ function PendingRequests() {
   }, [user]);
 
   return (
-    <div className="PendingRequests">
-      <div className="RequestCards">
-        {!requests.length && (
-          <span className="Nothing">Nothing to show here</span>
-        )}
-        {requests.map((request) => {
-          return (
-            <RequestCard
-              className="RequestCardOuter"
-              key={request._id}
-              request={request}
-              showAccept={false}
-              showCollect={true}
-              showDelete={false}
-            ></RequestCard>
-          );
-        })}
+    <div className="bgvir">
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+      >
+        <Divider />
+        <Toolbar />
+        <Box sx={{ overflow: "auto" }}>
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/requests")}>
+                <ListItemIcon>{<ListAltIcon />}</ListItemIcon>
+                <ListItemText primary="All Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/myRequests")}>
+                <ListItemIcon>{<InboxIcon />}</ListItemIcon>
+                <ListItemText primary="My Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/pendingRequests")}>
+                <ListItemIcon>{<PendingActionsIcon />}</ListItemIcon>
+                <ListItemText primary="Pending Requests" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/myHistory")}>
+                <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
+                <ListItemText primary="History" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
+
+      <div className="PendingRequests">
+        <h1 className="PendingRequestsHeading">Pending Requests</h1>
+        <div className="RequestCards">
+          {!requests.length && (
+            <span className="Nothing">Nothing to show here</span>
+          )}
+          {requests.map((request) => {
+            return (
+              <RequestCard
+                className="RequestCardOuter"
+                key={request._id}
+                request={request}
+                showAccept={false}
+                showCollect={true}
+                showDelete={false}
+              ></RequestCard>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

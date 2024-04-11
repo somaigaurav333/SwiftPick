@@ -5,11 +5,17 @@
   /* margin-left: 40px; */
 }
 
+.PendingRequestsHeading{
+    margin-bottom: 5px;
+  /* font-weight: bold; */
+  font-size: x-large;
+}
+
 .PendingRequests {
-  margin-top: 30px;
-  margin-left: 40px;
-  padding-top: 50px;
-  padding-left: 40px;
+ margin-top: 40px;
+  margin-left: 240px;
+  padding-top: 40px;
+  padding-left: 20px;
 }
 
 .Nothing {

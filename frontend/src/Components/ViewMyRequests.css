@@ -2,14 +2,18 @@
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  margin-left: 40px;
+  /* margin-left: 40px; */
+}
+
+.bgvir {
+  margin-top: 30px;
 }
 
 .ViewMyRequests {
-  margin-top: 30px;
-  margin-left: 40px;
-  padding-top: 50px;
-  padding-left: 40px;
+  margin-top: 40px;
+  margin-left: 240px;
+  padding-top: 40px;
+  padding-left: 20px;
 }
 
 .Nothing {
