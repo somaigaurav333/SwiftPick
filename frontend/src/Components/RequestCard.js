@@ -41,7 +41,7 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete, showC
   };
   const handleDelete = async () => {
     const response = await axios_instance
-      .post("/request/delete/" + request._id)
+      .post("/requests/delete/" + request._id)
       .then((response) => {
         console.log(response);
         if (response.status == 200) {
