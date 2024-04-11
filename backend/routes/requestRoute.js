@@ -64,7 +64,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Route to get all requests
+// Route to get all open requests
 router.get("/open", async (req, res) => {
   try {
     const requests = await Request.find({ status: STATUS_OPEN });

@@ -17,6 +17,7 @@ import ViewMyHistory from "./Components/ViewMyHistory";
 import { useSelector } from "react-redux";
 import Header from "./Components/Header";
 import PendingRequests from "./Components/PendingRequests";
+import Layout from "./Components/Layout";
 
 const App = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
@@ -28,6 +29,26 @@ const App = () => {
       </header>
       <main>
         <Routes>
+          <Route element={<Layout />}>
+            {isLoggedIn && (
+              <Route path="/requests" element={<ViewAllRequests />} />
+            )}
+            {isLoggedIn && (
+              <Route path="/admin/locations" element={<ViewAllLocations />} />
+            )}
+            {isLoggedIn && (
+              <Route path="/admin/getAllUsers" element={<ViewAllUsers />} />
+            )}
+            {isLoggedIn && (
+              <Route path="/myRequests" element={<ViewMyRequests />} />
+            )}
+            {isLoggedIn && (
+              <Route path="/myHistory" element={<ViewMyHistory />} />
+            )}
+            {isLoggedIn && (
+              <Route path="/pendingRequests" element={<PendingRequests />} />
+            )}
+          </Route>
           <Route path="/" element={<Login />} />
           <Route path="/auth/signup" element={<SingUp />} />
           <Route path="/auth/login" element={<Login />} />
@@ -39,24 +60,6 @@ const App = () => {
           />
           <Route path="/auth/verifySignup/:token" element={<SignupVerify />} />
           {isLoggedIn && <Route path="/dashboard" element={<Dashboard />} />}
-          {isLoggedIn && (
-            <Route path="/requests" element={<ViewAllRequests />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/admin/locations" element={<ViewAllLocations />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/admin/getAllUsers" element={<ViewAllUsers />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/myRequests" element={<ViewMyRequests />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/myHistory" element={<ViewMyHistory />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/pendingRequests" element={<PendingRequests />} />
-          )}
         </Routes>
       </main>
     </React.Fragment>
