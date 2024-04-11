@@ -46,7 +46,7 @@ const App = () => {
             <Route path="/admin/locations" element={<ViewAllLocations />} />
           )}
           {isLoggedIn && (
-            <Route path="/admin/getAllUsers" element={<ViewAllUsers />} />
+            <Route path="/admin/users" element={<ViewAllUsers />} />
           )}
           {isLoggedIn && (
             <Route path="/myRequests" element={<ViewMyRequests />} />

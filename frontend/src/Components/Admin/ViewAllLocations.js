@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid} from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -9,63 +9,23 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
-import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import axios from 'axios';
+import GroupIcon from '@mui/icons-material/Group';
+import {useNavigate} from 'react-router-dom'
 import axios_instance from '../../axios';
 
-const drawerWidth = 240;
-
-// const columns = [
-//   { field: 'id', headerName: 'ID', width: 70 },
-//   { field: 'firstName', headerName: 'First name', width: 130 },
-//   { field: 'lastName', headerName: 'Last name', width: 130 },
-//   {
-//     field: 'age',
-//     headerName: 'Age',
-//     type: 'number',
-//     width: 90,
-//   },
-//   {
-//     field: 'fullName',
-//     headerName: 'Full name',
-//     description: 'This column has a value getter and is not sortable.',
-//     sortable: false,
-//     width: 160,
-//     valueGetter: (params) =>
-//       `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-//   },
-// ];
-
-//fetching data
-
-// const rows = [
-//   { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-//   { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-//   { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-//   { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-//   { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-//   { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-//   { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-//   { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-//   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-// ];
+const drawerWidth = 200;
 
 const ViewAllLocations = () => {
   let firstRender = true;
   const [user, setUser] = useState();
+  const navigate = useNavigate();
 
   const refreshToken = async () => {
     const res = await axios_instance
@@ -113,8 +73,6 @@ const ViewAllLocations = () => {
       if (response.status !== 200) {
         throw new Error('Failed to delete location');
       }
-      // Assuming you want to remove the row from the UI after successful deletion
-      // You would need to implement this logic in your application
       console.log('Location deleted successfully');
     } catch (error) {
       console.error('Error deleting location:', error.message);
@@ -122,7 +80,7 @@ const ViewAllLocations = () => {
     fetchData();
   };
 
-  const columns = [
+  const locationsColumn = [
     {
       field: '_id',
       headerName: 'ID',
@@ -195,12 +153,6 @@ const ViewAllLocations = () => {
     }
   };
 
-  // useEffect(()=>{
-  //     fetch('http://localhost:5000/locations')
-  //     .then(resp=>resp.json())
-  //     // .then(resp=>console.log(resp.data))
-  //     .then(resp=>setData(resp.data))
-  // },[])
   useEffect(() => {
     fetchData();
   }, []);
@@ -232,20 +184,27 @@ const ViewAllLocations = () => {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            {['Locations'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
+              <ListItem disablePadding>
+                <ListItemButton onClick={(event) => navigate("/admin/locations")}>
                   <ListItemIcon>
                     <LocationOnIcon />
-                    {/* {index % 2 === 0 ? <LocationOnIcon /> : <PeopleAltIcon />} */}
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary="Locations" />
                 </ListItemButton>
               </ListItem>
-            ))}
+              <ListItem  disablePadding>
+                <ListItemButton onClick={(event) => navigate("/admin/users")}>
+                  <ListItemIcon>
+                    <GroupIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Users" />
+                </ListItemButton>
+              </ListItem>
           </List>
         </Box>
       </Drawer>{' '}
+
+      {/* Main Rendering of the Table begins here */}
       <div
         style={{
           display: 'flex',
@@ -299,19 +258,11 @@ const ViewAllLocations = () => {
               <Button onClick={handleSubmit}>Add</Button>
             </DialogActions>
           </Dialog>
-          <div style={{ margin: '50px auto', maxWidth: '800px', height: 400 }}>
+          <div style={{ margin: '50px auto', maxWidth: '1000px', height: 400 }}>
             <DataGrid
               getRowId={(row) => row._id}
               rows={data}
-              columns={columns}
-              // initialState={{
-              //   pagination: {
-              //     paginationModel: { page: 0, pageSize: 5 },
-              //   },
-              // }}
-              // pageSizeOptions={[5, 10]}
-              // checkboxSelection
-
+              columns={locationsColumn}
               hideFooter={true}
             />
           </div>

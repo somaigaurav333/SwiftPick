@@ -10,12 +10,15 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import GroupIcon from '@mui/icons-material/Group';
 import axios_instance from "../../axios";
+import {useNavigate} from "react-router-dom"
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const ViewAllUsers = () => {
   const [user, setUser] = useState();
+  const navigate = useNavigate();
 
   const refreshToken = async () => {
     const res = await axios_instance
@@ -113,7 +116,7 @@ const ViewAllUsers = () => {
   };
   const x = 5;
 
-  const columns = [
+  const userColumns = [
     {
       field: "username",
       headerName: "username",
@@ -156,20 +159,20 @@ const ViewAllUsers = () => {
       align: "right",
       headerAlign: "right",
     },
-    // {
-    //   field: 'totalRequests',
-    //   headerName: 'Total Req',
-    //   width: 200,
-    //   align: 'right',
-    //   headerAlign: 'right',
-    // },
-    // {
-    //   field: 'totalDeliveries',
-    //   headerName: 'Total Deliveries',
-    //   width: 200,
-    //   align: 'right',
-    //   headerAlign: 'right',
-    // },
+    {
+      field: 'totalRequests',
+      headerName: 'Total Req',
+      width: 200,
+      align: 'right',
+      headerAlign: 'right',
+    },
+    {
+      field: 'totalDeliveries',
+      headerName: 'Total Deliveries',
+      width: 200,
+      align: 'right',
+      headerAlign: 'right',
+    },
     {
       field: "actions",
       headerName: "Actions",
@@ -179,7 +182,7 @@ const ViewAllUsers = () => {
       renderCell: (params) => {
         return (
           <div>
-            {/* <Button
+            <Button
               onClick={(e) => onButtonClickValidate(e, params.row)}
               variant='contained'
               style={{ marginRight: '8px', backgroundColor: '#4CAF50', color: 'white' }}
@@ -192,7 +195,7 @@ const ViewAllUsers = () => {
               style={{ marginRight: '8px', backgroundColor: '#FDC364', color: 'white' }}
             >
               Strike
-            </Button> */}
+            </Button>
             <Button
               onClick={(e) => onButtonClickDelete(e, params.row)}
               variant="contained"
@@ -234,19 +237,24 @@ const ViewAllUsers = () => {
         }}
       >
         <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
+        <Box sx={{ overflow: 'auto' }}>
           <List>
-            {["Locations"].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
+              <ListItem disablePadding>
+                <ListItemButton onClick={(event) => navigate("/admin/locations")}>
                   <ListItemIcon>
                     <LocationOnIcon />
-                    {/* {index % 2 === 0 ? <LocationOnIcon /> : <PeopleAltIcon />} */}
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary="Locations" />
                 </ListItemButton>
               </ListItem>
-            ))}
+              <ListItem  disablePadding>
+                <ListItemButton onClick={(event) => navigate("/admin/users")}>
+                  <ListItemIcon>
+                    <GroupIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Users" />
+                </ListItemButton>
+              </ListItem>
           </List>
         </Box>
       </Drawer>{" "}
@@ -260,28 +268,20 @@ const ViewAllUsers = () => {
         }}
       >
         <div
-          style={{ position: "relative", maxWidth: "4000px", width: "100%" }}
+          style={{ position: "relative", maxWidth: "1000px", width: "100%" }}
         >
           {/* Button positioned at the top right corner */}
           <div
             style={{
-              margin: "50px 100px 50px auto",
-              maxWidth: "4000px",
-              height: 400,
+              margin: "50px 0 50px auto",
+              maxWidth: "62.5rem",
+              height: "37.5rem",
             }}
           >
             <DataGrid
               getRowId={(row) => row._id}
               rows={data}
-              columns={columns}
-              // initialState={{
-              //   pagination: {
-              //     paginationModel: { page: 0, pageSize: 5 },
-              //   },
-              // }}
-              // pageSizeOptions={[5, 10]}
-              // checkboxSelection
-
+              columns={userColumns}
               hideFooter={true}
             />
           </div>
