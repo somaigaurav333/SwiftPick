@@ -75,25 +75,27 @@ const Login = () => {
             <Link
               className="no-underline border-b border-blue "
               to={"/auth/forgotPassword"}
+              style={{ color: "blue" }}
             >
               Forgot Password?
             </Link>
           </div>
           <div className="white-space:break-space bg-grey-lighter flex p-4 items-center justify-center">
-            Login as
             <Link
-              className="no-underline border-b border-blue "
+              className="no-underline border-b border-blue"
               to={"/auth/adminLogin    "}
+              style={{ color: "blue" }}
             >
-              Admin?
+              Login as Admin?
             </Link>
           </div>
         </form>
         <div className="text-grey-dark mt-6">
-          Don't have an Account?
+          Don't have an Account?&nbsp;
           <Link
             className="no-underline border-b border-blue text-blue"
             to={"/auth/signup"}
+            style={{ color: "blue" }}
           >
             SignUp
           </Link>
