@@ -183,7 +183,7 @@ const ViewAllUsers = () => {
       renderCell: (params) => {
         return (
           <div>
-            <Button
+          {*/ <Button
               onClick={(e) => onButtonClickValidate(e, params.row)}
               variant="contained"
               style={{
@@ -204,7 +204,7 @@ const ViewAllUsers = () => {
               }}
             >
               Strike
-            </Button>
+            </Button> */}
             <Button
               onClick={(e) => onButtonClickDelete(e, params.row)}
               variant="contained"
