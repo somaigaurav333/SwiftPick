@@ -42,11 +42,20 @@ function RequestCard({ request, showAccept, showCollect, showDelete }) {
             <div className="RequestDescriptionDialogText">
               Requester: {request.requesterUsername}
             </div>
-            {showAccept && (
-              <div className="RequestDescriptionDialogText">
-                Requester Phone: {request.phoneNumber}
+
+            <div className="RequestDescriptionDialogText">
+              Requester Phone: {request.phoneNumber}
+            </div>
+            {/* {request.status != "OPEN" && (
+              <div>
+                <div className="RequestDescriptionDialogText">
+                  Requestee Name: {request.requesteeId}
+                </div>
+                <div className="RequestDescriptionDialogText">
+                  Requestee Phone Number: {request.requesteeId}
+                </div>
               </div>
-            )}
+            )} */}
             <div className="RequestDescriptionDialogText">
               Date: {request.date}
             </div>

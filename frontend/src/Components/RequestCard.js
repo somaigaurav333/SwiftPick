@@ -6,7 +6,14 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-function RequestCard({ request, user, showAccept, showCollect, showDelete, showClose }) {
+function RequestCard({
+  request,
+  user,
+  showAccept,
+  showCollect,
+  showDelete,
+  showClose,
+}) {
   const [showRequestDescription, setShowRequestDescription] = useState(false);
 
   const handleCloseDialog = () => {
@@ -52,19 +59,19 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete, showC
         setShowRequestDescription(false);
       });
   };
-  const handleClose = async () =>{
+  const handleClose = async () => {
     const response = await axios_instance
       .post("/requests/close/" + request._id)
       .then((response) => {
-        console.log(response)
-        if(response.status == 200){
-          alert("Request Closed")
-        }else{
-          alert("Could not close the request")
+        console.log(response);
+        if (response.status == 200) {
+          alert("Request Closed");
+        } else {
+          alert("Could not close the request");
         }
         setShowRequestDescription(false);
-      })
-  }
+      });
+  };
 
   return (
     <span>
@@ -82,7 +89,7 @@ function RequestCard({ request, user, showAccept, showCollect, showDelete, showC
               <div className="RequestDescriptionDialogText">
                 Requester: {request.requesterUsername}
               </div>
-              {showAccept && (
+              {request.status != "OPEN" && (
                 <div className="RequestDescriptionDialogText">
                   Requester Phone: {request.phoneNumber}
                 </div>
