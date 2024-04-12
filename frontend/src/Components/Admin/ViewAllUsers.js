@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, DEFAULT_GRID_AUTOSIZE_OPTIONS } from "@mui/x-data-grid";
+// import { DataGridPremium } from "@mui/x-data-grid-premium";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -10,9 +11,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import GroupIcon from '@mui/icons-material/Group';
+import GroupIcon from "@mui/icons-material/Group";
 import axios_instance from "../../axios";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 200;
 
@@ -119,59 +120,59 @@ const ViewAllUsers = () => {
   const userColumns = [
     {
       field: "username",
-      headerName: "username",
-      width: 210,
-      align: "right",
-      headerAlign: "right",
+      headerName: "Username",
+      width: 150,
+      align: "left",
+      headerAlign: "left",
     },
     {
       field: "email",
       headerName: "Email",
-      width: 200,
-      align: "right",
-      headerAlign: "right",
+      width: 300,
+      align: "left",
+      headerAlign: "left",
     },
     {
       field: "isVerified",
       headerName: "Verfication",
-      width: 200,
-      align: "right",
-      headerAlign: "right",
+      width: 100,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "gender",
       headerName: "Gender",
-      width: 200,
-      align: "right",
-      headerAlign: "right",
+      width: 100,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "requesterRating",
       headerName: "Requester Rating",
-      width: 200,
-      align: "right",
-      headerAlign: "right",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "requesteeRating",
       headerName: "Requestee Rating",
-      width: 200,
-      align: "right",
-      headerAlign: "right",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
-      field: 'totalRequests',
-      headerName: 'Total Req',
-      width: 200,
-      align: 'right',
-      headerAlign: 'right',
+      field: "totalRequests",
+      headerName: "Total Requests",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
-      field: 'totalDeliveries',
-      headerName: 'Total Deliveries',
-      width: 200,
-      align: 'right',
-      headerAlign: 'right',
+      field: "totalDeliveries",
+      headerName: "Total Deliveries",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "actions",
@@ -184,15 +185,23 @@ const ViewAllUsers = () => {
           <div>
             <Button
               onClick={(e) => onButtonClickValidate(e, params.row)}
-              variant='contained'
-              style={{ marginRight: '8px', backgroundColor: '#4CAF50', color: 'white' }}
+              variant="contained"
+              style={{
+                marginRight: "8px",
+                backgroundColor: "#4CAF50",
+                color: "white",
+              }}
             >
               Validate
             </Button>
             <Button
               onClick={(e) => onButtonClickStrike(e, params.row)}
-              variant='contained'   
-              style={{ marginRight: '8px', backgroundColor: '#FDC364', color: 'white' }}
+              variant="contained"
+              style={{
+                marginRight: "8px",
+                backgroundColor: "#FDC364",
+                color: "white",
+              }}
             >
               Strike
             </Button>
@@ -237,24 +246,24 @@ const ViewAllUsers = () => {
         }}
       >
         <Toolbar />
-        <Box sx={{ overflow: 'auto' }}>
+        <Box sx={{ overflow: "auto" }}>
           <List>
-              <ListItem disablePadding>
-                <ListItemButton onClick={(event) => navigate("/admin/locations")}>
-                  <ListItemIcon>
-                    <LocationOnIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Locations" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem  disablePadding>
-                <ListItemButton onClick={(event) => navigate("/admin/users")}>
-                  <ListItemIcon>
-                    <GroupIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Users" />
-                </ListItemButton>
-              </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/admin/locations")}>
+                <ListItemIcon>
+                  <LocationOnIcon />
+                </ListItemIcon>
+                <ListItemText primary="Locations" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/admin/users")}>
+                <ListItemIcon>
+                  <GroupIcon />
+                </ListItemIcon>
+                <ListItemText primary="Users" />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Drawer>{" "}
@@ -273,7 +282,7 @@ const ViewAllUsers = () => {
           {/* Button positioned at the top right corner */}
           <div
             style={{
-              margin: "50px 0 50px auto",
+              margin: "50px 0 50px 50px",
               maxWidth: "62.5rem",
               height: "28.125rem",
             }}

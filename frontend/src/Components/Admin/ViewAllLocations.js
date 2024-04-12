@@ -219,7 +219,7 @@ const ViewAllLocations = () => {
           <Button
             variant='outlined'
             onClick={handleClickOpen}
-            style={{ position: 'absolute', top: 0, right: 0 }}
+            style={{ position: 'absolute', top: 0, right: 0, marginTop: 10}}
           >
             Add Location
           </Button>
