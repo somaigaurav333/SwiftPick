@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import RequestCard from "./RequestCard";
+import MyRequestCard from "./MyRequestCard";
 import "./ViewMyRequestsRow.css";
 
 function ViewMyRequestsRow({ title, requests, pickupLocation, user }) {
@@ -23,7 +23,7 @@ function ViewMyRequestsRow({ title, requests, pickupLocation, user }) {
           <div className="RequestCards">
             {filteredRequests.map((request) => {
               return (
-                <RequestCard
+                <MyRequestCard
                   className="RequestCardOuter"
                   key={request._id}
                   request={request}
@@ -32,7 +32,7 @@ function ViewMyRequestsRow({ title, requests, pickupLocation, user }) {
                   showCollect={false}
                   showDelete={true}
                   showClose={true}
-                ></RequestCard>
+                ></MyRequestCard>
               );
             })}
           </div>
