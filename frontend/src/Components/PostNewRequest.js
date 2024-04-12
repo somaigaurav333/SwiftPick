@@ -174,6 +174,7 @@ export default function PostNewRequest() {
                 console.log(response);
                 if (response.status === 201) {
                   alert("Successfull Added");
+                  navigate("/myRequests");
                 } else {
                   alert("Retry");
                 }

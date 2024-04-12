@@ -104,8 +104,8 @@ function PendingRequests() {
       >
         <Divider />
         <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
-          <List>
+        <Box sx={{ overflow: "auto" }} className="custombox">
+          <List className="customlist">
             <ListItem disablePadding>
               <ListItemButton onClick={(event) => navigate("/requests")}>
                 <ListItemIcon>{<ListAltIcon />}</ListItemIcon>
@@ -119,7 +119,10 @@ function PendingRequests() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton onClick={(event) => navigate("/pendingRequests")}>
+              <ListItemButton
+                onClick={(event) => navigate("/pendingRequests")}
+                style={{ backgroundColor: "#BED5EE" }}
+              >
                 <ListItemIcon>{<PendingActionsIcon />}</ListItemIcon>
                 <ListItemText primary="Pending Requests" />
               </ListItemButton>

@@ -22,7 +22,6 @@ import PendingActionsIcon from "@mui/icons-material/PendingActions";
 
 const drawerWidth = 240;
 
-
 function ViewMyRequests() {
   const navigate = useNavigate();
   let firstRender = true;
@@ -111,7 +110,10 @@ function ViewMyRequests() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton onClick={(event) => navigate("/myRequests")}>
+              <ListItemButton
+                onClick={(event) => navigate("/myRequests")}
+                style={{ backgroundColor: "#BED5EE" }}
+              >
                 <ListItemIcon>{<InboxIcon />}</ListItemIcon>
                 <ListItemText primary="My Requests" />
               </ListItemButton>

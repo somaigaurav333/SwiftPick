@@ -114,7 +114,10 @@ function ViewMyHistory() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton onClick={(event) => navigate("/myHistory")}>
+              <ListItemButton
+                onClick={(event) => navigate("/myHistory")}
+                style={{ backgroundColor: "#BED5EE" }}
+              >
                 <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
                 <ListItemText primary="History" />
               </ListItemButton>

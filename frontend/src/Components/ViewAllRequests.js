@@ -117,7 +117,10 @@ function ViewAllRequests() {
         <Box sx={{ overflow: "auto" }}>
           <List>
             <ListItem disablePadding>
-              <ListItemButton onClick={(event) => navigate("/requests")}>
+              <ListItemButton
+                onClick={(event) => navigate("/requests")}
+                style={{ backgroundColor: "#BED5EE" }}
+              >
                 <ListItemIcon>{<ListAltIcon />}</ListItemIcon>
                 <ListItemText primary="All Requests" />
               </ListItemButton>
