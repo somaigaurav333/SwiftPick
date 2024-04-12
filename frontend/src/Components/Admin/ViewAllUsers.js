@@ -14,8 +14,15 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import GroupIcon from "@mui/icons-material/Group";
 import axios_instance from "../../axios";
 import { useNavigate } from "react-router-dom";
+import Rating from "@mui/material/Rating";
 
 const drawerWidth = 200;
+
+function renderRating(params) {
+  return (
+    <Rating readOnly defaultValue={0.5} precision={0.5} value={params.value} />
+  );
+}
 
 const ViewAllUsers = () => {
   const [user, setUser] = useState();
@@ -152,6 +159,7 @@ const ViewAllUsers = () => {
       width: 150,
       align: "center",
       headerAlign: "center",
+      renderCell: renderRating,
     },
     {
       field: "requesteeRating",
@@ -159,6 +167,7 @@ const ViewAllUsers = () => {
       width: 150,
       align: "center",
       headerAlign: "center",
+      renderCell: renderRating,
     },
     {
       field: "totalRequests",
