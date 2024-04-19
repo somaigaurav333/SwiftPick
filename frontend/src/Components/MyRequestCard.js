@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 
 import { useState } from "react";
 
-function RequestCard({ request, showAccept, showCollect, showDelete }) {
+function RequestCard({ user, request, showAccept, showCollect, showDelete }) {
   const [showRequestDescription, setShowRequestDescription] = useState(false);
   const [rating, setRating] = useState(null);
   const [hoverValue, setHoverValue] = useState(null);
@@ -24,8 +24,15 @@ function RequestCard({ request, showAccept, showCollect, showDelete }) {
     setRating(newValue);
   };
 
-  const handleSubmitRating = () => {
-    alert(`You submitted a rating of ${rating} stars.`);
+  const handleSubmitRating = async () => {
+    try {
+      const response = await axios_instance.put(
+        "/users/" + user.userId + "requesteeRating/" + rating
+      );
+      alert(response.data.message);
+    } catch (err) {
+      alert(err);
+    }
   };
   const handleClose = () => {
     setShowRequestDescription(false);
