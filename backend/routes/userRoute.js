@@ -384,4 +384,84 @@ router.get("/users/:id", async (req, res) => {
   }
 });
 
+// Define route to update requester rating
+router.put("/users/:userId/requesterRating/:rating", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const { rating } = req.body;
+
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Fetch the current sum of ratings and count of ratings
+    let numberOfrequesterRating = user.numberOfrequesterRating || 0;
+    let sumOfrequesterRating = user.requesterRating * numberOfRatings;
+
+    // Update sum of ratings and count of ratings
+    sumOfrequesterRating += rating;
+    numberOfrequesterRating += 1;
+
+    // Calculate the new rating
+    const newRating = sumOfrequesterRating / numberOfrequesterRating;
+
+    // Update user's rating and ratings count
+    user.requesterRating = newRating;
+    user.numberOfrequesterRating = numberOfrequesterRating;
+
+    // Save the updated user
+    await user.save();
+
+    return res
+      .status(200)
+      .json({ message: "User rating updated successfully", user });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Define route to update requestee rating
+router.put("/users/:userId/requesteeRating/:rating", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const { rating } = req.body;
+
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Fetch the current sum of ratings and count of ratings
+    let numberOfrequesteeRating = user.numberOfrequesteeRating || 0;
+    let sumOfrequesteeRating = user.requesteeRating * numberOfRatings;
+
+    // Update sum of ratings and count of ratings
+    sumOfrequesteeRating += rating;
+    numberOfrequesteeRating += 1;
+
+    // Calculate the new rating
+    const newRating = sumOfrequesteeRating / numberOfrequesteeRating;
+
+    // Update user's rating and ratings count
+    user.requesteeRating = newRating;
+    user.numberOfrequesteeRating = numberOfrequesteeRating;
+
+    // Save the updated user
+    await user.save();
+
+    return res
+      .status(200)
+      .json({ message: "User rating updated successfully", user });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 export default router;
