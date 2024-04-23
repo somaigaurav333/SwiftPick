@@ -34,6 +34,7 @@ app.get("/", (requset, response) => {
 
 app.use("/requests", requestRoute);
 app.use("/auth", userRoute);
+// app.use("/users", userRoute);
 app.use("/admin", adminRoutes);
 mongoose
   .connect(process.env.mongoDBURL)

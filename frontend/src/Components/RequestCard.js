@@ -6,6 +6,9 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import Rating from "@mui/material/Rating";
+import Box from "@mui/material/Box";
+
 function RequestCard({
   request,
   user,
@@ -15,6 +18,29 @@ function RequestCard({
   showClose,
 }) {
   const [showRequestDescription, setShowRequestDescription] = useState(false);
+  const [rating, setRating] = useState(null);
+  const [hoverValue, setHoverValue] = useState(null);
+
+  const handleHover = (event, newValue) => {
+    setHoverValue(newValue);
+  };
+
+  const handleRatingChange = (event, newValue) => {
+    setRating(newValue);
+  };
+
+  const handleSubmitRating = async () => {
+    try {
+      const response = await axios_instance.put(
+        "/auth/users/requesterRating/" + request.requesterId,
+        { rating: rating }
+      );
+      alert(response.data.message);
+    } catch (err) {
+      alert(err);
+    }
+    setShowRequestDescription(false);
+  };
 
   const handleCloseDialog = () => {
     setShowRequestDescription(false);
@@ -167,6 +193,40 @@ function RequestCard({
                 </div>
               )}
             </DialogContentText>
+            {request.status == "DELIVERED" && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <div className="RequestDescriptionDialogText">
+                  Rate this user:
+                </div>
+                <Box component="fieldset" mb={3} borderColor="transparent">
+                  <Rating
+                    name="user-rating"
+                    value={rating}
+                    precision={0.5}
+                    onChange={handleRatingChange}
+                    onChangeActive={handleHover}
+                    size="large"
+                    sx={{ fontSize: "50px" }}
+                  />
+                </Box>
+                {rating !== null && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmitRating}
+                  >
+                    Submit Rating
+                  </Button>
+                )}
+              </div>
+            )}
           </DialogContent>
         </Dialog>
       </div>
