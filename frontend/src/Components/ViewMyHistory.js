@@ -19,6 +19,10 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import HistoryIcon from "@mui/icons-material/History";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
+// import { GoogleMap, LoadScript } from "@react-google-maps/api";
+
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 
 const drawerWidth = 240;
 
@@ -75,8 +79,7 @@ function ViewMyHistory() {
 
       return;
     }
-    fetchRequests();
-  }, [user]);
+  });
 
   return (
     <div className="bgvir">
@@ -145,6 +148,22 @@ function ViewMyHistory() {
               ></MyRequestCard>
             );
           })}
+        </div>
+        <div className="map">
+          <MapContainer
+            center={[17.544589442898644, 78.57276072353719]}
+            zoom={16.5}
+            style={{ height: "500px", width: "1000px" }}
+            scrollWheelZoom={false}
+            className="leaflet-container"
+            minZoom={16}
+            maxZoom={18}
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <Marker position={[17.544589442898644, 78.57276072353719]}>
+              <Popup>BITS Hyderabad</Popup>
+            </Marker>
+          </MapContainer>
         </div>
       </div>
     </div>
