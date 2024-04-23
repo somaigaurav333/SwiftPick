@@ -41,13 +41,27 @@ function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
   };
   const handleDelete = async () => {
     const response = await axios_instance
-      .post("/requests/delete/" + request._id)
+      .delete("/requests/delete/" + request._id)
       .then((response) => {
         console.log(response);
         if (response.status == 200) {
           alert("Request Deleted Successfully");
         } else {
           alert("Could not Delete Request");
+        }
+        setShowRequestDescription(false);
+      });
+  };
+
+  const handleDelivered = async () => {
+    const response = await axios_instance
+      .post("/requests/delivered/" + request._id)
+      .then((response) => {
+        console.log(response);
+        if (response.status == 200) {
+          alert("Request marked Delivered");
+        } else {
+          alert("Could not mark request as delivered");
         }
         setShowRequestDescription(false);
       });
@@ -113,9 +127,21 @@ function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
               <div className="RequestDescriptionDialogButtonDiv">
                 <Button
                   onClick={handleDelete}
+                  variant="outlined"
                   className="RequestDescriptionDialogButton"
                 >
                   Delete
+                </Button>
+              </div>
+            )}
+            {request.status == "COLLECTED" && (
+              <div className="RequestDescriptionDialogButtonDiv">
+                <Button
+                  onClick={handleDelivered}
+                  variant="outlined"
+                  className="RequestDescriptionDialogButton"
+                >
+                  Delivered
                 </Button>
               </div>
             )}

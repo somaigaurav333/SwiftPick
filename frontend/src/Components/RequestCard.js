@@ -154,6 +154,7 @@ function RequestCard({
                   <Button
                     onClick={handleCollect}
                     className="RequestDescriptionDialogButton"
+                    variant="outlined"
                   >
                     Collect
                   </Button>
@@ -176,6 +177,7 @@ function RequestCard({
                 <div className="RequestDescriptionDialogButtonDiv">
                   <Button
                     onClick={handleDelete}
+                    variant="outlined"
                     className="RequestDescriptionDialogButton"
                   >
                     Delete
@@ -186,6 +188,7 @@ function RequestCard({
                 <div className="RequestDescriptionDialogButtonDiv">
                   <Button
                     onClick={handleClose}
+                    variant="outlined"
                     className="RequestDescriptionDialogButton"
                   >
                     Close

@@ -7,6 +7,7 @@ const STATUS_OPEN = "OPEN";
 const STATUS_ACCEPTED = "ACCEPTED";
 const STATUS_COLLECTED = "COLLECTED";
 const STATUS_DELIVERED = "DELIVERED";
+const STATUS_CLOSED = "CLOSED";
 
 // Route for add request
 router.post("/", async (req, res) => {
@@ -64,7 +65,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Route to get all requests
+// Route to get all open requests
 router.get("/open", async (req, res) => {
   try {
     const requests = await Request.find({ status: STATUS_OPEN });
@@ -221,18 +222,61 @@ router.post("/close/:requestid", async (req, res) => {
   }
 });
 
+// Route to fetch all closed requests
+router.get("/closed/:userid", async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const result = await Request.find({
+      requesterId: userid,
+      status: STATUS_CLOSED,
+    });
+    if (!result) {
+      return res.status(404).json({ message: "Requests not found" });
+    }
+    return res.status(200).json({ data: result });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).send({ message: error.message });
+  }
+});
+
 //Route to delete request by id
 router.delete("/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const result = await Request.findByIdAndDelete(id);
     if (!result) {
-      return res.status(404).json({ message: "Request not found" });
+      return res.status(403).json({ message: "Request not found" });
     }
     return res.status(200).send({ message: "Request deleted successfully" });
   } catch (error) {
     console.log(error.message);
     return res.status(500).send({ message: error.message });
+  }
+});
+
+// Route to mark a request as DELIVERED
+router.post("/delivered/:requestid", async (req, res) => {
+  try {
+    const requestid = req.params.requestid;
+    const userRequest = await Request.find({
+      _id: requestid,
+      status: STATUS_COLLECTED,
+    });
+    if (userRequest) {
+      await Request.findByIdAndUpdate(
+        { _id: requestid },
+        { status: STATUS_DELIVERED }
+      );
+      return res.status(200).send({ message: "Request Marked as Delivered" });
+    } else {
+      return res
+        .status(400)
+        .send({ message: "No such Collected request exists" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res.status(401).send({ message: error.message });
   }
 });
 

@@ -15,6 +15,7 @@ function ViewMyRequestsRow({ title, requests, pickupLocation, user }) {
     });
   }, [requests, pickupLocation]);
 
+  console.log(title, filteredRequests);
   return (
     <div>
       {filteredRequests.length > 0 && (

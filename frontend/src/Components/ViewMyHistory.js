@@ -67,7 +67,7 @@ function ViewMyHistory() {
     async function fetchRequests() {
       if (user) {
         const response = await axios_instance.get(
-          "/requests/delivered/" + user._id
+          "/requests/closed/" + user._id
         );
         console.log(response);
         setRequests(response.data.data);
