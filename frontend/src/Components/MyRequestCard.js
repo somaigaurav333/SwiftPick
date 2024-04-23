@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 
 import { useState } from "react";
 
-function RequestCard({ user, request, showAccept, showCollect, showDelete }) {
+function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
   const [showRequestDescription, setShowRequestDescription] = useState(false);
   const [rating, setRating] = useState(null);
   const [hoverValue, setHoverValue] = useState(null);
@@ -27,12 +27,14 @@ function RequestCard({ user, request, showAccept, showCollect, showDelete }) {
   const handleSubmitRating = async () => {
     try {
       const response = await axios_instance.put(
-        "/users/" + user.userId + "requesteeRating/" + rating
+        "/auth/users/requesteeRating/" + request.requesteeId,
+        { rating: rating }
       );
       alert(response.data.message);
     } catch (err) {
       alert(err);
     }
+    setShowRequestDescription(false);
   };
   const handleClose = () => {
     setShowRequestDescription(false);
@@ -118,36 +120,40 @@ function RequestCard({ user, request, showAccept, showCollect, showDelete }) {
               </div>
             )}
           </DialogContentText>
-          {/* <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-            }}
-          >
-            <div className="RequestDescriptionDialogText">Rate this user:</div>
-            <Box component="fieldset" mb={3} borderColor="transparent">
-              <Rating
-                name="user-rating"
-                value={rating}
-                precision={0.5}
-                onChange={handleRatingChange}
-                onChangeActive={handleHover}
-                size="large"
-                sx={{ fontSize: "50px" }}
-              />
-            </Box>
-            {rating !== null && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSubmitRating}
-              >
-                Submit Rating
-              </Button>
-            )}
-          </div> */}
+          {request.status == "DELIVERED" && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <div className="RequestDescriptionDialogText">
+                Rate this user:
+              </div>
+              <Box component="fieldset" mb={3} borderColor="transparent">
+                <Rating
+                  name="user-rating"
+                  value={rating}
+                  precision={0.5}
+                  onChange={handleRatingChange}
+                  onChangeActive={handleHover}
+                  size="large"
+                  sx={{ fontSize: "50px" }}
+                />
+              </Box>
+              {rating !== null && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmitRating}
+                >
+                  Submit Rating
+                </Button>
+              )}
+            </div>
+          )}
         </DialogContent>
       </Dialog>
       <span
@@ -181,4 +187,4 @@ function RequestCard({ user, request, showAccept, showCollect, showDelete }) {
   );
 }
 
-export default RequestCard;
+export default MyRequestCard;

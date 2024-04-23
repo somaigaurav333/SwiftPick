@@ -20,8 +20,8 @@ config();
 //Middleware for handling CORS Policy
 //Option 1: Allow All origins with default of cors(*)
 const corsOptions = {
-  origin: "https://swift-pick-frontend.vercel.app",
-  // origin: "http://localhost:3000",
+  // origin: "https://swift-pick-frontend.vercel.app",
+  origin: "http://localhost:3000",
   optionsSuccessStatus: 200,
   credentials: true,
 };
@@ -34,6 +34,7 @@ app.get("/", (requset, response) => {
 
 app.use("/requests", requestRoute);
 app.use("/auth", userRoute);
+// app.use("/users", userRoute);
 app.use("/admin", adminRoutes);
 mongoose
   .connect(process.env.mongoDBURL)

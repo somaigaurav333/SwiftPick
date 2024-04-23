@@ -68,8 +68,10 @@ router.post("/signup", async (req, res) => {
       hostelName: hostelName,
       gender: gender,
       phoneNumber: phoneNumber,
-      requesterRating: 0.1,
-      requesteeRating: 0.1,
+      requesterRating: 0.0,
+      requesteeRating: 0.0,
+      numberOfrequesterRating: 0,
+      numberOfrequesteeRating: 0,
       totalRequests: 0,
       totalDeliveries: 0,
     };
@@ -385,7 +387,7 @@ router.get("/users/:id", async (req, res) => {
 });
 
 // Define route to update requester rating
-router.put("/users/:userId/requesterRating/:rating", async (req, res) => {
+router.put("/users/requesterRating/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
     const { rating } = req.body;
@@ -399,7 +401,7 @@ router.put("/users/:userId/requesterRating/:rating", async (req, res) => {
 
     // Fetch the current sum of ratings and count of ratings
     let numberOfrequesterRating = user.numberOfrequesterRating || 0;
-    let sumOfrequesterRating = user.requesterRating * numberOfRatings;
+    let sumOfrequesterRating = user.requesterRating * numberOfrequesterRating;
 
     // Update sum of ratings and count of ratings
     sumOfrequesterRating += rating;
@@ -425,7 +427,7 @@ router.put("/users/:userId/requesterRating/:rating", async (req, res) => {
 });
 
 // Define route to update requestee rating
-router.put("/users/:userId/requesteeRating/:rating", async (req, res) => {
+router.put("/users/requesteeRating/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
     const { rating } = req.body;
@@ -439,7 +441,7 @@ router.put("/users/:userId/requesteeRating/:rating", async (req, res) => {
 
     // Fetch the current sum of ratings and count of ratings
     let numberOfrequesteeRating = user.numberOfrequesteeRating || 0;
-    let sumOfrequesteeRating = user.requesteeRating * numberOfRatings;
+    let sumOfrequesteeRating = user.requesteeRating * numberOfrequesteeRating;
 
     // Update sum of ratings and count of ratings
     sumOfrequesteeRating += rating;

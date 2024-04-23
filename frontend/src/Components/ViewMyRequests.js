@@ -138,7 +138,7 @@ function ViewMyRequests() {
           {!requests.length && (
             <span className="Nothing">Nothing to show here</span>
           )}
-          {["OPEN", "ACCEPTED", "COLLECTED"].map((status) => {
+          {["OPEN", "ACCEPTED", "COLLECTED", "DELIVERED"].map((status) => {
             return (
               <div>
                 <ViewMyRequestsRow
