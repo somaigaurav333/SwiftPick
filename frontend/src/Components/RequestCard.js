@@ -193,7 +193,7 @@ function RequestCard({
                 </div>
               )}
             </DialogContentText>
-            {request.status != "DELIVERED" && (
+            {request.status == "DELIVERED" && (
               <div
                 style={{
                   display: "flex",
