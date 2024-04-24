@@ -29,4 +29,8 @@
     margin-bottom: 2px;
 }
 
-/* .RatingDescription {} */
+/* .RatingDialog {
+    padding: 50px !important;
+    margin: 100px !important;
+    min-width: 50vw !important;
+} */

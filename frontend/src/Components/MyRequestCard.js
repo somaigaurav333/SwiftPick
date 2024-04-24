@@ -79,6 +79,8 @@ function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
         open={showRating}
         onClose={handleCloseRating}
         className="RatingDialog"
+        fullWidth
+        maxWidth="xs"
       >
         <DialogTitle className="RequestDescriptionDialogTitle">
           Rate
@@ -108,17 +110,14 @@ function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
               variant="contained"
               color="primary"
               onClick={handleSubmitRating}
+              style={{ marginBottom: "10px" }}
             >
               Submit Rating
             </Button>
           )}
         </div>
       </Dialog>
-      <Dialog
-        open={showRequestDescription}
-        onClose={handleClose}
-        className="RequestDescriptionDialog"
-      >
+      <Dialog open={showRequestDescription} onClose={handleClose} className=" ">
         <DialogTitle className="RequestDescriptionDialogTitle">
           Request Details
         </DialogTitle>
