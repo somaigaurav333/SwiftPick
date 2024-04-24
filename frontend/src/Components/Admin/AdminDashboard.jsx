@@ -43,6 +43,7 @@ const AdminDashboard = () => {
     const [pickupCount, setPickupCount] = useState([]);
     const [pieColors1, setPieColors1] = useState([]);
     const [pieColors2, setPieColors2] = useState([]);
+    const [dayWiseData, setDayWiseData] = useState([]);
 
     const refreshToken = async () => {
         const res = await axios_instance.get('/auth/refreshAdmin', {
@@ -76,6 +77,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         getCount();
         getLocCount();
+        getDayWise();
     }, []);
 
     useEffect(() => {
@@ -105,43 +107,12 @@ const AdminDashboard = () => {
         console.log(deliveryCount)
     };
 
-    const lineData = [
-        {
-            "date": "2024-04-11",
-            "Completed Requests": 14,
-            "Total Requests": 68
-        },
-        {
-            "date": "2024-04-12",
-            "Completed Requests": 1,
-            "Total Requests": 21
-        },
-        {
-            "date": "2024-04-13",
-            "Completed Requests": 11,
-            "Total Requests": 83
-        },
-        {
-            "date": "2024-04-14",
-            "Completed Requests": 14,
-            "Total Requests": 72
-        },
-        {
-            "date": "2024-04-15",
-            "Completed Requests": 12,
-            "Total Requests": 65
-        },
-        {
-            "date": "2024-04-16",
-            "Completed Requests": 79,
-            "Total Requests": 100
-        },
-        {
-            "date": "2024-04-17",
-            "Completed Requests": 52,
-            "Total Requests": 69
-        },
-    ];
+    const getDayWise = async () => {
+        const dayWiseData = await axios_instance.get('/stats/getPerDayReqs').catch((err) => console.log(err));
+        
+        console.log(dayWiseData.data)
+        setDayWiseData(dayWiseData.data);
+    }
 
     const generatePieColors = (data) => {
         const colors = [];
@@ -243,7 +214,7 @@ const AdminDashboard = () => {
                         <LineChart
                             width={500}
                             height={300}
-                            data={lineData}
+                            data={dayWiseData}
                             margin={{
                                 top: 5,
                                 right: 30,
