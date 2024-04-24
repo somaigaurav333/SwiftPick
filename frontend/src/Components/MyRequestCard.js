@@ -13,6 +13,7 @@ import { useState } from "react";
 
 function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
   const [showRequestDescription, setShowRequestDescription] = useState(false);
+  const [showRating, setShowRating] = useState(false);
   const [rating, setRating] = useState(null);
   const [hoverValue, setHoverValue] = useState(null);
 
@@ -34,10 +35,16 @@ function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
     } catch (err) {
       alert(err);
     }
-    setShowRequestDescription(false);
+
+    handleDelivered();
+
+    setShowRating(false);
   };
   const handleClose = () => {
     setShowRequestDescription(false);
+  };
+  const handleCloseRating = () => {
+    setShowRating(false);
   };
   const handleDelete = async () => {
     const response = await axios_instance
@@ -68,6 +75,45 @@ function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
   };
   return (
     <span>
+      <Dialog
+        open={showRating}
+        onClose={handleCloseRating}
+        className="RatingDialog"
+      >
+        <DialogTitle className="RequestDescriptionDialogTitle">
+          Rate
+        </DialogTitle>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <div className="RequestDescriptionDialogText">Rate the requestee</div>
+          <Box component="fieldset" mb={3} borderColor="transparent">
+            <Rating
+              name="user-rating"
+              value={rating}
+              precision={0.5}
+              onChange={handleRatingChange}
+              onChangeActive={handleHover}
+              size="large"
+              sx={{ fontSize: "50px" }}
+            />
+          </Box>
+          {rating !== null && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmitRating}
+            >
+              Submit Rating
+            </Button>
+          )}
+        </div>
+      </Dialog>
       <Dialog
         open={showRequestDescription}
         onClose={handleClose}
@@ -137,7 +183,9 @@ function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
             {request.status == "COLLECTED" && (
               <div className="RequestDescriptionDialogButtonDiv">
                 <Button
-                  onClick={handleDelivered}
+                  onClick={() => {
+                    setShowRating(true);
+                  }}
                   variant="outlined"
                   className="RequestDescriptionDialogButton"
                 >
@@ -146,40 +194,6 @@ function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
               </div>
             )}
           </DialogContentText>
-          {request.status == "DELIVERED" && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <div className="RequestDescriptionDialogText">
-                Rate this user:
-              </div>
-              <Box component="fieldset" mb={3} borderColor="transparent">
-                <Rating
-                  name="user-rating"
-                  value={rating}
-                  precision={0.5}
-                  onChange={handleRatingChange}
-                  onChangeActive={handleHover}
-                  size="large"
-                  sx={{ fontSize: "50px" }}
-                />
-              </Box>
-              {rating !== null && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSubmitRating}
-                >
-                  Submit Rating
-                </Button>
-              )}
-            </div>
-          )}
         </DialogContent>
       </Dialog>
       <span
