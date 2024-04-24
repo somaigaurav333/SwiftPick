@@ -39,6 +39,8 @@ function RequestCard({
     } catch (err) {
       alert(err);
     }
+
+    handleCloseRequest();
     setShowRequestDescription(false);
   };
 
@@ -85,7 +87,7 @@ function RequestCard({
         setShowRequestDescription(false);
       });
   };
-  const handleClose = async () => {
+  const handleCloseRequest = async () => {
     const response = await axios_instance
       .post("/requests/close/" + request._id)
       .then((response) => {
@@ -181,17 +183,6 @@ function RequestCard({
                     className="RequestDescriptionDialogButton"
                   >
                     Delete
-                  </Button>
-                </div>
-              )}
-              {showClose && request.status == "COLLECTED" && (
-                <div className="RequestDescriptionDialogButtonDiv">
-                  <Button
-                    onClick={handleClose}
-                    variant="outlined"
-                    className="RequestDescriptionDialogButton"
-                  >
-                    Close
                   </Button>
                 </div>
               )}
