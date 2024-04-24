@@ -37,7 +37,7 @@ app.use("/requests", requestRoute);
 app.use("/auth", userRoute);
 // app.use("/users", userRoute);
 app.use("/admin", adminRoutes);
-app.use("/stats", statsRoutes)
+app.use("/stats", statsRoutes);
 
 mongoose
   .connect(process.env.mongoDBURL)
