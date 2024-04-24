@@ -68,18 +68,24 @@ function ViewMyHistory() {
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
+    console.log("user:", user);
     async function fetchRequests() {
       if (user) {
+        console.log("first");
         const response = await axios_instance.get(
-          "/requests/closed/" + user._id
+          "/requests/history/" + user._id
         );
         console.log(response);
         setRequests(response.data.data);
+      } else {
+        console.log("second");
       }
 
       return;
     }
-  });
+
+    fetchRequests();
+  }, [user]);
 
   return (
     <div className="bgvir">
