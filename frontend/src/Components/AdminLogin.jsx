@@ -22,7 +22,7 @@ const Login = () => {
         })
         .then((response) => {
             if (response.status === 200) {
-              navigate("/admin/locations");
+              navigate("/admin/dashboard");
               dispatch(authActions.login())
             } else {
               alert("Error Occurred");

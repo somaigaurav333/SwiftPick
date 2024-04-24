@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid, DEFAULT_GRID_AUTOSIZE_OPTIONS } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 // import { DataGridPremium } from "@mui/x-data-grid-premium";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -12,6 +12,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import GroupIcon from "@mui/icons-material/Group";
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import axios_instance from "../../axios";
 import { useNavigate } from "react-router-dom";
 import Rating from "@mui/material/Rating";
@@ -256,7 +257,15 @@ const ViewAllUsers = () => {
       >
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          <List>
+        <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/admin/dashboard")}>
+                <ListItemIcon>
+                  <SpaceDashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Dashboard" />
+              </ListItemButton>
+            </ListItem>
             <ListItem disablePadding>
               <ListItemButton onClick={(event) => navigate("/admin/locations")}>
                 <ListItemIcon>
