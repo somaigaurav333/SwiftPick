@@ -68,10 +68,27 @@
   align-self: center;
 }
 
-
 /* .RequestDescriptionDialog {
-  background-color: pink !important;
+  width: 2000px;
+  height: 900px;
 } */
+
+.outerdiv {
+  display: flex;
+  flex-direction: horizontal;
+  align-items: start;
+}
+
+.detailsdiv {
+  flex: 2 !important;
+}
+
+.mapdiv {
+  flex: 3 !important;
+  vertical-align: top !important;
+  margin-left: 40px;
+  margin-top: 20px;
+}
 
 .RequestDescriptionDialogText {
   font-size: x-large !important;
@@ -79,7 +96,6 @@
   padding-left: 20px;
   padding-right: 20px;
   /* background-color: pink !important; */
-
 }
 
 .RequestDescriptionDialogTitle {
@@ -87,7 +103,6 @@
   text-align: center;
   /* background-color: rgb(236, 219, 222) !important; */
   background-color: rgb(219, 236, 236) !important;
-
 }
 
 .RequestDescriptionDialogButtonDiv {
@@ -116,8 +131,6 @@
   background-color: #03dac6 !important;
   border-color: #03dac6 !important;
 }
-
-
 
 .RequestDescriptionDialogItems {
   text-align: center;

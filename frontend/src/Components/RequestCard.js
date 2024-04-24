@@ -9,6 +9,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+
 function RequestCard({
   request,
   user,
@@ -106,95 +109,124 @@ function RequestCard({
           open={showRequestDescription}
           onClose={handleCloseDialog}
           className="RequestDescriptionDialog"
+          fullWidth={true}
+          maxWidth="lg"
         >
           <DialogTitle className="RequestDescriptionDialogTitle">
             Request Details
           </DialogTitle>
           <DialogContent>
             <DialogContentText className="RequestDescriptionDialogText">
-              <div className="RequestDescriptionDialogText">
-                Requester: {request.requesterUsername}
-              </div>
-              {request.status != "OPEN" && (
-                <div className="RequestDescriptionDialogText">
-                  Requester Phone: {request.phoneNumber}
-                </div>
-              )}
-
-              <div className="RequestDescriptionDialogText">
-                Date: {request.date}
-              </div>
-              <div className="RequestDescriptionDialogText">
-                Time: {request.time}
-              </div>
-              <div className="RequestDescriptionDialogText">
-                Pickp Location: {request.pickupLocation}
-              </div>
-              <div className="RequestDescriptionDialogText">
-                Delivery Location: {request.deliveryLocation}
-              </div>
-              <div className="RequestDescriptionDialogText">
-                Items:
-                {request.items.map((item) => {
-                  return (
-                    <div className="RequestDescriptionDialogItems" key={item}>
-                      {item}
+              <div className="outerdiv">
+                <div className="detailsdiv">
+                  <div className="RequestDescriptionDialogText">
+                    Requester: {request.requesterUsername}
+                  </div>
+                  {request.status != "OPEN" && (
+                    <div className="RequestDescriptionDialogText">
+                      Requester Phone: {request.phoneNumber}
                     </div>
-                  );
-                })}
-              </div>
-              <div className="RequestDescriptionDialogText">
-                Payment Method: {request.paymentMethod}
-              </div>
-              <div className="RequestDescriptionDialogText">
-                Requester Note: {request.requesterNote}
-              </div>
-              {showCollect && request.status == "ACCEPTED" && (
-                <div className="RequestDescriptionDialogButtonDiv">
-                  <Button
-                    onClick={handleCollect}
-                    className="RequestDescriptionDialogButton"
-                    variant="outlined"
-                  >
-                    Collect
-                  </Button>
+                  )}
+
+                  <div className="RequestDescriptionDialogText">
+                    Date: {request.date}
+                  </div>
+                  <div className="RequestDescriptionDialogText">
+                    Time: {request.time}
+                  </div>
+                  <div className="RequestDescriptionDialogText">
+                    Pickp Location: {request.pickupLocation}
+                  </div>
+                  <div className="RequestDescriptionDialogText">
+                    Delivery Location: {request.deliveryLocation}
+                  </div>
+                  <div className="RequestDescriptionDialogText">
+                    Items:
+                    {request.items.map((item) => {
+                      return (
+                        <div
+                          className="RequestDescriptionDialogItems"
+                          key={item}
+                        >
+                          {item}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="RequestDescriptionDialogText">
+                    Payment Method: {request.paymentMethod}
+                  </div>
+                  <div className="RequestDescriptionDialogText">
+                    Requester Note: {request.requesterNote}
+                  </div>
+                  {showCollect && request.status == "ACCEPTED" && (
+                    <div className="RequestDescriptionDialogButtonDiv">
+                      <Button
+                        onClick={handleCollect}
+                        className="RequestDescriptionDialogButton"
+                        variant="outlined"
+                      >
+                        Collect
+                      </Button>
+                    </div>
+                  )}
+                  {user &&
+                    showAccept &&
+                    request.requesterUsername != user.username && (
+                      <div className="RequestDescriptionDialogButtonDiv">
+                        <Button
+                          onClick={handleAcceptRequest}
+                          variant="outlined"
+                          className="RequestDescriptionDialogButton"
+                        >
+                          Accept
+                        </Button>
+                      </div>
+                    )}
+                  {showDelete && request.status == "OPEN" && (
+                    <div className="RequestDescriptionDialogButtonDiv">
+                      <Button
+                        onClick={handleDelete}
+                        variant="outlined"
+                        className="RequestDescriptionDialogButton"
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  )}
+                  {showClose && request.status == "COLLECTED" && (
+                    <div className="RequestDescriptionDialogButtonDiv">
+                      <Button
+                        onClick={handleClose}
+                        variant="outlined"
+                        className="RequestDescriptionDialogButton"
+                      >
+                        Close
+                      </Button>
+                    </div>
+                  )}
                 </div>
-              )}
-              {user &&
-                showAccept &&
-                request.requesterUsername != user.username && (
-                  <div className="RequestDescriptionDialogButtonDiv">
-                    <Button
-                      onClick={handleAcceptRequest}
-                      variant="outlined"
-                      className="RequestDescriptionDialogButton"
+                {request.status == "ACCEPTED" && (
+                  <div className="mapdiv">
+                    <MapContainer
+                      center={[17.544589442898644, 78.57276072353719]}
+                      zoom={16.5}
+                      style={{ height: "75vh", width: "45vw" }}
+                      scrollWheelZoom={false}
+                      className="leaflet-container"
+                      minZoom={16}
+                      maxZoom={18}
                     >
-                      Accept
-                    </Button>
+                      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                      <Marker
+                        position={[17.544589442898644, 78.57276072353719]}
+                      >
+                        <Popup>BPHC</Popup>
+                      </Marker>
+                    </MapContainer>
                   </div>
                 )}
-              {showDelete && request.status == "OPEN" && (
-                <div className="RequestDescriptionDialogButtonDiv">
-                  <Button
-                    onClick={handleDelete}
-                    variant="outlined"
-                    className="RequestDescriptionDialogButton"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              )}
-              {showClose && request.status == "COLLECTED" && (
-                <div className="RequestDescriptionDialogButtonDiv">
-                  <Button
-                    onClick={handleClose}
-                    variant="outlined"
-                    className="RequestDescriptionDialogButton"
-                  >
-                    Close
-                  </Button>
-                </div>
-              )}
+              </div>
             </DialogContentText>
             {request.status == "DELIVERED" && (
               <div
