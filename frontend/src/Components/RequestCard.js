@@ -32,12 +32,16 @@ function RequestCard({
   pickupCoordinates,
   deliveryCoordinates,
 }) {
-  var pickupResult = String(pickupCoordinates).split(",").map(function (value) {
-    return value.trim();
-  });
-  var deliveryResult = String(deliveryCoordinates).split(",").map(function (value) {
-    return value.trim();
-  });
+  var pickupResult = String(pickupCoordinates)
+    .split(",")
+    .map(function (value) {
+      return value.trim();
+    });
+  var deliveryResult = String(deliveryCoordinates)
+    .split(",")
+    .map(function (value) {
+      return value.trim();
+    });
   const pickupx = parseFloat(pickupResult[0]);
   const pickupy = parseFloat(pickupResult[1]);
   const deliveryx = parseFloat(deliveryResult[0]);
@@ -346,7 +350,7 @@ function RequestCard({
                 <div className="mapdiv">
                   <MapContainer
                     center={[centerx, centery]}
-                    zoom={16.5}
+                    zoom={18}
                     style={{ height: "75vh", width: "45vw" }}
                     scrollWheelZoom={false}
                     className="leaflet-container"
