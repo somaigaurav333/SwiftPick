@@ -239,6 +239,24 @@ router.get("/closed/:userid", async (req, res) => {
   }
 });
 
+// Route to closed and delivered requests (history)
+router.get("/history/:userid", async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const result = await Request.find({
+      requesterId: userid,
+      status: { $in: [STATUS_DELIVERED, STATUS_CLOSED] },
+    });
+    if (!result) {
+      return res.status(404).json({ message: "Requests not found" });
+    }
+    return res.status(200).json({ data: result });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).send({ message: error.message });
+  }
+});
+
 //Route to delete request by id
 router.delete("/delete/:id", async (req, res) => {
   try {

@@ -14,11 +14,11 @@ const verifyToken = async (req, res, next) => {
         return res.status(403).json({ message: "Invalid Token" });
       }
       req.id = user._id;
+      next();
     });
   } catch (error) {
     return res.status(404).json({ message: "Invalid Token" });
   }
-  next();
 };
 
 const getUser = async (req, res, next) => {
@@ -63,8 +63,6 @@ const refreshToken = async (req, res, next) => {
         return res.status(408).json({ message: "Invalid Token" });
       }
 
-      // console.log(user);
-
       res.clearCookie(`${user._id}`);
       req.cookies[`${user._id}`] = "";
 
@@ -85,8 +83,6 @@ const refreshToken = async (req, res, next) => {
         expiresIn: "11m",
       });
 
-      // console.log("Regenerated Token\n", token);
-
       const options = {
         path: "/",
         expires: new Date(Date.now() + 1000 * 60 * 10),
@@ -97,8 +93,10 @@ const refreshToken = async (req, res, next) => {
 
       res.cookie(String(user._id), token, options);
 
-      req.id = user._id;
-      next();
+      // Send a response or end the middleware chain here
+      res.status(200).json({ token });
+
+      // Avoid calling next() here
     });
   } catch (error) {
     return res.status(409).json({ message: "Invalid Token" });
@@ -117,8 +115,6 @@ const refreshAdminToken = async (req, res, next) => {
         console.log(err);
         return res.status(411).json({ message: "Invalid Token" });
       }
-
-      // console.log(user);
 
       res.clearCookie(`${admin._id}`);
       req.cookies[`${admin._id}`] = "";
@@ -140,8 +136,10 @@ const refreshAdminToken = async (req, res, next) => {
       };
       res.cookie(String(admin._id), token, options);
 
-      req.id = admin._id;
-      next();
+      // Send a response or end the middleware chain here
+      res.status(200).json({ token });
+
+      // Avoid calling next() here
     });
   } catch (error) {
     return res.status(412).json({ message: "Invalid Token" });

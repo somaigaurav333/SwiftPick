@@ -6,6 +6,17 @@ import { Request } from "../models/requestModel.js";
 
 const router = express.Router();
 
+function formatDate(date) {
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  return `${day} ${month} ${year}`;
+}
+
 router.get('/getCount', async (req, res) => {
     try {
         // Your user data fetching logic here
@@ -21,26 +32,40 @@ router.get('/getCount', async (req, res) => {
 });
 
 router.get('/getPerDayReqs', async (req, res) =>{
-    try {
-        console.log("Hello");
-        const deliveriesPerDay = await Request.aggregate([
-            {
-                $match: {
-                    totalDeliveries: { $gt: 0 },
-                },
-            },
-            {
-                $group: {
-                    _id: { $dateToString: { format: '%Y-%m-%d', date: '$updatedAt' } },
-                    count: { $sum: 1 },
-                },
-            },
-            { $sort: { _id: 1 } },
-        ]);
-        res.status(200).json(deliveriesPerDay);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+  try {
+    const stats = [];
+
+    for (let i = 0; i < 7; i++) {
+      const currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() - i);
+      const formattedDate = formatDate(currentDate);
+
+      const nextDate = new Date(currentDate);
+      nextDate.setDate(nextDate.getDate() + 1);
+      const formattedNextDate = formatDate(nextDate);
+
+      const totalRequests = await Request.countDocuments({
+        date: { $gte: formattedDate, $lt: formattedNextDate },
+      });
+
+      const completedRequests = await Request.countDocuments({
+        date: { $gte: formattedDate, $lt: formattedNextDate },
+        status: "CLOSED",
+      });
+
+      const dailyStats = {
+        date: formattedDate,
+        "Completed Requests": completedRequests,
+        "Total Requests": totalRequests,
+      };
+
+      stats.unshift(dailyStats);
     }
+
+    res.json(stats);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 })
 
 // Route to get no. of requests based on Pickup Location

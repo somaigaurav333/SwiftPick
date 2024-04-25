@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DataGrid} from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -17,7 +17,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import GroupIcon from '@mui/icons-material/Group';
-import {useNavigate} from 'react-router-dom'
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
+import { useNavigate } from 'react-router-dom'
 import axios_instance from '../../axios';
 
 const drawerWidth = 200;
@@ -184,22 +185,30 @@ const ViewAllLocations = () => {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-              <ListItem disablePadding>
-                <ListItemButton onClick={(event) => navigate("/admin/locations")}>
-                  <ListItemIcon>
-                    <LocationOnIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Locations" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem  disablePadding>
-                <ListItemButton onClick={(event) => navigate("/admin/users")}>
-                  <ListItemIcon>
-                    <GroupIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Users" />
-                </ListItemButton>
-              </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/admin/dashboard")}>
+                <ListItemIcon>
+                  <SpaceDashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Dashboard" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/admin/locations")}>
+                <ListItemIcon>
+                  <LocationOnIcon />
+                </ListItemIcon>
+                <ListItemText primary="Locations" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/admin/users")}>
+                <ListItemIcon>
+                  <GroupIcon />
+                </ListItemIcon>
+                <ListItemText primary="Users" />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Drawer>{' '}
@@ -219,7 +228,7 @@ const ViewAllLocations = () => {
           <Button
             variant='outlined'
             onClick={handleClickOpen}
-            style={{ position: 'absolute', top: 0, right: 0, marginTop: 10}}
+            style={{ position: 'absolute', top: 0, right: 0, marginTop: 10 }}
           >
             Add Location
           </Button>

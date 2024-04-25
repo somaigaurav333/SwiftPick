@@ -11,7 +11,7 @@ import Dashboard from "./Components/Dashboard";
 import AdminLogin from "./Components/AdminLogin";
 import ViewAllLocations from "./Components/Admin/ViewAllLocations";
 import ViewAllUsers from "./Components/Admin/ViewAllUsers";
-import PostNewRequest from "./Components/PostNewRequest";
+import AdminDashboard from "./Components/Admin/AdminDashboard";
 import ViewMyRequests from "./Components/ViewMyRequests";
 import ViewMyHistory from "./Components/ViewMyHistory";
 import { useSelector } from "react-redux";
@@ -41,6 +41,9 @@ const App = () => {
           {isLoggedIn && <Route path="/dashboard" element={<Dashboard />} />}
           {isLoggedIn && (
             <Route path="/requests" element={<ViewAllRequests />} />
+          )}
+          {isLoggedIn && (
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
           )}
           {isLoggedIn && (
             <Route path="/admin/locations" element={<ViewAllLocations />} />
