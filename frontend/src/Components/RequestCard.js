@@ -29,7 +29,21 @@ function RequestCard({
   showCollect,
   showDelete,
   showClose,
+  pickupCoordinates,
+  deliveryCoordinates,
 }) {
+  var pickupResult = String(pickupCoordinates).split(",").map(function (value) {
+    return value.trim();
+  });
+  var deliveryResult = String(deliveryCoordinates).split(",").map(function (value) {
+    return value.trim();
+  });
+  const pickupx = parseFloat(pickupResult[0]);
+  const pickupy = parseFloat(pickupResult[1]);
+  const deliveryx = parseFloat(deliveryResult[0]);
+  const deliveryy = parseFloat(deliveryResult[1]);
+  const centerx = (pickupx + deliveryx) / 2;
+  const centery = (pickupy + deliveryy) / 2;
   const [showRequestDescription, setShowRequestDescription] = useState(false);
   const [showMapDescription, setShowMapDescription] = useState(false);
   const [rating, setRating] = useState(null);
@@ -145,7 +159,7 @@ function RequestCard({
                 Time: {request.time}
               </div>
               <div className="RequestDescriptionDialogText">
-                Pickp Location: {request.pickupLocation}
+                Pickup Location: {request.pickupLocation}
               </div>
               <div className="RequestDescriptionDialogText">
                 Delivery Location: {request.deliveryLocation}
@@ -331,7 +345,7 @@ function RequestCard({
                 </div>
                 <div className="mapdiv">
                   <MapContainer
-                    center={[17.544589442898644, 78.57276072353719]}
+                    center={[centerx, centery]}
                     zoom={16.5}
                     style={{ height: "75vh", width: "45vw" }}
                     scrollWheelZoom={false}
@@ -341,16 +355,13 @@ function RequestCard({
                   >
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                     <Marker
-                      position={[17.544589442898644, 78.57276072353719]}
+                      position={[pickupx, pickupy]}
                       icon={iconGreen}
                       style={{ colors: "green" }}
                     >
                       <Popup>BPHC</Popup>
                     </Marker>
-                    <Marker
-                      position={[17.543871814277598, 78.5762166760505]}
-                      icon={iconBlue}
-                    >
+                    <Marker position={[deliveryx, deliveryy]} icon={iconBlue}>
                       <Popup>BPHC</Popup>
                     </Marker>
                   </MapContainer>

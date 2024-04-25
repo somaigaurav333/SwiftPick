@@ -35,8 +35,11 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
+const pickupLocationsURL = "/admin/locations";
 
 function PendingRequests() {
+  //fetch pickup locations data
+  const [pickupLocations, setpickupLocations] = useState([]);
   const navigate = useNavigate();
   let firstRender = true;
   const [user, setUser] = useState();
@@ -88,6 +91,15 @@ function PendingRequests() {
     }
     fetchRequests();
   }, [user]);
+
+  useEffect(() => {
+    async function fetchPickUpLocations() {
+      const response = await axios_instance.get(pickupLocationsURL);
+      setpickupLocations(response.data.data);
+      return;
+    }
+    fetchPickUpLocations();
+  }, []);
 
   return (
     <div className="bgvir">
@@ -152,6 +164,16 @@ function PendingRequests() {
                 showAccept={false}
                 showCollect={true}
                 showDelete={false}
+                pickupCoordinates={String(
+                  pickupLocations.find(
+                    (place) => place.location === request.pickupLocation
+                  ).coordinate
+                )}
+                deliveryCoordinates={String(
+                  pickupLocations.find(
+                    (place) => place.location === request.deliveryLocation
+                  ).coordinate
+                )}
               ></RequestCard>
             );
           })}
