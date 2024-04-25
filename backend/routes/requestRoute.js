@@ -185,7 +185,7 @@ router.get("/pending/:requesteeid", async (req, res) => {
     const { requesteeid } = req.params;
     const result = await Request.find({
       requesteeId: requesteeid,
-      status: { $in: [STATUS_ACCEPTED, STATUS_COLLECTED] },
+      status: { $in: [STATUS_ACCEPTED, STATUS_COLLECTED, STATUS_DELIVERED] },
     });
     if (!result) {
       return res.status(404).json({ message: "Requests not found" });
@@ -203,12 +203,11 @@ router.post("/close/:requestid", async (req, res) => {
     const requestid = req.params.requestid;
     const userRequest = await Request.find({
       _id: requestid,
-      status: STATUS_COLLECTED,
     });
     if (userRequest) {
       await Request.findByIdAndUpdate(
         { _id: requestid },
-        { status: STATUS_DELIVERED }
+        { status: STATUS_CLOSED }
       );
       return res.status(200).send({ message: "Request Delivered" });
     } else {
@@ -261,7 +260,6 @@ router.post("/delivered/:requestid", async (req, res) => {
     const requestid = req.params.requestid;
     const userRequest = await Request.find({
       _id: requestid,
-      status: STATUS_COLLECTED,
     });
     if (userRequest) {
       await Request.findByIdAndUpdate(

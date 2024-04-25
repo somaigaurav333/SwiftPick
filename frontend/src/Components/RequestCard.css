@@ -69,9 +69,15 @@
 }
 
 /* .RequestDescriptionDialog {
-  width: 2000px;
+  width: 650px;
   height: 900px;
+  align-items: center;
+  align-self: center !important;
 } */
+
+.detailsdiv{
+  align-self: center;
+ }
 
 .outerdiv {
   display: flex;
@@ -79,7 +85,7 @@
   align-items: start;
 }
 
-.detailsdiv {
+.detailsdiv-map {
   flex: 2 !important;
 }
 
