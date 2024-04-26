@@ -5,18 +5,32 @@ import axios_instance from "../axios";
 
 const pickupLocationsURL = "/admin/locations";
 
-function ViewAllRequestsRow({ title, requests, pickupLocation, user }) {
+function ViewAllRequestsRow({
+  title,
+  requests,
+  pickupLocation,
+  user,
+  pending,
+}) {
   //Filter requests based on pickup location
   const [filteredRequests, setFilteredRequests] = useState([]);
   const [pickupLocations, setpickupLocations] = useState([]);
 
   useEffect(() => {
     setFilteredRequests([]);
-    requests.forEach((request) => {
-      if (request.pickupLocation === pickupLocation.location) {
-        setFilteredRequests((oldArray) => [...oldArray, request]);
-      }
-    });
+    if (pending === 0) {
+      requests.forEach((request) => {
+        if (request.pickupLocation === pickupLocation.location) {
+          setFilteredRequests((oldArray) => [...oldArray, request]);
+        }
+      });
+    } else if (pending === 1) {
+      requests.forEach((request) => {
+        if (request.status === pickupLocation) {
+          setFilteredRequests((oldArray) => [...oldArray, request]);
+        }
+      });
+    }
   }, [requests, pickupLocation]);
 
   useEffect(() => {
