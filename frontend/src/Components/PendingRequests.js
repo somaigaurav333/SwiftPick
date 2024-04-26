@@ -166,7 +166,6 @@ function PendingRequests() {
                 return true;
               }
             });
-            console.log(typeof pc?.coordinate);
             let dc = pickupLocations.find((place) => {
               // console.log(typeof place.location);
               // console.log(typeof request.pickupLocation);

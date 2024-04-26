@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import RequestCard from "./RequestCard";
 import "./ViewAllRequestsRow.css";
+import axios_instance from "../axios";
+
+const pickupLocationsURL = "/admin/locations";
 
 function ViewAllRequestsRow({ title, requests, pickupLocation, user }) {
   //Filter requests based on pickup location
   const [filteredRequests, setFilteredRequests] = useState([]);
+  const [pickupLocations, setpickupLocations] = useState([]);
 
   useEffect(() => {
     setFilteredRequests([]);
@@ -15,6 +19,15 @@ function ViewAllRequestsRow({ title, requests, pickupLocation, user }) {
     });
   }, [requests, pickupLocation]);
 
+  useEffect(() => {
+    async function fetchPickUpLocations() {
+      const response = await axios_instance.get(pickupLocationsURL);
+      setpickupLocations(response.data.data);
+      return;
+    }
+    fetchPickUpLocations();
+  }, []);
+
   return (
     <div>
       {filteredRequests.length > 0 && (
@@ -22,6 +35,26 @@ function ViewAllRequestsRow({ title, requests, pickupLocation, user }) {
           <h2>{title}</h2>
           <div className="RequestCards">
             {filteredRequests.map((request) => {
+              let pc = pickupLocations.find((place) => {
+                // console.log(typeof place.location);
+                // console.log(typeof request.pickupLocation);
+                if (place.location === request.pickupLocation) {
+                  // console.log(place.coordinate);
+
+                  // console.log(typeof place.coordinate);
+                  return true;
+                }
+              });
+              let dc = pickupLocations.find((place) => {
+                // console.log(typeof place.location);
+                // console.log(typeof request.pickupLocation);
+                if (place.location === request.deliveryLocation) {
+                  // console.log(place.coordinate);
+
+                  // console.log(typeof place.coordinate);
+                  return true;
+                }
+              });
               return (
                 <RequestCard
                   className="RequestCardOuter"
@@ -31,6 +64,8 @@ function ViewAllRequestsRow({ title, requests, pickupLocation, user }) {
                   showAccept={true}
                   showCollect={false}
                   showDelete={false}
+                  pickupCoordinates={pc?.coordinate}
+                  deliveryCoordinates={dc?.coordinate}
                 ></RequestCard>
               );
             })}

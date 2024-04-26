@@ -413,10 +413,13 @@ function RequestCard({
         href="#"
         class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 RequestCard"
         onClick={() => {
-          if (request.status === "ACCEPTED" || request.status === "COLLECTED") {
+          if (
+            request.status === "OPEN" ||
+            request.status === "ACCEPTED" ||
+            request.status === "COLLECTED"
+          ) {
             setShowMapDescription(true);
           } else if (
-            request.status === "OPEN" ||
             request.status === "DELIVERED" ||
             request.status === "CLOSED"
           ) {
