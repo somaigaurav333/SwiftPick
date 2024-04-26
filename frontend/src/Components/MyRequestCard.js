@@ -86,7 +86,7 @@ function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
           }
         });
     };
-    getUserDetails();
+    if (request.status != "OPEN") getUserDetails();
   }, []);
 
   return (
