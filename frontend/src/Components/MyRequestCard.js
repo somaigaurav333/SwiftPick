@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./MyRequestCard.css";
 import Dialog from "@mui/material/Dialog";
 import { Button } from "@mui/material";
@@ -9,10 +9,9 @@ import axios_instance from "../axios";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 
-import { useState } from "react";
-
 function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
   const [showRequestDescription, setShowRequestDescription] = useState(false);
+  const [requesteeDetails, setrequesteeDetails] = useState(null);
   const [showRating, setShowRating] = useState(false);
   const [rating, setRating] = useState(null);
   const [hoverValue, setHoverValue] = useState(null);
@@ -73,6 +72,23 @@ function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
         setShowRequestDescription(false);
       });
   };
+
+  useEffect(() => {
+    const getUserDetails = async () => {
+      const response = await axios_instance
+        .get("/auth/users/" + request.requesteeId)
+        .then((response) => {
+          if (response.status == 200) {
+            console.log("user: ", response.data);
+            setrequesteeDetails(response.data);
+          } else {
+            alert(response.data.message);
+          }
+        });
+    };
+    getUserDetails();
+  }, []);
+
   return (
     <span>
       <Dialog
@@ -130,16 +146,16 @@ function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
             <div className="RequestDescriptionDialogText">
               Requester Phone: {request.phoneNumber}
             </div>
-            {/* {request.status != "OPEN" && (
+            {request.status != "OPEN" && (
               <div>
                 <div className="RequestDescriptionDialogText">
-                  Requestee Name: {request.requesteeId}
+                  Requestee Name: {requesteeDetails?.username}
                 </div>
                 <div className="RequestDescriptionDialogText">
-                  Requestee Phone Number: {request.requesteeId}
+                  Requestee Phone Number: {requesteeDetails?.phoneNumber}
                 </div>
               </div>
-            )} */}
+            )}
             <div className="RequestDescriptionDialogText">
               Date: {request.date}
             </div>
