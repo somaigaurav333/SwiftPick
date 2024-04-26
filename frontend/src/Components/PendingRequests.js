@@ -3,6 +3,7 @@ import PostNewRequest from "./PostNewRequest";
 import axios_instance from "../axios";
 import RequestCard from "./RequestCard";
 import "./PendingRequests.css";
+import ViewAllRequestsRow from "./ViewAllRequestsRow";
 import axios from "axios";
 import MyRequestCard from "./MyRequestCard";
 import { DataGrid } from "@mui/x-data-grid";
@@ -35,8 +36,11 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
+const pickupLocationsURL = "/admin/locations";
 
 function PendingRequests() {
+  //fetch pickup locations data
+  const [pickupLocations, setpickupLocations] = useState([]);
   const navigate = useNavigate();
   let firstRender = true;
   const [user, setUser] = useState();
@@ -88,6 +92,15 @@ function PendingRequests() {
     }
     fetchRequests();
   }, [user]);
+
+  useEffect(() => {
+    async function fetchPickUpLocations() {
+      const response = await axios_instance.get(pickupLocationsURL);
+      setpickupLocations(response.data.data);
+      return;
+    }
+    fetchPickUpLocations();
+  }, []);
 
   return (
     <div className="bgvir">
@@ -143,16 +156,18 @@ function PendingRequests() {
           {!requests.length && (
             <span className="Nothing">Nothing to show here</span>
           )}
-          {requests.map((request) => {
+          {["ACCEPTED", "COLLECTED", "DELIVERED"].map((status) => {
             return (
-              <RequestCard
-                className="RequestCardOuter"
-                key={request._id}
-                request={request}
-                showAccept={false}
-                showCollect={true}
-                showDelete={false}
-              ></RequestCard>
+              <ViewAllRequestsRow
+                key={status}
+                title={status}
+                requests={requests}
+                pickupLocation={null}
+                user={user}
+                pickupCoordinate={null}
+                deliveryCoordinate={null}
+                pending={1}
+              ></ViewAllRequestsRow>
             );
           })}
         </div>

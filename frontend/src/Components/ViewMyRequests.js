@@ -134,6 +134,7 @@ function ViewMyRequests() {
         </Box>
       </Drawer>
       <div className="ViewMyRequests">
+        <h1 className="PendingRequestsHeading">My Requests</h1>
         <div className="RequestCards">
           {!requests.length && (
             <span className="Nothing">Nothing to show here</span>
