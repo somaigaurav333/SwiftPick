@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios_instance from "../axios";
 import "./ViewMyHistory.css";
+import ViewMyRequestsRow from "./ViewMyRequestsRow";
 import MyRequestCard from "./MyRequestCard";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
@@ -138,7 +139,7 @@ function ViewMyHistory() {
           {!requests.length && (
             <span className="Nothing">Nothing to show here</span>
           )}
-          {requests.map((request) => {
+          {/* {requests.map((request) => {
             return (
               <MyRequestCard
                 className="RequestCardOuter"
@@ -149,6 +150,20 @@ function ViewMyHistory() {
                 showDelete={false}
                 showClose={false}
               ></MyRequestCard>
+            );
+          })} */}
+          {["CLOSED"].map((status) => {
+            return (
+              <div>
+                <ViewMyRequestsRow
+                  key={status}
+                  title={status}
+                  requests={requests}
+                  pickupLocation={status}
+                  user={user}
+                ></ViewMyRequestsRow>
+                <br />
+              </div>
             );
           })}
         </div>

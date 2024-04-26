@@ -3,6 +3,7 @@ import PostNewRequest from "./PostNewRequest";
 import axios_instance from "../axios";
 import RequestCard from "./RequestCard";
 import "./PendingRequests.css";
+import ViewAllRequestsRow from "./ViewAllRequestsRow";
 import axios from "axios";
 import MyRequestCard from "./MyRequestCard";
 import { DataGrid } from "@mui/x-data-grid";
@@ -155,26 +156,18 @@ function PendingRequests() {
           {!requests.length && (
             <span className="Nothing">Nothing to show here</span>
           )}
-          {requests.map((request) => {
+          {["ACCEPTED", "COLLECTED", "DELIVERED"].map((status) => {
             return (
-              <RequestCard
-                className="RequestCardOuter"
-                key={request._id}
-                request={request}
-                showAccept={false}
-                showCollect={true}
-                showDelete={false}
-                pickupCoordinates={String(
-                  pickupLocations.find(
-                    (place) => place.location === request.pickupLocation
-                  ).coordinate
-                )}
-                deliveryCoordinates={String(
-                  pickupLocations.find(
-                    (place) => place.location === request.deliveryLocation
-                  ).coordinate
-                )}
-              ></RequestCard>
+              <ViewAllRequestsRow
+                key={status}
+                title={status}
+                requests={requests}
+                pickupLocation={null}
+                user={user}
+                pickupCoordinate={null}
+                deliveryCoordinate={null}
+                pending={1}
+              ></ViewAllRequestsRow>
             );
           })}
         </div>

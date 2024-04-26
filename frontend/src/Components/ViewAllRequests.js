@@ -146,7 +146,9 @@ function ViewAllRequests() {
           </List>
         </Box>
       </Drawer>
-
+      <div className="AllRequests">
+        <h1 className="PendingRequestsHeading">All Requests</h1>
+      </div>
       <div className="ViewAllRequests">
         {pickupLocations.map((pickupLocation) => {
           return (
@@ -156,6 +158,9 @@ function ViewAllRequests() {
               requests={requests}
               pickupLocation={pickupLocation}
               user={user}
+              pickupCoordinate={null}
+              deliveryCoordinate={null}
+              pending={0}
             ></ViewAllRequestsRow>
           );
         })}

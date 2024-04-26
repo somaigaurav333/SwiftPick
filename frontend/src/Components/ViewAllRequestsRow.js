@@ -2,17 +2,33 @@ import React, { useState, useEffect } from "react";
 import RequestCard from "./RequestCard";
 import "./ViewAllRequestsRow.css";
 
-function ViewAllRequestsRow({ title, requests, pickupLocation, user }) {
+function ViewAllRequestsRow({
+  title,
+  requests,
+  pickupLocation,
+  user,
+  pickupCoordinate,
+  deliveryCoordinate,
+  pending,
+}) {
   //Filter requests based on pickup location
   const [filteredRequests, setFilteredRequests] = useState([]);
 
   useEffect(() => {
-    setFilteredRequests([]);
-    requests.forEach((request) => {
-      if (request.pickupLocation === pickupLocation.location) {
-        setFilteredRequests((oldArray) => [...oldArray, request]);
-      }
-    });
+    if (pending === 0) {
+      setFilteredRequests([]);
+      requests.forEach((request) => {
+        if (request.pickupLocation === pickupLocation.location) {
+          setFilteredRequests((oldArray) => [...oldArray, request]);
+        }
+      });
+    } else if (pending === 1) {
+      requests.forEach((request) => {
+        if (request.status === title) {
+          setFilteredRequests((oldArray) => [...oldArray, request]);
+        }
+      });
+    }
   }, [requests, pickupLocation]);
 
   return (
@@ -28,9 +44,11 @@ function ViewAllRequestsRow({ title, requests, pickupLocation, user }) {
                   key={request._id}
                   request={request}
                   user={user}
-                  showAccept={true}
-                  showCollect={false}
+                  showAccept={request.status === "OPEN" ? true : false}
+                  showCollect={request.status === "ACCEPTED" ? true : false}
                   showDelete={false}
+                  pickupCoordinates={pickupCoordinate}
+                  deliveryCoordinates={deliveryCoordinate}
                 ></RequestCard>
               );
             })}
