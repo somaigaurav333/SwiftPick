@@ -363,10 +363,10 @@ function RequestCard({
                       icon={iconGreen}
                       style={{ colors: "green" }}
                     >
-                      <Popup>{request.pickupLocation}</Popup>
+                      <Popup>BPHC</Popup>
                     </Marker>
                     <Marker position={[deliveryx, deliveryy]} icon={iconBlue}>
-                      <Popup>{request.deliveryLocation}</Popup>
+                      <Popup>BPHC</Popup>
                     </Marker>
                   </MapContainer>
                 </div>

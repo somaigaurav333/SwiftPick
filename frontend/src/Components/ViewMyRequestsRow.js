@@ -31,7 +31,7 @@ function ViewMyRequestsRow({ title, requests, pickupLocation, user }) {
                   user={user}
                   showAccept={false}
                   showCollect={false}
-                  showDelete={request.status == "OPEN" ? true : false}
+                  showDelete={true}
                   showClose={true}
                 ></MyRequestCard>
               );
