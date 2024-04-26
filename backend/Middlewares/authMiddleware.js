@@ -4,12 +4,12 @@ import { Admin } from "../models/adminModel.js";
 
 const verifyToken = async (req, res, next) => {
   try {
-    const cookies = req.headers.cookie;
+    const cookies = req.headers.cookie || "";
     const token = cookies.split("=")[1];
     if (!token) {
-      return res.status(402).json({ message: "No token found" });
+      return res.status(401).json({ message: "No token found" });
     }
-    jwt.verify(String(token), process.env.jwtTokenKey, (err, user) => {
+    jwt.verify(token, process.env.jwtTokenKey, (err, user) => {
       if (err) {
         return res.status(403).json({ message: "Invalid Token" });
       }
@@ -23,49 +23,42 @@ const verifyToken = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   const userId = req.id;
-  let user;
   try {
-    user = await User.findById(userId, "-password");
+    const user = await User.findById(userId, "-password");
     if (!user) {
-      return res.status(405).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
     return res.status(200).json({ user });
   } catch (error) {
-    return res.status(406).json({ message: "Error" });
+    return res.status(500).json({ message: "Error" });
   }
 };
 
 const getAdmin = async (req, res, next) => {
   const userId = req.id;
-  let user;
   try {
-    user = await Admin.findById(userId, "-password");
+    const admin = await Admin.findById(userId, "-password");
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+    return res.status(200).json({ admin });
   } catch (error) {
-    return res.status(404).json({ message: "Error" });
+    return res.status(500).json({ message: "Error" });
   }
-
-  if (!user) {
-    return res.status(404).json({ message: "Admin not found" });
-  }
-  return res.status(200).json({ user });
 };
 
 const refreshToken = async (req, res, next) => {
   try {
-    const cookies = req.headers.cookie;
+    const cookies = req.headers.cookie || "";
     const prevToken = cookies.split("=")[1];
     if (!prevToken) {
-      return res.status(407).json({ message: "No token found" });
+      return res.status(400).json({ message: "No token found" });
     }
-    jwt.verify(String(prevToken), process.env.jwtTokenKey, (err, user) => {
+    jwt.verify(prevToken, process.env.jwtTokenKey, (err, user) => {
       if (err) {
-        console.log(err);
-        return res.status(408).json({ message: "Invalid Token" });
+        console.error(err);
+        return res.status(403).json({ message: "Invalid Token" });
       }
-
-      res.clearCookie(`${user._id}`);
-      req.cookies[`${user._id}`] = "";
-
       const payLoad = {
         _id: user._id,
         username: user.username,
@@ -82,7 +75,6 @@ const refreshToken = async (req, res, next) => {
       const token = jwt.sign(payLoad, process.env.jwtTokenKey, {
         expiresIn: "11m",
       });
-
       const options = {
         path: "/",
         expires: new Date(Date.now() + 1000 * 60 * 10),
@@ -90,35 +82,26 @@ const refreshToken = async (req, res, next) => {
         sameSite: "None",
         secure: true,
       };
-
       res.cookie(String(user._id), token, options);
-
-      // Send a response or end the middleware chain here
-      res.status(200).json({ token });
-
-      // Avoid calling next() here
+      return res.status(200).json({ token });
     });
   } catch (error) {
-    return res.status(409).json({ message: "Invalid Token" });
+    return res.status(500).json({ message: "Invalid Token" });
   }
 };
 
 const refreshAdminToken = async (req, res, next) => {
   try {
-    const cookies = req.headers.cookie;
+    const cookies = req.headers.cookie || "";
     const prevToken = cookies.split("=")[1];
     if (!prevToken) {
-      return res.status(410).json({ message: "No token found" });
+      return res.status(400).json({ message: "No token found" });
     }
-    jwt.verify(String(prevToken), process.env.jwtTokenKey, (err, admin) => {
+    jwt.verify(prevToken, process.env.jwtTokenKey, (err, admin) => {
       if (err) {
-        console.log(err);
-        return res.status(411).json({ message: "Invalid Token" });
+        console.error(err);
+        return res.status(403).json({ message: "Invalid Token" });
       }
-
-      res.clearCookie(`${admin._id}`);
-      req.cookies[`${admin._id}`] = "";
-
       const payLoad = {
         _id: admin._id,
         username: admin.username,
@@ -135,14 +118,10 @@ const refreshAdminToken = async (req, res, next) => {
         secure: true,
       };
       res.cookie(String(admin._id), token, options);
-
-      // Send a response or end the middleware chain here
-      res.status(200).json({ token });
-
-      // Avoid calling next() here
+      return res.status(200).json({ token });
     });
   } catch (error) {
-    return res.status(412).json({ message: "Invalid Token" });
+    return res.status(500).json({ message: "Invalid Token" });
   }
 };
 
