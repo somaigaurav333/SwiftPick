@@ -156,6 +156,29 @@ function PendingRequests() {
             <span className="Nothing">Nothing to show here</span>
           )}
           {requests.map((request) => {
+            let pc = pickupLocations.find((place) => {
+              // console.log(typeof place.location);
+              // console.log(typeof request.pickupLocation);
+              if (place.location === request.pickupLocation) {
+                // console.log(place.coordinate);
+
+                // console.log(typeof place.coordinate);
+                return true;
+              }
+            });
+            console.log(typeof pc?.coordinate);
+            let dc = pickupLocations.find((place) => {
+              // console.log(typeof place.location);
+              // console.log(typeof request.pickupLocation);
+              if (place.location === request.deliveryLocation) {
+                // console.log(place.coordinate);
+
+                // console.log(typeof place.coordinate);
+                return true;
+              }
+            });
+
+            // console.log(typeof pc);
             return (
               <RequestCard
                 className="RequestCardOuter"
@@ -164,16 +187,8 @@ function PendingRequests() {
                 showAccept={false}
                 showCollect={true}
                 showDelete={false}
-                pickupCoordinates={String(
-                  pickupLocations.find(
-                    (place) => place.location === request.pickupLocation
-                  ).coordinate
-                )}
-                deliveryCoordinates={String(
-                  pickupLocations.find(
-                    (place) => place.location === request.deliveryLocation
-                  ).coordinate
-                )}
+                pickupCoordinates={pc?.coordinate}
+                deliveryCoordinates={dc?.coordinate}
               ></RequestCard>
             );
           })}
