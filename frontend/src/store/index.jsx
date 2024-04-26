@@ -1,8 +1,8 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { createSlice, configureStore } from '@reduxjs/toolkit';
 
 const loadState = () => {
   try {
-    const serializedState = localStorage.getItem('authState');
+    const serializedState = sessionStorage.getItem('authState'); // Use sessionStorage instead of localStorage
     if (serializedState === null) {
       return { isLoggedIn: false };
     }
@@ -18,11 +18,11 @@ const authSlice = createSlice({
   reducers: {
     login(state) {
       state.isLoggedIn = true;
-      localStorage.setItem('authState', JSON.stringify(state));
+      sessionStorage.setItem('authState', JSON.stringify(state)); // Use sessionStorage instead of localStorage
     },
     logout(state) {
       state.isLoggedIn = false;
-      localStorage.setItem('authState', JSON.stringify(state));
+      sessionStorage.removeItem('authState'); // Use sessionStorage instead of localStorage
     },
   },
 });
