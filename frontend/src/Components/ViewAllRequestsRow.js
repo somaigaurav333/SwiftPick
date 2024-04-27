@@ -11,10 +11,11 @@ function ViewAllRequestsRow({
   pickupLocation,
   user,
   pending,
+  pickupLocations,
 }) {
   //Filter requests based on pickup location
   const [filteredRequests, setFilteredRequests] = useState([]);
-  const [pickupLocations, setpickupLocations] = useState([]);
+  // const [pickupLocations, setpickupLocations] = useState([]);
 
   useEffect(() => {
     setFilteredRequests([]);
@@ -33,14 +34,14 @@ function ViewAllRequestsRow({
     }
   }, [requests, pickupLocation]);
 
-  useEffect(() => {
-    async function fetchPickUpLocations() {
-      const response = await axios_instance.get(pickupLocationsURL);
-      setpickupLocations(response.data.data);
-      return;
-    }
-    fetchPickUpLocations();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchPickUpLocations() {
+  //     const response = await axios_instance.get(pickupLocationsURL);
+  //     setpickupLocations(response.data.data);
+  //     return;
+  //   }
+  //   fetchPickUpLocations();
+  // }, []);
 
   return (
     <div>

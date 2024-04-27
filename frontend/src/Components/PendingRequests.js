@@ -201,6 +201,7 @@ function PendingRequests() {
                 pickupLocation={status}
                 user={user}
                 pending={1}
+                pickupLocations={pickupLocations}
               ></ViewAllRequestsRow>
             );
           })}
