@@ -3,6 +3,7 @@ import PostNewRequest from "./PostNewRequest";
 import axios_instance from "../axios";
 import RequestCard from "./RequestCard";
 import "./PendingRequests.css";
+import ViewAllRequestsRow from "./ViewAllRequestsRow";
 import axios from "axios";
 import MyRequestCard from "./MyRequestCard";
 import { DataGrid } from "@mui/x-data-grid";
@@ -155,7 +156,7 @@ function PendingRequests() {
           {!requests.length && (
             <span className="Nothing">Nothing to show here</span>
           )}
-          {requests.map((request) => {
+          {/* {requests.map((request) => {
             let pc = pickupLocations.find((place) => {
               // console.log(typeof place.location);
               // console.log(typeof request.pickupLocation);
@@ -189,6 +190,19 @@ function PendingRequests() {
                 pickupCoordinates={pc?.coordinate}
                 deliveryCoordinates={dc?.coordinate}
               ></RequestCard>
+            );
+          })} */}
+          {["ACCEPTED", "COLLECTED", "DELIVERED"].map((status) => {
+            return (
+              <ViewAllRequestsRow
+                key={status}
+                title={status}
+                requests={requests}
+                pickupLocation={status}
+                user={user}
+                pending={1}
+                pickupLocations={pickupLocations}
+              ></ViewAllRequestsRow>
             );
           })}
         </div>

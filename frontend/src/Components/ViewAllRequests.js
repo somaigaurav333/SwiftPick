@@ -158,6 +158,8 @@ function ViewAllRequests() {
               requests={requests}
               pickupLocation={pickupLocation}
               user={user}
+              pending={0}
+              pickupLocations={pickupLocations}
             ></ViewAllRequestsRow>
           );
         })}
