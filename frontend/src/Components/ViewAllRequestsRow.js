@@ -76,8 +76,8 @@ function ViewAllRequestsRow({
                   key={request._id}
                   request={request}
                   user={user}
-                  showAccept={true}
-                  showCollect={false}
+                  showAccept={pending === 0 ? true : false}
+                  showCollect={request.status === "ACCEPTED" ? true : false}
                   showDelete={false}
                   pickupCoordinates={pc?.coordinate}
                   deliveryCoordinates={dc?.coordinate}
