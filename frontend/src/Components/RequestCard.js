@@ -230,7 +230,7 @@ function RequestCard({
                 }}
               >
                 <div className="RequestDescriptionDialogText">
-                  Rate this user:
+                  Rate the requester:
                 </div>
                 <Box component="fieldset" mb={3} borderColor="transparent">
                   <Rating
