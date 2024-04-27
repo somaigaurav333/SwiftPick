@@ -168,7 +168,7 @@ router.post("/login", async (req, res) => {
       isAdmin: false,
     };
     const token = jwt.sign(payLoad, process.env.jwtTokenKey, {
-      expiresIn: "11m",
+      expiresIn: "1hr",
     });
 
     if (req.cookies[`${existingUser._id}`]) {
@@ -177,7 +177,7 @@ router.post("/login", async (req, res) => {
 
     const options = {
       path: "/",
-      expires: new Date(Date.now() + 1000 * 60 * 10),
+      expires: new Date(Date.now() + 1000 * 60 * 60),
       httpOnly: true,
       sameSite: "None",
       secure: true,
@@ -307,11 +307,11 @@ router.post("/adminLogin", async (req, res) => {
       email: admin.email,
     };
     const token = jwt.sign(payLoad, process.env.jwtTokenKey, {
-      expiresIn: "11m",
+      expiresIn: "1hr",
     });
     const options = {
       path: "/",
-      expires: new Date(Date.now() + 1000 * 60 * 10),
+      expires: new Date(Date.now() + 1000 * 60 * 60),
       httpOnly: true,
       sameSite: "None",
       secure: true,

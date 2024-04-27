@@ -253,7 +253,7 @@ const AdminDashboard = () => {
                                     <Legend />
                                 </PieChart>
                                 <div className='chart-title'>
-                                    Percentage of Orders from a Location (Pickup)
+                                    Popularity of Pickup Locations 
                                 </div>
                             </div>
                             <div className='pie-chart'>
@@ -276,7 +276,7 @@ const AdminDashboard = () => {
                                     <Legend />
                                 </PieChart>
                                 <div className='chart-title'>
-                                    Percentage of Orders from a Location (Delivery)
+                                    Popularity of Delivery Locations
                                 </div>
                             </div>
                         </div>

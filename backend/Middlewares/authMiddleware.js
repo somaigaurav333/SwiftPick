@@ -73,11 +73,11 @@ const refreshToken = async (req, res, next) => {
         totalDeliveries: user.totalDeliveries,
       };
       const token = jwt.sign(payLoad, process.env.jwtTokenKey, {
-        expiresIn: "11m",
+        expiresIn: "1hr",
       });
       const options = {
         path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 10),
+        expires: new Date(Date.now() + 1000 * 60 * 60),
         httpOnly: true,
         sameSite: "None",
         secure: true,
@@ -108,11 +108,11 @@ const refreshAdminToken = async (req, res, next) => {
         email: admin.email,
       };
       const token = jwt.sign(payLoad, process.env.jwtTokenKey, {
-        expiresIn: "11m",
+        expiresIn: "1hr",
       });
       const options = {
         path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 10),
+        expires: new Date(Date.now() + 1000 * 60 * 60),
         httpOnly: true,
         sameSite: "None",
         secure: true,

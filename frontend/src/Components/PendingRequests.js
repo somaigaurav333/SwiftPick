@@ -74,7 +74,7 @@ function PendingRequests() {
     }
     let interval = setInterval(() => {
       refreshToken().then((data) => setUser(data.user));
-    }, 1000 * 60 * 9);
+    }, 1000 * 60 * 60);
 
     return () => clearInterval(interval);
   }, []);
