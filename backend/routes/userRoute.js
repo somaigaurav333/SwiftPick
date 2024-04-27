@@ -165,6 +165,7 @@ router.post("/login", async (req, res) => {
       requesteeRating: existingUser.requesteeRating,
       totalRequests: existingUser.totalRequests,
       totalDeliveries: existingUser.totalDeliveries,
+      isAdmin: false,
     };
     const token = jwt.sign(payLoad, process.env.jwtTokenKey, {
       expiresIn: "11m",
@@ -322,6 +323,7 @@ router.post("/adminLogin", async (req, res) => {
       message: "login successfully",
       user: admin,
       token,
+      isAdmin: true,
     });
   }
 });
@@ -339,7 +341,6 @@ router.post("/userLogout", verifyToken, async (req, res) => {
         console.log(err);
         return res.status(403).json({ message: "Invalid Token" });
       }
-
       res.clearCookie(`${user._id}`);
       req.cookies[`${user._id}`] = "";
 

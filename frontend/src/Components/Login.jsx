@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store";
 import axios_instance from "../axios";
 
@@ -9,33 +9,51 @@ const Login = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  
   const navigate = useNavigate();
+  
+  axios_instance.defaults.withCredentials = true;
+  
+  
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const isAdmin = useSelector((state) => state.isAdmin);
+  // Redirect if user is already logged in
+  useEffect(() => {
+    if (isLoggedIn) {
+      if (isAdmin) {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/requests');
+      }
+    }
+  }, [isLoggedIn, isAdmin, navigate]);
 
   axios_instance.defaults.withCredentials = true;
 
   const sendLoginReq = async () => {
-    const res = axios_instance
-      .post("/auth/login", {
+    try {
+      const response = await axios_instance.post("/auth/login", {
         email,
         password,
-      })
-      .then((response) => {
-        if (response.status == 200) {
-          navigate("/requests");
-          dispatch(authActions.login());
-        } else {
-          alert("Error Occurred");
-        }
-      })
-      .catch((err) => {
-        alert(err.response.data.message);
-        window.location.reload();
       });
-    const data = await res.data;
-    return data;
+  
+      if (response.status === 200) {
+        const userData = response.data; 
+        dispatch(authActions.login({
+          isLoggedIn: true,
+          isAdmin: userData.user.isAdmin,
+          userId: userData.user._id
+        }));
+        navigate("/requests");
+      } else {
+        alert("Error Occurred");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      window.location.reload();
+    }
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     sendLoginReq();

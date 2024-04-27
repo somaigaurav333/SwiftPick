@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import axios_instance from "../axios";
+import { useSelector } from "react-redux";
 
 const SingUp = () => {
   const [username, setUserName] = useState("");
@@ -13,6 +14,19 @@ const SingUp = () => {
   const [phoneNumber, setPhoneNumber] = useState();
 
   const navigate = useNavigate();
+
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const isAdmin = useSelector((state) => state.isAdmin);
+  // Redirect if user is already logged in
+  useEffect(() => {
+    if (isLoggedIn) {
+      if (isAdmin) {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/requests');
+      }
+    }
+  }, [isLoggedIn, isAdmin, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

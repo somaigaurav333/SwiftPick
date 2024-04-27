@@ -20,7 +20,8 @@ import PendingRequests from "./Components/PendingRequests";
 
 const App = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
-  // console.log(isLoggedIn);
+  const isAdmin = useSelector((state) => state.isAdmin);
+
   return (
     <React.Fragment>
       <header>
@@ -38,26 +39,26 @@ const App = () => {
             element={<ResetPassword />}
           />
           <Route path="/auth/verifySignup/:token" element={<SignupVerify />} />
-          {isLoggedIn && <Route path="/dashboard" element={<Dashboard />} />}
-          {isLoggedIn && (
+          {isLoggedIn && !isAdmin &&<Route path="/dashboard" element={<Dashboard />} />}
+          {isLoggedIn && !isAdmin &&(
             <Route path="/requests" element={<ViewAllRequests />} />
           )}
-          {isLoggedIn && (
+          {isLoggedIn &&  isAdmin && (
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
           )}
-          {isLoggedIn && (
+          {isLoggedIn && isAdmin && (
             <Route path="/admin/locations" element={<ViewAllLocations />} />
           )}
-          {isLoggedIn && (
+          {isLoggedIn && isAdmin && (
             <Route path="/admin/users" element={<ViewAllUsers />} />
           )}
-          {isLoggedIn && (
+          {isLoggedIn && !isAdmin &&(
             <Route path="/myRequests" element={<ViewMyRequests />} />
           )}
-          {isLoggedIn && (
+          {isLoggedIn && !isAdmin &&(
             <Route path="/myHistory" element={<ViewMyHistory />} />
           )}
-          {isLoggedIn && (
+          {isLoggedIn && !isAdmin &&(
             <Route path="/pendingRequests" element={<PendingRequests />} />
           )}
         </Routes>
