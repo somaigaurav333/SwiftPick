@@ -1,5 +1,6 @@
 import express from "express";
 import { Request } from "../models/requestModel.js";
+import { User } from "../models/userModel.js";
 import mongoose, { Mongoose } from "mongoose";
 const router = express.Router();
 
@@ -44,6 +45,10 @@ router.post("/", async (req, res) => {
       time: req.body.time,
     };
     const item = await Request.create(newReq);
+    await User.updateOne(
+      { _id: req.body.requesterId },
+      { $inc: { totalRequests: 1 } }
+    );
     return res.status(201).send(item);
   } catch (error) {
     console.log(error.message);
@@ -265,6 +270,8 @@ router.delete("/delete/:id", async (req, res) => {
     if (!result) {
       return res.status(403).json({ message: "Request not found" });
     }
+
+    // await User.updateOne({ _id: req.body.requesterId }, { $inc: { totalRequests: 1 } });
     return res.status(200).send({ message: "Request deleted successfully" });
   } catch (error) {
     console.log(error.message);
@@ -283,6 +290,10 @@ router.post("/delivered/:requestid", async (req, res) => {
       await Request.findByIdAndUpdate(
         { _id: requestid },
         { status: STATUS_DELIVERED }
+      );
+      await User.updateOne(
+        { _id: userRequest.requesteeId },
+        { $inc: { totalDeliveries: 1 } }
       );
       return res.status(200).send({ message: "Request Marked as Delivered" });
     } else {
