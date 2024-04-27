@@ -26,11 +26,11 @@ const AdminLogin = () => {
         navigate('/requests');
       }
     }
-  }, [isLoggedIn, isAdmin, navigate]);
+  }, [isLoggedIn, isAdmin]);
 
   const sendLoginReq = async () => {
   try {
-    const response = await axios_instance.post("/auth/login", {
+    const response = await axios_instance.post("/auth/adminLogin", {
       email,
       password,
     });
@@ -38,18 +38,19 @@ const AdminLogin = () => {
     if (response.status === 200) {
       const userData = response.data; // Assuming the response contains user data
       console.log(userData);
+      console.log(isAdmin, isLoggedIn)
       dispatch(authActions.login({
         isLoggedIn: true,
-        isAdmin: userData.user.isAdmin, // Assuming isAdmin is returned from the API response
+        isAdmin: userData.isAdmin, // Assuming isAdmin is returned from the API response
         userId: userData.user._id // Assuming userId is returned from the API response
       }));
-      navigate("/requests");
+      navigate("/admin/dashboard");
     } else {
       alert("Error Occurred");
     }
   } catch (error) {
     console.error("Login error:", error);
-    window.location.reload();
+    // window.location.reload();
   }
 };
 
