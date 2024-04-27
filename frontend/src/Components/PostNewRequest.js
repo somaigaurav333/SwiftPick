@@ -282,6 +282,7 @@ export default function PostNewRequest() {
           </div>
           <TextField
             autoFocus
+            required
             margin="dense"
             id="requesterNote"
             name="requesterNote"
