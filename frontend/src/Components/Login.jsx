@@ -9,21 +9,20 @@ const Login = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const navigate = useNavigate();
-  
+
   axios_instance.defaults.withCredentials = true;
-  
-  
+
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const isAdmin = useSelector((state) => state.isAdmin);
   // Redirect if user is already logged in
   useEffect(() => {
     if (isLoggedIn) {
       if (isAdmin) {
-        navigate('/admin/dashboard');
+        navigate("/admin/dashboard");
       } else {
-        navigate('/requests');
+        navigate("/requests");
       }
     }
   }, [isLoggedIn, isAdmin, navigate]);
@@ -36,24 +35,27 @@ const Login = () => {
         email,
         password,
       });
-  
+
       if (response.status === 200) {
-        const userData = response.data; 
-        dispatch(authActions.login({
-          isLoggedIn: true,
-          isAdmin: userData.user.isAdmin,
-          userId: userData.user._id
-        }));
+        const userData = response.data;
+        dispatch(
+          authActions.login({
+            isLoggedIn: true,
+            isAdmin: userData.user.isAdmin,
+            userId: userData.user._id,
+          })
+        );
         navigate("/requests");
       } else {
         alert("Error Occurred");
       }
     } catch (error) {
       console.error("Login error:", error);
+      alert("Please check your credentials and try again.");
       window.location.reload();
     }
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     sendLoginReq();
