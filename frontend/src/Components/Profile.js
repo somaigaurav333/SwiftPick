@@ -238,21 +238,30 @@ export default function Profile() {
                   </MDBCardText>
                 </div>
                 <div className="ratingdetails">
-                  <Rating
-                    readOnly
-                    defaultValue={0.5}
-                    precision={0.5}
-                    value={user?.requesterRating}
-                    style={{ padding: "20px" }}
-                  />
-
-                  <Rating
-                    readOnly
-                    defaultValue={0.5}
-                    precision={0.5}
-                    value={user?.requesteeRating}
-                    style={{ padding: "20px" }}
-                  />
+                  <div className="ratingdiv">
+                    <Rating
+                      readOnly
+                      defaultValue={0.5}
+                      precision={0.5}
+                      value={user?.requesterRating}
+                      style={{ padding: "20px" }}
+                    />
+                    <MDBCardText className="small text-muted mb-0">
+                      Requester Rating
+                    </MDBCardText>
+                  </div>
+                  <div className="ratingdiv">
+                    <Rating
+                      readOnly
+                      defaultValue={0.5}
+                      precision={0.5}
+                      value={user?.requesteeRating}
+                      style={{ padding: "20px" }}
+                    />
+                    <MDBCardText className="small text-muted mb-0">
+                      Requestee Rating
+                    </MDBCardText>
+                  </div>
                 </div>
               </div>
             </MDBCardBody>
