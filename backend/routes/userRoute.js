@@ -342,7 +342,7 @@ router.post("/userLogout", verifyToken, async (req, res) => {
         return res.status(403).json({ message: "Invalid Token" });
       }
       res.clearCookie(`${user._id}`);
-      req.cookies[`${user._id}`] = "";
+      // req.cookies[`${user._id}`] = "";
 
       return res.status(200).json({ message: "Logout Success" });
     });

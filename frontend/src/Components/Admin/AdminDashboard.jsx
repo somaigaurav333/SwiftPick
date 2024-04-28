@@ -45,34 +45,46 @@ const AdminDashboard = () => {
     const [pieColors2, setPieColors2] = useState([]);
     const [dayWiseData, setDayWiseData] = useState([]);
 
-    const refreshToken = async () => {
-        const res = await axios_instance.get('/auth/refreshAdmin', {
-            withCredentials: true,
-        }).catch((err) => console.log(err));
-
-        const data = await res.data;
-        return data;
-    };
-
-    const sendReq = async () => {
-        const res = await axios_instance.get('/auth/verifyAdminLogin', {
-            withCredentials: true,
-        }).catch((err) => console.log(err));
-        const data = await res.data;
-        return data;
-    };
-
     useEffect(() => {
-        if (firstRender) {
-            firstRender = false;
-            sendReq().then((data) => setUser(data.user));
-        }
-        let interval = setInterval(() => {
-            refreshToken().then((data) => setUser(data.user));
-        }, 1000 * 60 * 9);
+        // Function to verify token
+        const verifyToken = async () => {
+            try {
+                // Verify admin login
+                const res = await axios_instance.get('/auth/verifyAdminLogin', {
+                    withCredentials: true,
+                });
+                const data = res.data;
+                setUser(data.user);
+            } catch (error) {
+                // Handle error, e.g., redirect user to login page
+                navigate('/auth/login'); // Assuming '/login' is the login page
+            }
+        };
 
+        // Function to refresh token
+        const refreshToken = async () => {
+            try {
+                // Refresh token
+                const res = await axios_instance.get('/auth/refreshAdmin', {
+                    withCredentials: true,
+                });
+                const data = res.data;
+                setUser(data.user);
+            } catch (error) {
+                console.log(error); // Handle error appropriately
+            }
+        };
+
+        verifyToken(); // Call verifyToken initially
+
+        // Set up interval to refresh token every 9 minutes
+        const interval = setInterval(refreshToken, 1000 * 60 * 9);
+
+        // Cleanup function to clear interval when component unmounts
         return () => clearInterval(interval);
-    }, []);
+    }, [navigate]); // Add navigate as a dependency
+
+    
 
     useEffect(() => {
         getCount();

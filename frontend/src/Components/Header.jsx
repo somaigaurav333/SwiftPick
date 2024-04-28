@@ -173,6 +173,7 @@ export default function Header() {
       withCredentials: true,
     });
     if (res.status === 200) {
+      navigate('/')
       return res;
     }
     return new Error("Unable TO Logout. Please try again");

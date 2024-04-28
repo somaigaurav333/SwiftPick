@@ -20,6 +20,7 @@
     "js-cookie": "^3.0.5",
     "leaflet": "^1.9.4",
     "mapbox-gl": "^3.3.0",
+    "mdb-react-ui-kit": "^8.0.0",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "popper.js": "^1.16.1",

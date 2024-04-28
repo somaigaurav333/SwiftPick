@@ -31,37 +31,42 @@ function ViewMyHistory() {
   const [user, setUser] = useState();
   const [userName, setUserName] = useState();
 
-  const refreshToken = async () => {
-    const res = await axios_instance
-      .get("/auth/refresh", {
-        withCredentials: true,
-      })
-      .catch((err) => console.log(err));
-
-    const data = await res.data;
-    return data;
-  };
-
-  const sendReq = async () => {
-    const res = await axios_instance
-      .get("/auth/verifyLogin", {
-        withCredentials: true,
-      })
-      .catch((err) => console.log(err));
-    const data = await res.data;
-    return data;
-  };
   useEffect(() => {
-    if (firstRender) {
-      firstRender = false;
-      sendReq().then((data) => setUser(data.user));
-    }
-    let interval = setInterval(() => {
-      refreshToken().then((data) => setUser(data.user));
-    }, 1000 * 60 * 60);
+    const verifyToken = async () => {
+      try {
+        const res = await axios_instance.get('/auth/verifyLogin', {
+          withCredentials: true,
+        });
+        const data = res.data;
+        setUser(data.user);
+      } catch (error) {
+        // Redirect user to login page if token verification fails
+        navigate('/auth/login');
+      }
+    };
 
+    const refreshToken = async () => {
+      try {
+        const res = await axios_instance.get('/auth/refresh', {
+          withCredentials: true,
+        });
+        const data = res.data;
+        setUser(data.user);
+      } catch (error) {
+        console.log("Error refreshing token:", error);
+        // Handle error appropriately, such as displaying an error message to the user
+      }
+    };
+
+    // Initial token verification
+    verifyToken();
+
+    // Set up interval to refresh token every 9 minutes
+    const interval = setInterval(refreshToken, 1000 * 60 * 60);
+
+    // Cleanup function to clear interval when component unmounts
     return () => clearInterval(interval);
-  }, []);
+  }, [navigate]); // Add navigate as a dependency
 
   //fetch requests data
   const [requests, setRequests] = useState([]);
