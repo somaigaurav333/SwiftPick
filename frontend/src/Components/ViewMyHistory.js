@@ -20,6 +20,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import HistoryIcon from "@mui/icons-material/History";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import PersonIcon from "@mui/icons-material/Person";
 // import { GoogleMap, LoadScript } from "@react-google-maps/api";
 
 const drawerWidth = 240;
@@ -127,6 +128,12 @@ function ViewMyHistory() {
               >
                 <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
                 <ListItemText primary="History" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/profile")}>
+                <ListItemIcon>{<PersonIcon />}</ListItemIcon>
+                <ListItemText primary="Profile" />
               </ListItemButton>
             </ListItem>
           </List>

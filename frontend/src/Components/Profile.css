@@ -1,0 +1,91 @@
+.gradient-custom-2 {
+  /* fallback for old browsers */
+  background: #fbc2eb;
+  margin-top: 45px;
+  margin-left: 240px;
+  height: 40vh;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(
+    to right,
+    rgba(251, 194, 235, 1),
+    rgba(166, 193, 238, 1)
+  );
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(
+    to right,
+    rgba(251, 194, 235, 1),
+    rgba(166, 193, 238, 1)
+  );
+}
+
+.username {
+  font-size: 40px;
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+.hostel {
+  font-size: 20px;
+  margin-left: 20px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editbutton {
+  align-self: flex-end;
+  margin-right: 20px;
+}
+
+.requestdetailsdiv {
+  align-self: flex-end;
+  display: flex;
+  justify-content: end;
+  /* margin-right: 20px;
+  margin-top: 20px; */
+}
+
+.requestdetails {
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.detailscard {
+  /* margin-top: 20px; */
+  margin-left: 20px;
+  /* margin-right: 20px; */
+  align-items: center;
+}
+
+.detailsdiv {
+  align-self: flex-start;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+  margin-top: 20px;
+}
+
+.secondarydetails {
+  background: linear-gradient(to right, white, #bed5ee, white);
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.basicdetails {
+  font-size: 20px;
+
+  /* font-weight: bold; */
+}
+
+.ratingdetails {
+  margin-right: "20px";
+  align-items: center;
+  justify-content: space-between;
+}

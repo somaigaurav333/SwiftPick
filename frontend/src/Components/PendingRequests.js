@@ -30,6 +30,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import HistoryIcon from "@mui/icons-material/History";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import PersonIcon from "@mui/icons-material/Person";
 import MailIcon from "@mui/icons-material/Mail";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
@@ -144,6 +145,12 @@ function PendingRequests() {
               <ListItemButton onClick={(event) => navigate("/myHistory")}>
                 <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
                 <ListItemText primary="History" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/profile")}>
+                <ListItemIcon>{<PersonIcon />}</ListItemIcon>
+                <ListItemText primary="Profile" />
               </ListItemButton>
             </ListItem>
           </List>

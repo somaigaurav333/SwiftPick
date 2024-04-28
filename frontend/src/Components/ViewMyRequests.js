@@ -19,6 +19,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import HistoryIcon from "@mui/icons-material/History";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import PersonIcon from "@mui/icons-material/Person";
 
 const drawerWidth = 240;
 
@@ -128,6 +129,12 @@ function ViewMyRequests() {
               <ListItemButton onClick={(event) => navigate("/myHistory")}>
                 <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
                 <ListItemText primary="History" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={(event) => navigate("/profile")}>
+                <ListItemIcon>{<PersonIcon />}</ListItemIcon>
+                <ListItemText primary="Profile" />
               </ListItemButton>
             </ListItem>
           </List>

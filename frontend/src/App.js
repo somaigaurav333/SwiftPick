@@ -14,6 +14,7 @@ import ViewAllUsers from "./Components/Admin/ViewAllUsers";
 import AdminDashboard from "./Components/Admin/AdminDashboard";
 import ViewMyRequests from "./Components/ViewMyRequests";
 import ViewMyHistory from "./Components/ViewMyHistory";
+import Profile from "./Components/Profile";
 import { useSelector } from "react-redux";
 import Header from "./Components/Header";
 import PendingRequests from "./Components/PendingRequests";
@@ -39,11 +40,13 @@ const App = () => {
             element={<ResetPassword />}
           />
           <Route path="/auth/verifySignup/:token" element={<SignupVerify />} />
-          {isLoggedIn && !isAdmin &&<Route path="/dashboard" element={<Dashboard />} />}
-          {isLoggedIn && !isAdmin &&(
+          {isLoggedIn && !isAdmin && (
+            <Route path="/dashboard" element={<Dashboard />} />
+          )}
+          {isLoggedIn && !isAdmin && (
             <Route path="/requests" element={<ViewAllRequests />} />
           )}
-          {isLoggedIn &&  isAdmin && (
+          {isLoggedIn && isAdmin && (
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
           )}
           {isLoggedIn && isAdmin && (
@@ -52,14 +55,17 @@ const App = () => {
           {isLoggedIn && isAdmin && (
             <Route path="/admin/users" element={<ViewAllUsers />} />
           )}
-          {isLoggedIn && !isAdmin &&(
+          {isLoggedIn && !isAdmin && (
             <Route path="/myRequests" element={<ViewMyRequests />} />
           )}
-          {isLoggedIn && !isAdmin &&(
+          {isLoggedIn && !isAdmin && (
             <Route path="/myHistory" element={<ViewMyHistory />} />
           )}
-          {isLoggedIn && !isAdmin &&(
+          {isLoggedIn && !isAdmin && (
             <Route path="/pendingRequests" element={<PendingRequests />} />
+          )}
+          {isLoggedIn && !isAdmin && (
+            <Route path="/profile" element={<Profile />} />
           )}
         </Routes>
       </main>
