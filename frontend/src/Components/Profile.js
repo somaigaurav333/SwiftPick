@@ -49,20 +49,20 @@ export default function Profile() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const res = await axios_instance.get('/auth/verifyLogin', {
+        const res = await axios_instance.get("/auth/verifyLogin", {
           withCredentials: true,
         });
         const data = res.data;
         setUser(data.user);
       } catch (error) {
         // Redirect user to login page if token verification fails
-        navigate('/auth/login');
+        navigate("/auth/login");
       }
     };
 
     const refreshToken = async () => {
       try {
-        const res = await axios_instance.get('/auth/refresh', {
+        const res = await axios_instance.get("/auth/refresh", {
           withCredentials: true,
         });
         const data = res.data;
@@ -84,7 +84,7 @@ export default function Profile() {
   }, [navigate]); // Add navigate as a dependency
 
   return (
-    <div className="gradient-custom-2" style={{ backgroundColor: "#9de2ff" }}>
+    <div className="gradient-custom-2">
       <Drawer
         variant="permanent"
         sx={{
@@ -138,7 +138,7 @@ export default function Profile() {
       </Drawer>
       <MDBContainer className="py-5 h-100">
         <MDBRow className="justify-content-center align-items-center h-100">
-          <MDBCard>
+          <MDBCard style={{ background: "white" }}>
             <div
               className="topbar rounded-top text-white d-flex flex-row"
               style={{ backgroundColor: "#000", height: "400px" }}
