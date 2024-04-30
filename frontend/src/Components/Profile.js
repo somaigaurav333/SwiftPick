@@ -54,6 +54,7 @@ export default function Profile() {
         });
         const data = res.data;
         setUser(data.user);
+        console.log(user);
       } catch (error) {
         // Redirect user to login page if token verification fails
         navigate("/auth/login");
@@ -75,7 +76,7 @@ export default function Profile() {
 
     // Initial token verification
     verifyToken();
-
+    console.log(user);
     // Set up interval to refresh token every 9 minutes
     const interval = setInterval(refreshToken, 1000 * 60 * 60);
 
@@ -246,7 +247,7 @@ export default function Profile() {
                   <div className="ratingdiv">
                     <Rating
                       readOnly
-                      defaultValue={0.5}
+                      defaultValue={4.142857142857143}
                       precision={0.5}
                       value={user?.requesterRating}
                       style={{ padding: "20px" }}
@@ -258,7 +259,7 @@ export default function Profile() {
                   <div className="ratingdiv">
                     <Rating
                       readOnly
-                      defaultValue={0.5}
+                      defaultValue={3.227272727272727}
                       precision={0.5}
                       value={user?.requesteeRating}
                       style={{ padding: "20px" }}
