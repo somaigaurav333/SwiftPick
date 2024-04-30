@@ -342,7 +342,12 @@ router.post("/userLogout", verifyToken, async (req, res) => {
         return res.status(403).json({ message: "Invalid Token" });
       }
       // Clear the cookie by setting an empty value and an expiration date in the past
-      res.clearCookie(`${user._id}`, { path: '/', expires: new Date(0) });
+      res.clearCookie(`${user._id}`, {
+        path: "/",
+        expires: new Date(0),
+        sameSite: "None",
+        secure: true,
+      });
 
       return res.status(200).json({ message: "Logout Success" });
     });
@@ -350,7 +355,6 @@ router.post("/userLogout", verifyToken, async (req, res) => {
     return res.status(404).json({ message: "Invalid Token" });
   }
 });
-
 
 // Route for login verification
 router.get("/verifyLogin", verifyToken, getUser);
