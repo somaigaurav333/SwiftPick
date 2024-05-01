@@ -191,7 +191,7 @@ function RequestCard({
                     className="RequestDescriptionDialogButton"
                     variant="outlined"
                   >
-                    Collect
+                    Collected
                   </Button>
                 </div>
               )}
@@ -318,7 +318,7 @@ function RequestCard({
                         className="RequestDescriptionDialogButton"
                         variant="outlined"
                       >
-                        Collect
+                        Collected
                       </Button>
                     </div>
                   )}

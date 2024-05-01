@@ -27,20 +27,20 @@ export default function PostNewRequest() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const res = await axios_instance.get('/auth/verifyLogin', {
+        const res = await axios_instance.get("/auth/verifyLogin", {
           withCredentials: true,
         });
         const data = res.data;
         setUser(data.user);
       } catch (error) {
         // Redirect user to login page if token verification fails
-        navigate('/auth/login');
+        navigate("/auth/login");
       }
     };
 
     const refreshToken = async () => {
       try {
-        const res = await axios_instance.get('/auth/refresh', {
+        const res = await axios_instance.get("/auth/refresh", {
           withCredentials: true,
         });
         const data = res.data;
@@ -70,7 +70,16 @@ export default function PostNewRequest() {
   useEffect(() => {
     async function fetchLocations() {
       const response = await axios_instance.get(locationsURL);
-      setLocations(response.data.data);
+      setLocations(
+        response.data.data.sort((a, b) => {
+          const aLoc = a.location.toLowerCase();
+          const bLoc = b.location.toLowerCase();
+          if (aLoc < bLoc) return -1;
+          else if (aLoc > bLoc) return 1;
+          return 0;
+        })
+      );
+      console.log(locations);
       console.log(response);
       return;
     }
