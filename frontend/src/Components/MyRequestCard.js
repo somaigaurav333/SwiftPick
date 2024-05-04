@@ -52,6 +52,7 @@ function MyRequestCard({ user, request, showAccept, showCollect, showDelete }) {
         console.log(response);
         if (response.status == 200) {
           alert("Request Deleted Successfully");
+          window.location.reload();
         } else {
           alert("Could not Delete Request");
         }

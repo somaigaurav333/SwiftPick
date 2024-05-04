@@ -188,6 +188,7 @@ export default function PostNewRequest() {
                 if (response.status === 201) {
                   alert("Successfull Added");
                   navigate("/myRequests");
+                  // window.location.reload();
                 } else {
                   alert("Retry");
                 }

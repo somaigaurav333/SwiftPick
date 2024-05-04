@@ -88,6 +88,7 @@ function RequestCard({
         console.log(response);
         if (response.status == 200) {
           alert("Request Accepted Successfully");
+          window.location.reload();
         } else {
           alert("Could not accept request");
         }
@@ -101,6 +102,7 @@ function RequestCard({
         console.log(response);
         if (response.status == 200) {
           alert("Request Marked as Collected");
+          window.location.reload();
         } else {
           alert("Could not mark request as collected");
         }
@@ -114,6 +116,7 @@ function RequestCard({
         console.log(response);
         if (response.status == 200) {
           alert("Request Deleted Successfully");
+          window.location.reload();
         } else {
           alert("Could not Delete Request");
         }
@@ -127,6 +130,7 @@ function RequestCard({
         console.log(response);
         if (response.status == 200) {
           alert("Request Closed");
+          window.location.reload();
         } else {
           alert("Could not close the request");
         }
